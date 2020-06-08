@@ -1,0 +1,15 @@
+Stucture
+---: breaks one section from another
+ex:
+    Subject
+---
+    Body
+---End (last one marks the end of the email)
+
+<tsc>: the tsc number of the ticket
+<owner>: the owner of the device to be returned
+<model>: the model of the machine if given in ticket
+<sn>: the serial number of the device
+<address>: the client to update and validate from the ticket
+<device>: the type of machine being returned (laptop, desktop) starting with a uppercase
+<deviceL>: the type of machine being returned (laptop, desktop) starting with a lowercase

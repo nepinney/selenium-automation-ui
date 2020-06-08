@@ -1,0 +1,43 @@
+"Order number : 200504055401\n" +
+"Order date : 2020/05/04 11:17:13 AM\n" +
+"Requestor\n" +
+"Colleen Lamond (6101951)\tEmail : COLLEEN.LAMOND@BELL.CA\n" +
+"Telephone\t(416) 353-8607\tCompany\tBELL CANADA (1000)\n" +
+"Owner\n" +
+"Ather Qureshi (6091924)\tEmail : ATHER.QURESHI@BELL.CA\n" +
+"Telephone\t6473837332\tCompany\tBELL MOBILITY(10)\n" +
+"Org. Code\tH8041103\tProvince\tOntario\n" +
+"Title\tDEV, MACHINE LEARNING EN\tBuilding code\tTOROONDC\n" +
+"Item summary\n" +
+"Ather Qureshi (6091924)\n" +
+"Product\tAgent\tStatus\n" +
+"Return to Reuse Bell - Computer or Thin Client\tDepot 100 Wynford (416) 446-2647\tAssigned\n" +
+"Item details\n" +
+"Ather Qureshi (6091924)\n" +
+"200504-0554-0101\tReturn to Reuse Bell - Computer or Thin Client\n" +
+"Status\tAssigned\n" +
+"Agent\tDepot 100 Wynford (416) 446-2647\n" +
+"Billing Reference Number\t001125742\n" +
+"Broad Service Category\tDisconnect\n" +
+"Contact Information\tToronto Depot (DPTORO)\n" +
+"Services - Entity - Ref. (Computer Name or Serial #):HP PROBOOK 640 G25CG6426SYH (Return to Reuse Bell - Computer or Thin Client) - 20050405540101\n" +
+"Entity\tBell Canada (1000) - Bell Aliant (1000) - BCE inc (1010) - Bell Nexxia 8007 - Bell MTS (1000)\n" +
+"Configuration - Usage - Ref. (Computer Name or Serial #):HP PROBOOK 640 G25CG6426SYH (Return to Reuse Bell - Computer or Thin Client) - 20050405540101\n" +
+"Usage\tPrimary : Sole and exclusive station for main job functions by an active employee.\n" +
+"Configuration - Return - Ref. (Computer Name or Serial #):HP PROBOOK 640 G25CG6426SYH (Return to Reuse Bell - Computer or Thin Client) - 20050405540101\n" +
+"A separate item is required per computer to manage inventories.\tLaptop\n" +
+"Configuration - Details - Ref. (Computer Name or Serial #):HP PROBOOK 640 G25CG6426SYH (Return to Reuse Bell - Computer or Thin Client) - 20050405540101\n" +
+"Computer, peripherals, accessories and/or videozone devices to be returned\tLaptop\n" +
+"Please enter the quantities for each computers, peripherals, accessories and devices to be returned\t1 laptop, 1 access card. Pre-paid box is required\n" +
+"Please validate and update\tAther Qureshi c/o Kevin Ferreira\n" +
+"51 Heddington Ave -\n" +
+"Toronto, On - ON M5N 2K7\n" +
+"Exact location: suite, room, section, column, cubicle, extension, etc.\tPre-paid box is required.\n" +
+"Configuration - Method - Ref. (Computer Name or Serial #):HP PROBOOK 640 G25CG6426SYH (Return to Reuse Bell - Computer or Thin Client) - 20050405540101\n" +
+"You may return the computer and accessories to a DEPOT or request a pickup.\tPlease arrange for a pick-up.\n" +
+"Your answer will determine which group will handle this request.\tDEPOT 100 Wynford\n" +
+"Configuration - Contacts - Ref. (Computer Name or Serial #):HP PROBOOK 640 G25CG6426SYH (Return to Reuse Bell - Computer or Thin Client) - 20050405540101\n" +
+"Primary (on-site)\tKevin Ferreira (6075653) - (647) 407-4740 - k.ferreira.mie@gmail.com\n" +
+"Secondary (on-site)\tColleen Lamond (6101951) - (416) 353-8607 - COLLEEN.LAMOND@BELL.CA\n" +
+"Billing, Shipping & Installation - Desired Due Date - Ref. (Computer Name or Serial #):HP PROBOOK 640 G25CG6426SYH (Return to Reuse Bell - Computer or Thin Client) - 20050405540101\n" +
+"Desired Due Date\t2020/05/08"

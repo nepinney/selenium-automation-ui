@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root fx:id="rootGrid" type="javafx.scene.layout.GridPane" xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="5" vgap="6" gridLinesVisible="false">
+
+    <Label text="1. Open ticket on browser or enter tsc number to generate" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+
+    <GridPane fx:id="tscGrid" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" >
+        <Label fx:id="label2" text="TSC #: " GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="tscField" GridPane.rowIndex="0" GridPane.columnIndex="1" onMouseClicked="#onTextFieldClick"></TextField>
+        <Button fx:id="generateButton" text="Fetch Notes" onAction="#fetchTicket" GridPane.rowIndex="0" GridPane.columnIndex="2" GridPane.halignment="RIGHT"/>
+    </GridPane>
+
+    <Label fx:id="label3" text="2. Create request email" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+    <Button fx:id="emailButton" text="Create Email" onAction="#createEmail" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
+
+    <Label fx:id="label4" text="3. Update the ticket status and add email to notes" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+    <Button fx:id="updateButton" text="Update Ticket" onAction="#updateTicket" GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
+
+    <Label fx:id="label5" text="4. Save ticket and clear" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+    <Button fx:id="saveButton" text="Save ticket &amp; return to menu" onAction="#saveTicketAndClear" GridPane.rowIndex="9" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
+
+    <Button fx:id="printTicketButton" text="Print ticket details" onAction="#printTicket" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
+
+</fx:root>

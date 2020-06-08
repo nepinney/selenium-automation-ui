@@ -1,0 +1,39 @@
+Order number : 200526524201
+Order date : 2020/05/26 8:21:21 AM
+Requestor
+Calvin Zavitz (0120355)	Email : CAL.ZAVITZ@BELL.CA
+Telephone	(519) 281-3773	Company	BELL MOBILITY (10)
+Owner
+Calvin Zavitz (0120355)	Email : CAL.ZAVITZ@BELL.CA
+Telephone	(519) 281-3773	Company	BELL MOBILITY(10)
+Org. Code	510D0250	Province	Ontario
+Title	SENIOR MANAGER, NETWORK	Building code	LONDON48
+Item summary
+Calvin Zavitz (0120355)
+Product	Agent	Status
+Return to Reuse Bell - Computer or Thin Client	CGI DSM London	Assigned
+Item details
+Calvin Zavitz (0120355)
+200526-5242-0102	Return to Reuse Bell - Computer or Thin Client
+Status	Assigned
+Agent	CGI DSM London
+Billing Reference Number	001131090
+Contact Information	Dsm London (DSLOND)
+Services - Entity - Ref. (Computer Name or Serial #):PROBOOK 640 G15CG5394FZT (Return to Reuse Bell - Computer or Thin Client) - 20052652420102
+Entity	Bell TV - Bell Mobility - Bell Mobility Channels
+Configuration - Return - Ref. (Computer Name or Serial #):PROBOOK 640 G15CG5394FZT (Return to Reuse Bell - Computer or Thin Client) - 20052652420102
+A separate item is required per computer to manage inventories.	Laptop
+Configuration - Details - Ref. (Computer Name or Serial #):PROBOOK 640 G15CG5394FZT (Return to Reuse Bell - Computer or Thin Client) - 20052652420102
+Computer, peripherals, accessories and/or videozone devices to be returned
+Please validate and update	ZAVITZ CALVIN
+725 Colborne - Floor 3
+London - ON N6A 0B9
+Exact location: suite, room, section, column, cubicle, extension, etc.	Already returned to 100 Dundas.
+Configuration - Method - Ref. (Computer Name or Serial #):PROBOOK 640 G15CG5394FZT (Return to Reuse Bell - Computer or Thin Client) - 20052652420102
+You may return the computer and accessories to a DEPOT or request a pickup.	I will bring back the hardware to a depot; no appointment required.
+Your answer will determine which group will handle this request.	ON London - 100 Dundas
+Configuration - Contacts - Ref. (Computer Name or Serial #):PROBOOK 640 G15CG5394FZT (Return to Reuse Bell - Computer or Thin Client) - 20052652420102
+Primary (on-site)	ZAVITZ CALVIN () - (519) 281-3773 - CAL.ZAVITZ@BELL.CA
+Secondary (on-site)	ZAVITZ CALVIN () - (519) 281-3773 - CAL.ZAVITZ@BELL.CA
+Billing, Shipping & Installation - Desired Due Date - Ref. (Computer Name or Serial #):PROBOOK 640 G15CG5394FZT (Return to Reuse Bell - Computer or Thin Client) - 20052652420102
+Desired Due Date	2020/05/25

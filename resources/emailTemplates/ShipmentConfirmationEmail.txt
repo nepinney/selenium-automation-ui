@@ -1,0 +1,13 @@
+Shipment confirmation for order <tsc>
+---
+Hello,
+
+An empty return box has been shipped to  addressed to . The return Purolator waybill is included inside the box. Please dropoff to your nearest Purolator
+which can be located using their website.
+
+Purolator pin for the box coming to you:
+Purolator pin for the box which will be returning to us:
+
+Thanks,
+Nick
+---End

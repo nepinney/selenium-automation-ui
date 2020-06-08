@@ -1,0 +1,48 @@
+This ticket is giving issue where the secondary email comes out as the order number insteadof the email.
+The main difference between this and regular notes that work properly is that this one has the priority note at line 46.
+
+Order number : 200514312901
+Order date : 2020/05/14 8:30:47 AM
+Requestor
+Maureen Winges (3002298)	Email : MAUREEN.WINGES@BELL.CA
+Telephone	(613) 742-1168	Company	BELL CANADA (1000)
+Owner
+Patrick L Kaine (2299518)	Email : PATRICK.KAINE@BELL.CA
+Telephone	(905) 522-1155 #34497	Company	BELL CANADA(1000)
+Org. Code	4304025F	Province	Ontario
+Title	BUSINESS TECHNICIAN I	Building code	HMTNONBA
+Item summary
+Patrick L Kaine (2299518)
+Product	Agent	Status
+Return to Reuse Bell - Computer or Thin Client	CGI DSM Toronto	Assigned
+Item details
+Patrick L Kaine (2299518)
+200514-3129-0101	Return to Reuse Bell - Computer or Thin Client
+Status	Assigned
+Agent	CGI DSM Toronto
+Billing Reference Number	001128647
+Broad Service Category	Disconnect
+Contact Information	Dsm Toronto (DSTORO)
+Services - Entity - Ref. (Computer Name or Serial #):HP PROBOOK 640 G45CG8474CW9 (Return to Reuse Bell - Computer or Thin Client) - 20051431290101
+Entity	Bell Canada (1000) - Bell Aliant (1000) - BCE inc (1010) - Bell Nexxia 8007 - Bell MTS (1000)
+Configuration - Usage - Ref. (Computer Name or Serial #):HP PROBOOK 640 G45CG8474CW9 (Return to Reuse Bell - Computer or Thin Client) - 20051431290101
+Usage	Primary : Sole and exclusive station for main job functions by an active employee.
+Configuration - Return - Ref. (Computer Name or Serial #):HP PROBOOK 640 G45CG8474CW9 (Return to Reuse Bell - Computer or Thin Client) - 20051431290101
+A separate item is required per computer to manage inventories.	Laptop
+Configuration - Details - Ref. (Computer Name or Serial #):HP PROBOOK 640 G45CG8474CW9 (Return to Reuse Bell - Computer or Thin Client) - 20051431290101
+Computer, peripherals, accessories and/or videozone devices to be returned	Laptop
+Please enter the quantities for each computers, peripherals, accessories and devices to be returned	1
+Please validate and update	Patrick L Kaine
+160 Bay N. - Floor 1
+Hamilton - ON L8R 2P6
+Exact location: suite, room, section, column, cubicle, extension, etc.	Tim Illchene 289-439-1052
+Configuration - Method - Ref. (Computer Name or Serial #):HP PROBOOK 640 G45CG8474CW9 (Return to Reuse Bell - Computer or Thin Client) - 20051431290101
+You may return the computer and accessories to a DEPOT or request a pickup.	Please arrange for a pick-up.
+Your answer will determine which group will handle this request.	ON Toronto - 50 Eglinton
+Configuration - Contacts - Ref. (Computer Name or Serial #):HP PROBOOK 640 G45CG8474CW9 (Return to Reuse Bell - Computer or Thin Client) - 20051431290101
+Primary (on-site)	Timothy Ilchene (3006667) - (905) 526-6495 - TIMOTHY.ILCHENE@BELL.CA
+Secondary (on-site)	Timothy Ilchene (3006667) - (905) 526-6495 - TIMOTHY.ILCHENE@BELL.CA
+Configuration - Item Priority - Ref. (Computer Name or Serial #):HP PROBOOK 640 G45CG8474CW9 (Return to Reuse Bell - Computer or Thin Client) - 20051431290101
+Set this item as HIGH priority:	No
+Billing, Shipping & Installation - Desired Due Date - Ref. (Computer Name or Serial #):HP PROBOOK 640 G45CG8474CW9 (Return to Reuse Bell - Computer or Thin Client) - 20051431290101
+Desired Due Date	2020/05/19

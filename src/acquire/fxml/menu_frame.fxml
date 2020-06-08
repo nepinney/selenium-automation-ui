@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.*?>
+<?import acquire.kotlin.recoup.RecoupActionTypes?>
+<fx:root type="javafx.scene.layout.GridPane" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="50" vgap="10">
+
+<!--    <Label text="Select an email type to generate" fx:id="title">
+        <font><Font name="System Bold" size="13.0" /></font>
+    </Label>-->
+
+    <!--<padding><Insets bottom="0" left="10" right="10" top="0" /></padding>-->
+
+    <fx:define>
+        <ToggleGroup fx:id="menuSelection" />
+    </fx:define>
+
+    <RadioButton fx:id="localRequest" text="Local Request" GridPane.columnIndex="0" GridPane.rowIndex="0" toggleGroup="$menuSelection" selected="true">
+        <userData>
+            <RecoupActionTypes fx:constant="LOCALREQUEST"/>
+        </userData>
+    </RadioButton>
+
+    <RadioButton fx:id="outsideRequest" text="Outside Request" GridPane.columnIndex="1" GridPane.rowIndex="0" toggleGroup="$menuSelection">
+        <userData>
+            <RecoupActionTypes fx:constant="OUTSIDEREQUEST"/>
+        </userData>
+    </RadioButton>
+
+    <RadioButton fx:id="createWaybill" text="Create Waybill" GridPane.columnIndex="2" GridPane.rowIndex="0" toggleGroup="$menuSelection">
+        <userData>
+            <RecoupActionTypes fx:constant="CREATEWAYBILL"/>
+        </userData>
+    </RadioButton>
+
+    <RadioButton fx:id="confirmation" text="Confirmation" GridPane.columnIndex="3" GridPane.rowIndex="0" toggleGroup="$menuSelection">
+        <userData>
+            <RecoupActionTypes fx:constant="CONFIRMATION"/>
+        </userData>
+    </RadioButton>
+
+</fx:root>

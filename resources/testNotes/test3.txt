@@ -1,0 +1,47 @@
+Submit
+ITEM DETAILS
+Order number : 200528584702
+Order date : 2020/05/28 10:01:43 AM
+Requestor
+Shuo Wang (6085588)	Email : SHUO.WANG@BELL.CA
+Telephone	(416) 353-4120	Company	BELL MOBILITY (10)
+Owner
+Denisa Bani (EZ76005)	Email : DENISA.BANI@BELL.CA
+Telephone		Company	BELL MOBILITY(10)
+Org. Code	H8041051	Province	Ontario
+Title	INTERN, DATA SCIENCE	Building code	TOROONDC
+Item summary
+Denisa Bani (EZ76005)
+Product	Agent	Status
+Return to Reuse Bell - Computer or Thin Client	CGI DSM North York	Assigned
+Item details
+Denisa Bani (EZ76005)
+200528-5847-0201	Return to Reuse Bell - Computer or Thin Client
+Status	Assigned
+Agent	CGI DSM North York
+Billing Reference Number	001131769
+Broad Service Category	Disconnect
+Contact Information	Dsm North York (DSNYRK)
+Services - Entity - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201
+Entity	Bell TV - Bell Mobility - Bell Mobility Channels - BDI
+Configuration - Usage - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201
+Usage	Primary : Sole and exclusive station for main job functions by an active employee.
+Configuration - Return - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201
+A separate item is required per computer to manage inventories.	Laptop
+Configuration - Details - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201
+Computer, peripherals, accessories and/or videozone devices to be returned	Laptop
+Carrying Case
+AC Adapter
+Please enter the quantities for each computers, peripherals, accessories and devices to be returned	1,1,1
+Please validate and update	Denisa Bani
+11 Orlando Blvd -
+Toronto - ON M1R 3N5
+Exact location: suite, room, section, column, cubicle, extension, etc.	N/A
+Configuration - Method - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201
+You may return the computer and accessories to a DEPOT or request a pickup.	Please arrange for a pick-up.
+Your answer will determine which group will handle this request.	ON North York - 100 Wynford
+Configuration - Contacts - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201
+Primary (on-site)	Shuo Wang (6085588) - (416) 353-4120 - SHUO.WANG@BELL.CA
+Secondary (on-site)	Jesung Park (6065773) - (416) 353-3987 - JESUNG.PARK@BELL.CA
+Billing, Shipping & Installation - Desired Due Date - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201
+Desired Due Date	2020/05/29

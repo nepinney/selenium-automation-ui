@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<fx:root type="javafx.scene.layout.StackPane" xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/10.0.2-internal">
+
+    <Label contentDisplay="TOP" fx:id="statusMessage" graphicTextGap="-40.0" style="-fx-padding: 0 0 0 0;-fx-font-size: 20px;-fx-text-fill: white;" text="">
+        <graphic>
+            <ImageView fx:id="image" mouseTransparent="true">
+                <image>
+                    <Image url="/acquire/styles/mountain_image.jpg" />
+                </image>
+            </ImageView>
+        </graphic>
+    </Label>
+
+</fx:root>

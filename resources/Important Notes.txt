@@ -1,0 +1,32 @@
+When trying to get nested components to change size based on parent,
+    -use GridPane, HBox, VBox or, preferably, to StackPane and ArchorPane as parent node.
+
+When nesting fxml inside another
+    -make sure that proper file structure is present (need packages) or fxml wont be able to find the class associated.
+
+Run configurations (below) don't make a difference.
+    --module-path C:\javafx-sdk-11.0.2\lib --add-modules javafx.controls,javafx.fxml
+
+Libraries to add
+JavaFX
+    lib
+Poi
+    poi412
+    commons-math3
+    commons-collections4
+Selenium
+    lib
+    2 other jars
+
+When running:
+    Jar: java -jar absolutePathToJar.jar
+        All the required files must be in the same directory as the jar itself unless changes are made to the config.txt files
+
+    On IntelliJ: Need to put required files into the out\production folder so that the program (in the work directory can access them)
+
+What left to do:
+    -Test ticket fetching abilities with various notes
+    -Fix excel sheet creation with desktops
+    -When creating local request emial, put the entire device model and sn rather than just sn.
+    -Replace PC on confirmation template with variable for laptop or desktop
+    -Fix johns cc email for confirmations - DONE

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<fx:root type="javafx.scene.layout.GridPane" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
+
+    <Label text="Login to ITSM" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" hgap="10" vgap="10">
+        <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Button fx:id="loginButton" text="Login" onAction="#login" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    </GridPane>
+
+    <Label text="Setup a PIN for faster future logins" style="-fx-font-weight: bold" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+    <GridPane fx:id="pinGrid" GridPane.columnIndex="0" GridPane.rowIndex="6" alignment="CENTER" hgap="10" vgap="10">
+        <Label text="Pin:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <PasswordField fx:id="pinFieldOne" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label text="Re-Enter Pin:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <PasswordField fx:id="pinFieldTwo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Button fx:id="setPinButton" text="Set PIN &amp; Login" onAction="#setPin" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    </GridPane>
+
+    <Label fx:id="statusMessage" text="Placeholder" GridPane.columnIndex="0" GridPane.rowIndex="7" visible="false"/>
+    <Label text="By Nicholas Pinney | CGI" GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.halignment="LEFT" GridPane.valignment="BASELINE"/>
+
+</fx:root>

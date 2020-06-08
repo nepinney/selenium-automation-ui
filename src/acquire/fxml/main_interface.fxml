@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.*?>
+<?import acquire.kotlin.MenuFrame?>
+
+<?import acquire.kotlin.ActionFrame?>
+<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml" >
+
+    <!--prefWidth="475" prefHeight="480" -->
+    <SplitPane fx:id="splitLayout" orientation="VERTICAL"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0">
+        <MenuFrame fx:id="menuFrame" SplitPane.resizableWithParent="true"></MenuFrame>
+       <!-- <ActionFrame fx:id="actionFrame" SplitPane.resizableWithParent="true"></ActionFrame>-->
+        <!--<StackPane fx:id="option" >
+            <GenerateButton fx:id="genButton"  ></GenerateButton>
+        &lt;!&ndash;<Button text="Generate" onAction="#generate" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            hgap="10" vgap="10" GridPane.columnIndex="0" GridPane.rowIndex="5"
+            GridPane.columnIndex="0" GridPane.rowIndex="0"
+            <Button text="Copy" onAction="#copyText" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Button text="Clear" onAction="#clearForm" GridPane.columnIndex="2" GridPane.rowIndex="0" />&ndash;&gt;
+        </StackPane>-->
+    </SplitPane>
+    <!--onAction="#generate"-->
+
+</fx:root>
