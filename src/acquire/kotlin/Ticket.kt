@@ -1,4 +1,7 @@
 package acquire.kotlin
+
+import acquire.kotlin.exception.InvalidNotesException
+
 /**
  * @Author Nicholas Pinney
  */

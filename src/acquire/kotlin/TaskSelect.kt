@@ -1,6 +1,7 @@
 package acquire.kotlin
 
 import acquire.kotlin.recoup.RecoupInterface
+import acquire.kotlin.recoup.RecoupMenuComponent
 import acquire.kotlin.recoup.action.LocalRequest
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -10,6 +11,8 @@ import javafx.scene.control.Label
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.VBox
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TaskSelect : AnchorPane() {
 
@@ -34,8 +37,20 @@ class TaskSelect : AnchorPane() {
         taskButtons.forEach { rootContainer.children.add(it) }
 
         recoupButton.onAction = javafx.event.EventHandler {
-            ScreenController.addScene("recoupInterface", RecoupInterface(MenuFrame()))
+            ScreenController.addScene("recoupInterface", RecoupInterface(RecoupMenuComponent()))
             ScreenController.activateScene("recoupInterface")
+        }
+        macButton.onAction = javafx.event.EventHandler {
+            PurolatorFunctions.openPurolator()
+            PurolatorFunctions.login("jpaquete", "eusteam")
+            PurolatorFunctions.createShipmentFromHome()
+            PurolatorFunctions.enterShippingInformation("Nicholas Pinney","L6H 5T8", "2140", "Winding Woods Drive", "905", "2575603")
+            PurolatorFunctions.selectDropOff()
+            val date = Date()
+            val formatter = SimpleDateFormat("M/dd/yyyy hh:mm:ss aa")
+            val strDate = formatter.format(date).replace(".", "").toUpperCase()
+            println(strDate)
+
         }
         return rootContainer
     }

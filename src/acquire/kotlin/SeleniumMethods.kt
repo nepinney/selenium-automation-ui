@@ -14,27 +14,19 @@ import java.util.*
  */
 object SeleniumMethods {
     var driver: WebDriver? = null
+
     private var searchForm: WebElement? = null
     private var action: Actions? = null
-    //private var statusField: WebElement? = null
     private var statusReasonField: WebElement? = null
     private var resolutionField: WebElement? = null
-    //private var targetDateField: WebElement? = null
+
     var isRunning = false
-    var generatedCount = 0
 
     /**
     * Starts the ChromeDriver and sets the isRunning property to true
     */
     fun createDriver() {
-        //System.setProperty("webdriver.chrome.driver","src/acquire/java/selenium-java-3.141.59/chromedriver83/chromedriver.exe");
-        //System.setProperty("webdriver.chrome.driver","C:\\Users\\nick.pinney\\IdeaProjects\\RecoupKotlinV1\\RecoupSlayerV1\\libs\\selenium-java-3.141.59\\chromedriver83\\chromedriver.exe");
-        //System.setProperty("webdriver.chrome.driver","${Config.workingDirectory}\\chromedriver.exe");
         System.setProperty("webdriver.chrome.driver","${Config.readChromeDriverLocation()}")
-        /*System.setProperty(
-            "webdriver.chrome.driver",
-            "E:\\Documents\\Java Libraries\\selenium-java-3.141.59\\chromedriver_win32_81\\chromedriver.exe"
-        )*/
         driver = ChromeDriver()
         isRunning = true
     }
@@ -64,7 +56,7 @@ object SeleniumMethods {
         //select the login button to click to login
         val login = driver!!.findElement(By.name("login"))
         login.click()
-        ScreenController.activateScene("mainInterface")
+        ScreenController.activateScene("taskSelectionScene")
     }
 
     /**
@@ -206,8 +198,8 @@ object SeleniumMethods {
 
     private fun getFormattedDate(): String {
         val date = Date()
-        val formatter = SimpleDateFormat("MM/dd/yyyy hh:mm:ss aa")
-        return formatter.format(date)
+        val formatter = SimpleDateFormat("M/dd/yyyy hh:mm:ss aa")
+        return formatter.format(date).replace(".", "").toUpperCase()
     }
 
     fun setTargetDate() {

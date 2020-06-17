@@ -5,9 +5,11 @@ Note:
      prepend to the file paths which are relative. If .jar and whatever file are in the same
      directory, then only need to write the file name in this config.
     *Changes made will be applied on next launch of program
+    *DO NOT CHANGE FORMATTING OR ANYTHING LEFT OF SEMICOLONS
 
 Entire path
-pathToOutlookExe: C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
+pathToOutlookExe: C:\Program Files\Microsoft Office\Office16\outlook.exe
+C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
 saveBuiltExcelConfirmation: E:\Desktop\
 
 File name only

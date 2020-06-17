@@ -1,14 +1,13 @@
 package acquire.kotlin.recoup.action
 
 import acquire.kotlin.Config
-import acquire.kotlin.TicketIsNullException
+import acquire.kotlin.exception.TicketIsNullException
 import acquire.kotlin.recoup.RecoupActionTypes
 import acquire.kotlin.recoup.component.EmailComponent
 import acquire.kotlin.recoup.component.TicketModel
 import acquire.kotlin.recoup.component.TscComponent
 import acquire.kotlin.recoup.component.UpdateTicketComponent
 import javafx.geometry.HPos
-import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.CheckBox
 import javafx.scene.control.Label
@@ -77,8 +76,11 @@ class Confirmation(
                 val sheet = workbook.getSheetAt(0)
 
                 val date = Date()
-                val formatter = SimpleDateFormat("dd-MMM-yy")
-                val strDate = formatter.format(date)
+                val formatter = SimpleDateFormat("dd-MM-yy")
+                val strDate = if (formatter.format(date).contains("."))
+                    formatter.format(date).replace(".", "")
+                else
+                    formatter.format(date)
 
                 //Indexes start at 0 for row and col
                 val definiteCellsToEdit = mapOf(

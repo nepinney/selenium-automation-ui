@@ -1,11 +1,13 @@
 package acquire.kotlin
 
-import acquire.kotlin.recoup.RecoupInterface
-import acquire.kotlin.recoup.action.LocalRequest
+import acquire.kotlin.login.FirstLogin
+import acquire.kotlin.login.PinLogin
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.scene.layout.Pane
 import javafx.stage.Stage
+import java.io.File
+import java.io.FileNotFoundException
 
 /**
  * @Author Nicholas Pinney
@@ -21,7 +23,7 @@ class MyApplication : Application() {
         ScreenController.scene = mainScene
         ScreenController.bindSceneWithStage()
 
-        //ScreenController.addScene("firstLogin", FirstLogin())
+        ScreenController.addScene("firstLogin", FirstLogin())
         ScreenController.addScene("pinLogin", PinLogin())
         ScreenController.addScene("taskSelectionScene", TaskSelect())
 
@@ -36,14 +38,14 @@ class MyApplication : Application() {
             println("Cred.txt not found")
             acquire.kotlin.ScreenController.activateScene("firstLogin")
         }
-
+*/
         primaryStage.setOnCloseRequest {
             acquire.kotlin.SeleniumMethods.exitDriver()
-        }*/
+        }
 
         ScreenController.stage!!.title = "Recoup Automation Software"
         ScreenController.stage!!.isResizable = true
-        ScreenController.stage!!.show() //TODO: 5
+        //ScreenController.stage!!.show() //TODO: 5
         ScreenController.activateScene("taskSelectionScene") //TODO: 6 - Last
         //ScreenController.activateScene("mainInterface") //TODO: 6 - Last
     }

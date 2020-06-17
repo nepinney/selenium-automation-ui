@@ -1,5 +1,6 @@
 package acquire.kotlin.recoup.component
 
+import acquire.kotlin.SeleniumMethods
 import acquire.kotlin.recoup.RecoupActionTypes
 import javafx.geometry.HPos
 import javafx.scene.control.Button
@@ -30,8 +31,14 @@ class UpdateTicketComponent(
         configureUpdateComponent()
         updateButton.onAction = javafx.event.EventHandler {
             when (actionType) {
-                RecoupActionTypes.LOCALREQUEST -> { println("UpdatedLocal/OutsideRequest") }
-                RecoupActionTypes.CONFIRMATION -> { println("UpdatedConfirmation") }
+                RecoupActionTypes.LOCALREQUEST -> { SeleniumMethods.setStatusField("in progress") }
+                RecoupActionTypes.CONFIRMATION -> {
+                    SeleniumMethods.setStatusField("pending")
+                    SeleniumMethods.setStatusReasonField()
+                    SeleniumMethods.setResolution("Recoup completed.")
+                    SeleniumMethods.setNotes("Recoup completed.")
+                    SeleniumMethods.setTargetDate()
+                }
                 else -> {
                     println("No update instructions for: $actionType")
                 }

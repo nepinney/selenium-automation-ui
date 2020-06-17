@@ -2,7 +2,7 @@ package acquire.kotlin.recoup.component
 
 import acquire.kotlin.Config
 import acquire.kotlin.Ticket
-import acquire.kotlin.TicketIsNullException
+import acquire.kotlin.exception.TicketIsNullException
 import acquire.kotlin.recoup.RecoupActionTypes
 import javafx.beans.property.ObjectProperty
 import javafx.scene.control.Button

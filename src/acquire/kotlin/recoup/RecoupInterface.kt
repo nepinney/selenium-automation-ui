@@ -1,6 +1,5 @@
 package acquire.kotlin.recoup
 
-import acquire.kotlin.MenuFrame
 import acquire.kotlin.recoup.action.Confirmation
 import acquire.kotlin.recoup.action.CreateWaybill
 import acquire.kotlin.recoup.action.LocalRequest
@@ -16,7 +15,7 @@ import javafx.scene.layout.AnchorPane
 import java.io.IOException
 
 class RecoupInterface(
-    private val menuFrame: MenuFrame
+    private val menuFrame: RecoupMenuComponent
 ) : AnchorPane() {
 
     private val splitRoot = SplitPane()

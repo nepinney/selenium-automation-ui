@@ -1,8 +1,10 @@
 package acquire.kotlin.recoup.component
 
+import acquire.kotlin.SeleniumMethods
 import acquire.kotlin.Ticket
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
+import javafx.fxml.FXML
 import javafx.geometry.HPos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -44,11 +46,21 @@ class TscComponent(
         }
     }
 
+    private fun generateTicketFromBlankTscField(): Ticket {
+        return Ticket(SeleniumMethods.getNotesFromTicket(true))
+    }
+
+    private fun generateTicketFromTSCField(): Ticket {
+        SeleniumMethods.searchOrderNumber(tscField.text)
+        SeleniumMethods.selectSearchResult()
+        return Ticket(SeleniumMethods.getNotesFromTicket(false))
+    }
+
    init {
        configureGrid()
        addListenerToTicket()
        fetchNotesButton.onAction = javafx.event.EventHandler {
-           val ticket = Ticket("Submit\n" +
+           /*val ticket = Ticket("Submit\n" +
                    "ITEM DETAILS\n" +
                    "Order number : 200528584702\n" +
                    "Order date : 2020/05/28 10:01:43 AM\n" +
@@ -94,7 +106,16 @@ class TscComponent(
                    "Primary (on-site)\tShuo Wang (6085588) - (416) 353-4120 - SHUO.WANG@BELL.CA\n" +
                    "Secondary (on-site)\tJesung Park (6065773) - (416) 353-3987 - JESUNG.PARK@BELL.CA\n" +
                    "Billing, Shipping & Installation - Desired Due Date - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201\n" +
-                   "Desired Due Date\t2020/05/29")
+                   "Desired Due Date\t2020/05/29")*/
+           //var ticket: Ticket? = null
+           val ticket = when (tscField.text.isBlank()) {
+               true -> {
+                   generateTicketFromBlankTscField()
+               }
+               false -> {
+                   generateTicketFromTSCField()
+               }
+           }
            ticketModel.setCurrentTicket(ticket)
        }
    }
