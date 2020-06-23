@@ -79,7 +79,7 @@ class FirstLogin internal constructor() : GridPane() {
     }
 
     private fun login(u: String, p: String) {
-        SeleniumMethods.login(u, p)
+        ITSMFunctions.login(u, p)
     }
 
     @FXML

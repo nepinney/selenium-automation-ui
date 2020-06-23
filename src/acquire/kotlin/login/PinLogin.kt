@@ -1,6 +1,6 @@
 package acquire.kotlin.login
 
-import acquire.kotlin.SeleniumMethods
+import acquire.kotlin.ITSMFunctions
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.control.PasswordField
@@ -18,7 +18,7 @@ class PinLogin internal constructor() : GridPane() {
     fun checkPin() {
         try {
             val credentials = CredentialManager.decryptCredentialFile(pinField.text)
-            SeleniumMethods.login(credentials[1], credentials[2])
+            ITSMFunctions.login(credentials[1], credentials[2])
         } catch (e: Exception) {
             e.printStackTrace()
         }

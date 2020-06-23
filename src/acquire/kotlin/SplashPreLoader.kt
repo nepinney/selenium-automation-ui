@@ -43,7 +43,7 @@ class SplashPreLoader : Preloader() {
             handleStateChangeNotification("completed")
             ScreenController.stage?.isAlwaysOnTop = true
             ScreenController.stage?.show()
-            val cacheAlert = SeleniumMethods.driver?.switchTo()?.alert()
+            val cacheAlert = DriverFunctions.driver!!.switchTo()?.alert()
             if (cacheAlert != null) {
                 println("Got popup: " + cacheAlert.text)
                 cacheAlert.accept()

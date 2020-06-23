@@ -1,17 +1,13 @@
 package acquire.kotlin.recoup.component
 
-import acquire.kotlin.SeleniumMethods
+import acquire.kotlin.ITSMFunctions
 import acquire.kotlin.Ticket
-import javafx.beans.value.ChangeListener
-import javafx.beans.value.ObservableValue
-import javafx.fxml.FXML
 import javafx.geometry.HPos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
-import javafx.scene.layout.Priority
 
 class TscComponent(
         private val ticketModel: TicketModel
@@ -47,13 +43,13 @@ class TscComponent(
     }
 
     private fun generateTicketFromBlankTscField(): Ticket {
-        return Ticket(SeleniumMethods.getNotesFromTicket(true))
+        return Ticket(ITSMFunctions.getNotesFromTicket(true))
     }
 
     private fun generateTicketFromTSCField(): Ticket {
-        SeleniumMethods.searchOrderNumber(tscField.text)
-        SeleniumMethods.selectSearchResult()
-        return Ticket(SeleniumMethods.getNotesFromTicket(false))
+        ITSMFunctions.searchOrderNumber(tscField.text)
+        ITSMFunctions.selectSearchResult()
+        return Ticket(ITSMFunctions.getNotesFromTicket(false))
     }
 
    init {

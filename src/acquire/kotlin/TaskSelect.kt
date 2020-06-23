@@ -40,8 +40,9 @@ class TaskSelect : AnchorPane() {
             ScreenController.addScene("recoupInterface", RecoupInterface(RecoupMenuComponent()))
             ScreenController.activateScene("recoupInterface")
         }
+
         macButton.onAction = javafx.event.EventHandler {
-            PurolatorFunctions.openPurolator()
+            DriverFunctions.createNewTab("https://eshiponline.purolator.com/ShipOnline/SecurePages/Public/FormsLogin.aspx?ReturnUrl=/ShipOnline/Welcome.aspx&lang=E")
             PurolatorFunctions.login("jpaquete", "eusteam")
             PurolatorFunctions.createShipmentFromHome()
             PurolatorFunctions.enterShippingInformation("Nicholas Pinney","L6H 5T8", "2140", "Winding Woods Drive", "905", "2575603")
@@ -50,7 +51,6 @@ class TaskSelect : AnchorPane() {
             val formatter = SimpleDateFormat("M/dd/yyyy hh:mm:ss aa")
             val strDate = formatter.format(date).replace(".", "").toUpperCase()
             println(strDate)
-
         }
         return rootContainer
     }

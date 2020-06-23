@@ -1,5 +1,6 @@
 package acquire.kotlin
 
+import acquire.kotlin.DriverFunctions.driver
 import org.openqa.selenium.*
 import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.chrome.ChromeDriver
@@ -12,33 +13,13 @@ import java.util.*
 /**
  * @Author Nicholas Pinney
  */
-object SeleniumMethods {
-    var driver: WebDriver? = null
+object ITSMFunctions {
+
 
     private var searchForm: WebElement? = null
     private var action: Actions? = null
     private var statusReasonField: WebElement? = null
     private var resolutionField: WebElement? = null
-
-    var isRunning = false
-
-    /**
-    * Starts the ChromeDriver and sets the isRunning property to true
-    */
-    fun createDriver() {
-        System.setProperty("webdriver.chrome.driver","${Config.readChromeDriverLocation()}")
-        driver = ChromeDriver()
-        isRunning = true
-    }
-
-    fun checkDriver(): Boolean {
-        if (!isRunning) {
-            println("Driver not running")
-            return false
-            //throw new WebDriverNotRunningException("Driver not running");
-        }
-        return true
-    }
 
     /**
      * Used to log into the ITSM webportal

@@ -1,6 +1,5 @@
 package acquire.kotlin
 
-import acquire.kotlin.SeleniumMethods.createDriver
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
@@ -31,10 +30,10 @@ class SplashModel {
     }
 
     fun loadWebDriver() {
-        createDriver()
+        DriverFunctions.createDriver()
     }
 
     fun navigateToBMC() {
-        SeleniumMethods.driver!!["https://supportportal.cgi.com/arsys/shared/login.jsp?/arsys/"]
+        DriverFunctions.driver!!["https://supportportal.cgi.com/arsys/shared/login.jsp?/arsys/"]
     }
 }
