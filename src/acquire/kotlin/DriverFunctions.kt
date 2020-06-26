@@ -17,26 +17,48 @@ object DriverFunctions {
     fun createDriver() {
         System.setProperty("webdriver.chrome.driver", Config.readChromeDriverLocation())
         driver = ChromeDriver()
-        tabs = driver!!.windowHandles.toList()
+        //val tabHandles = driver!!.windowHandles.toList()
+        //tabs = mutableMapOf(Pair(tabHandles.first(), "itsm"))
         isRunning = true
     }
 
-    fun createNewTab(link: String) {
+    fun createNewTab(link: String, key: String) {
         when (isRunning) {
             true -> {
                 (driver as JavascriptExecutor).executeScript("window.open()")
+                val handles = driver!!.windowHandles.toList()
                 if (tabs == null) {
-                    val handles = ArrayList(driver!!.windowHandles)
-                    tabs = listOf("itsm", "purolator").zip(handles)
+                    tabs = mutableMapOf(
+                            Pair("itsm", handles.first()),
+                            Pair(key, handles.last())
+                    )
                 }
-                driver!!.switchTo().window(tabs!!.last())
-                driver!!.get(link)
+                else { //this logic not needed now as no other tabs will be opened
+                    println("tabs is not null")
+                }
+
+                //tabs!![handles.last()] = key
+                //driver!!.switchTo().window(tabs!![key])
+                switchToTab(key)
+                navigateToSite(link)
             }
             else -> {
                 println("Driver isn't running!")
             }
         }
 
+    }
+
+    fun navigateToSite(link: String) {
+        driver!![link]
+    }
+
+    fun switchToTab(key: String) {
+        when (isRunning && tabs != null) {
+            true -> {
+                driver!!.switchTo().window(tabs!![key])
+            }
+        }
     }
 
 }

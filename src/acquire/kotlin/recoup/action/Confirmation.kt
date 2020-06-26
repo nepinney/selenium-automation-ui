@@ -76,7 +76,7 @@ class Confirmation(
                 val sheet = workbook.getSheetAt(0)
 
                 val date = Date()
-                val formatter = SimpleDateFormat("dd-MM-yy")
+                val formatter = SimpleDateFormat("dd-MMM-yy")
                 val strDate = if (formatter.format(date).contains("."))
                     formatter.format(date).replace(".", "")
                 else

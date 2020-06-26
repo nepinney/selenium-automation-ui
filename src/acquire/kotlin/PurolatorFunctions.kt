@@ -13,6 +13,8 @@ import org.openqa.selenium.support.ui.WebDriverWait
 
 object PurolatorFunctions {
 
+    var purolatorOpen = false
+
     fun login(usr: String, ps: String) {
         val usernameField = driver!!.findElement(By.id("ctl00_Login_TxtBoxUserName"))
         usernameField.sendKeys(usr)
@@ -22,34 +24,29 @@ object PurolatorFunctions {
         loginButton.click()
     }
 
-    fun createShipmentFromHome() {
+    fun clickCreateShipmentButtonFromHomeScreen() {
         val createNewLabelLink = WebDriverWait(driver, 10)
                 .until(ExpectedConditions.elementToBeClickable(By.id("ctl00_CPPC_btnCreateShipment")))
         createNewLabelLink.click()
     }
 
-    fun enterShippingInformation(atnTo: String, pc: String, stNumber: String, stName: String, phoneArea: String, phone: String) {
+    fun fillCompanyName() {
         val wait = WebDriverWait(driver, 4)
         val company = wait.until(ExpectedConditions.elementToBeClickable(By.id("ctl00_CPPC_ToAd_txtName")))
         company.sendKeys("Bell")
+    }
 
+    fun fillAttentionTo(atnTo: String) {
         val attentionTo = driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtAttention"))
         attentionTo.sendKeys(atnTo)
+    }
 
+    fun fillPostalCode(pcode: String) {
         val postalCode = driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtPostalZipCode"))
-        postalCode.sendKeys(pc + Keys.TAB)
+        postalCode.sendKeys(pcode + Keys.TAB)
+    }
 
-
-        /*
-        Not going to do CITY!!!
-        val cityField = driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtCity"))
-        if (cityField.text.isBlank())
-            cityField.sendKeys(city)*/
-/*       val city =  WebDriverWait(driver, 10)
-               .until(ExpectedConditions.invisibilityOfElementWithText(By.id("ctl00_CPPC_ToAd_txtCity"), ""))
-        println("City: $city" )*/
-
-
+    fun checkAndFillStreetNumber(stNumber: String) {
         val shortWait = WebDriverWait(driver, 0.5.toLong())
         try {
             shortWait.until(ExpectedCondition { driver: WebDriver? -> driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetNumber")).getAttribute("value").isNotEmpty() } as ExpectedCondition<Boolean?>)!!
@@ -58,7 +55,10 @@ object PurolatorFunctions {
             val streetNumberField = driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetNumber"))
             streetNumberField.sendKeys(stNumber)
         }
+    }
 
+    fun checkAndFillStreetName(stName: String) {
+        val shortWait = WebDriverWait(driver, 0.5.toLong())
         try {
             shortWait.until(ExpectedCondition { driver: WebDriver? -> driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetName")).getAttribute("value").isNotEmpty() } as ExpectedCondition<Boolean?>)!!
         } catch (e: TimeoutException) {
@@ -66,7 +66,9 @@ object PurolatorFunctions {
             val streetNumberField = driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetName"))
             streetNumberField.sendKeys(stName)
         }
+    }
 
+    fun fillPhoneNumber(phoneArea: String, phone: String) {
         val phoneAreaField = driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtPhoneArea"))
         phoneAreaField.sendKeys(phoneArea)
 

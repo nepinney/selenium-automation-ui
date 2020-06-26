@@ -10,14 +10,15 @@ Note:
 Entire path
 pathToOutlookExe: C:\Program Files\Microsoft Office\Office16\outlook.exe
 C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
-saveBuiltExcelConfirmation: E:\Desktop\
+saveBuiltExcelConfirmation: C:\Users\nick.pinney\Desktop\
+E:\Desktop\
 
 File name only
 chromeDriverLocation: chromedriver.exe
 localEmailTemplate: LocalRequestEmailTemplate.txt
 outsideEmailTemplate: OutsideRequestEmailTemplate.txt
 confirmationEmailTemplate: ConfirmationEmailTemplate.txt
-confirmationEmailTemplate: ConfirmationEmailTemplate.txt
+confirmShipmentTemplate: ShipmentConfirmationEmail.txt
 excelConfirmationTemplate: confirmationTemplate.xls
 pathToCredFile: Cred.txt
 

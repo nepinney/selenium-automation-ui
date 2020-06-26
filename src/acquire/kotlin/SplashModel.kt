@@ -34,6 +34,6 @@ class SplashModel {
     }
 
     fun navigateToBMC() {
-        DriverFunctions.driver!!["https://supportportal.cgi.com/arsys/shared/login.jsp?/arsys/"]
+        DriverFunctions.navigateToSite("https://supportportal.cgi.com/arsys/shared/login.jsp?/arsys/")
     }
 }

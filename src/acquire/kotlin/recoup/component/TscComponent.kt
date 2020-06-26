@@ -1,11 +1,14 @@
 package acquire.kotlin.recoup.component
 
+import acquire.kotlin.DriverFunctions
 import acquire.kotlin.ITSMFunctions
 import acquire.kotlin.Ticket
 import javafx.geometry.HPos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
+import javafx.scene.input.Clipboard
+import javafx.scene.input.ClipboardContent
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 
@@ -56,7 +59,7 @@ class TscComponent(
        configureGrid()
        addListenerToTicket()
        fetchNotesButton.onAction = javafx.event.EventHandler {
-           /*val ticket = Ticket("Submit\n" +
+           val ticket = Ticket("Submit\n" +
                    "ITEM DETAILS\n" +
                    "Order number : 200528584702\n" +
                    "Order date : 2020/05/28 10:01:43 AM\n" +
@@ -102,8 +105,11 @@ class TscComponent(
                    "Primary (on-site)\tShuo Wang (6085588) - (416) 353-4120 - SHUO.WANG@BELL.CA\n" +
                    "Secondary (on-site)\tJesung Park (6065773) - (416) 353-3987 - JESUNG.PARK@BELL.CA\n" +
                    "Billing, Shipping & Installation - Desired Due Date - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201\n" +
-                   "Desired Due Date\t2020/05/29")*/
+                   "Desired Due Date\t2020/05/29")
            //var ticket: Ticket? = null
+           /*if (DriverFunctions.tabs != null) {
+               DriverFunctions.switchToTab("itsm")
+           }
            val ticket = when (tscField.text.isBlank()) {
                true -> {
                    generateTicketFromBlankTscField()
@@ -111,8 +117,25 @@ class TscComponent(
                false -> {
                    generateTicketFromTSCField()
                }
-           }
+           }*/
            ticketModel.setCurrentTicket(ticket)
+       }
+
+       tscField.onMouseClicked = javafx.event.EventHandler {
+           when (true) {
+               tscField.text.isBlank() -> { }
+               tscField.style == "-fx-faint-focus-color: transparent ; -fx-focus-color: green ;" -> {
+                   tscField.text = ""
+                   tscField.style = ""
+               }
+               true -> {
+                   val clipboard = Clipboard.getSystemClipboard()
+                   val content = ClipboardContent()
+                   content.putString(tscField.text)
+                   clipboard.setContent(content)
+                   tscField.style = "-fx-faint-focus-color: transparent ; -fx-focus-color: green ;"
+               }
+           }
        }
    }
 

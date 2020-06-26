@@ -5,17 +5,20 @@ Note:
      prepend to the file paths which are relative. If .jar and whatever file are in the same
      directory, then only need to write the file name in this config.
     *Changes made will be applied on next launch of program
+    *DO NOT CHANGE FORMATTING OR ANYTHING LEFT OF SEMICOLONS
 
 Entire path
-pathToOutlookExe: C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
-saveBuiltExcelConfirmation: E:\Desktop\
+pathToOutlookExe: C:\Program Files\Microsoft Office\Office16\outlook.exe
+C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
+saveBuiltExcelConfirmation: C:\Users\nick.pinney\Desktop\
+E:\Desktop\
 
 File name only
 chromeDriverLocation: chromedriver.exe
 localEmailTemplate: LocalRequestEmailTemplate.txt
 outsideEmailTemplate: OutsideRequestEmailTemplate.txt
 confirmationEmailTemplate: ConfirmationEmailTemplate.txt
-confirmationEmailTemplate: ConfirmationEmailTemplate.txt
+confirmShipmentTemplate: ShipmentConfirmationEmail.txt
 excelConfirmationTemplate: confirmationTemplate.xls
 pathToCredFile: Cred.txt
 

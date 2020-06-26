@@ -26,13 +26,13 @@ class CreateEmailButton(
 
     private fun generateEmailContent(emailTemplatePath: String): List<String> {
         val emailVariables = mapOf(
-                Pair("<tsc>", ticket!!.value.tscNumber),
-                Pair("<owner>", ticket!!.value.ownerName),
-                Pair("<model>", ticket!!.value.deviceModel),
-                Pair("<sn>", ticket!!.value.serialNumber),
-                Pair("<address>", ticket!!.value.clientToUpdateAndValidate),
-                Pair("<deviceL>", ticket!!.value.deviceType.first().toLowerCase() + ticket!!.value.deviceType.slice(1..ticket!!.value.deviceType.lastIndex)),
-                Pair("<device>", ticket!!.value.deviceType)
+                Pair("<tsc>", ticket.value.tscNumber),
+                Pair("<owner>", ticket.value.ownerName),
+                Pair("<model>", ticket.value.deviceModel),
+                Pair("<sn>", ticket.value.serialNumber),
+                Pair("<address>", ticket.value.clientToUpdateAndValidate),
+                Pair("<deviceL>", ticket.value.deviceType.first().toLowerCase() + ticket.value.deviceType.slice(1..ticket.value.deviceType.lastIndex)),
+                Pair("<device>", ticket.value.deviceType)
                 //Pair("<device>", t!!.device)
         )
 
@@ -55,7 +55,7 @@ class CreateEmailButton(
 
     private fun buildEmail(email: List<String>) {
 
-        val validRecipients = ticket!!.value.validUniqueEmailAddresses()
+        val validRecipients = ticket.value.validUniqueEmailAddresses()
 
         try {
             val message: Message = MimeMessage(Session.getInstance(System.getProperties()))
@@ -74,8 +74,8 @@ class CreateEmailButton(
                 RecoupActionTypes.CONFIRMATION -> {
                     message.setRecipients(
                             Message.RecipientType.TO, InternetAddress.parse(
-                            if (validRecipients.contains(ticket!!.value.requestorEmail))
-                                ticket!!.value.requestorEmail
+                            if (validRecipients.contains(ticket.value.requestorEmail))
+                                ticket.value.requestorEmail
                             else
                                 validRecipients.first()
                     )
@@ -87,7 +87,7 @@ class CreateEmailButton(
                         // add attachments
                         val attachPart = MimeBodyPart()
                         val attachmentPath =
-                                "${Config.readSaveBuiltExcelConfirmationLocation()}\\PC return ${ticket!!.value.ownerName}.xls"
+                                "${Config.readSaveBuiltExcelConfirmationLocation()}\\PC return ${ticket.value.ownerName}.xls"
                         attachPart.attachFile(attachmentPath)
                         multipart.addBodyPart(attachPart)
                     } catch (e: Exception) {
@@ -103,7 +103,7 @@ class CreateEmailButton(
                             )
                         }
                         2 -> {
-                            if (validRecipients.first().equals(ticket!!.value.primaryEmail)) {
+                            if (validRecipients.first().equals(ticket.value.primaryEmail)) {
                                 message.setRecipients(
                                         Message.RecipientType.TO,
                                         InternetAddress.parse(validRecipients.first())
@@ -126,15 +126,15 @@ class CreateEmailButton(
                         3 -> {
                             message.setRecipients(
                                     Message.RecipientType.TO,
-                                    InternetAddress.parse(ticket!!.value.primaryEmail)
+                                    InternetAddress.parse(ticket.value.primaryEmail)
                             )
                             message.setRecipients(
                                     Message.RecipientType.CC,
-                                    InternetAddress.parse(ticket!!.value.requestorEmail)
+                                    InternetAddress.parse(ticket.value.requestorEmail)
                             )
                             message.setRecipients(
                                     Message.RecipientType.CC,
-                                    InternetAddress.parse(ticket!!.value.secondaryEmail)
+                                    InternetAddress.parse(ticket.value.secondaryEmail)
                             )
                         }
                     }

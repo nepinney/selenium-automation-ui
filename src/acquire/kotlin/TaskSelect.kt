@@ -42,14 +42,14 @@ class TaskSelect : AnchorPane() {
         }
 
         macButton.onAction = javafx.event.EventHandler {
-            DriverFunctions.createNewTab("https://eshiponline.purolator.com/ShipOnline/SecurePages/Public/FormsLogin.aspx?ReturnUrl=/ShipOnline/Welcome.aspx&lang=E")
-            PurolatorFunctions.login("jpaquete", "eusteam")
-            PurolatorFunctions.createShipmentFromHome()
-            PurolatorFunctions.enterShippingInformation("Nicholas Pinney","L6H 5T8", "2140", "Winding Woods Drive", "905", "2575603")
-            PurolatorFunctions.selectDropOff()
+
+            DriverFunctions.switchToTab("itsm")
             val date = Date()
-            val formatter = SimpleDateFormat("M/dd/yyyy hh:mm:ss aa")
-            val strDate = formatter.format(date).replace(".", "").toUpperCase()
+            val formatter = SimpleDateFormat("dd-MMM-yy")
+            val strDate = if (formatter.format(date).contains("."))
+                formatter.format(date).replace(".", "")
+            else
+                formatter.format(date)
             println(strDate)
         }
         return rootContainer

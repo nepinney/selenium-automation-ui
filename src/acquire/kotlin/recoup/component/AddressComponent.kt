@@ -1,15 +1,15 @@
 package acquire.kotlin.recoup.component
 
+import acquire.kotlin.DriverFunctions
+import acquire.kotlin.PurolatorFunctions
 import acquire.kotlin.Ticket
 import javafx.beans.property.ObjectProperty
 import javafx.geometry.HPos
-import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
-import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 
 class AddressComponent(
@@ -101,6 +101,21 @@ class AddressComponent(
 
         createWaybillButton.onAction = javafx.event.EventHandler {
             println("Creating Waybill")
+            when (PurolatorFunctions.purolatorOpen) {
+                true -> {
+                    DriverFunctions.switchToTab("purolator")
+
+                }
+                false -> {
+                    DriverFunctions.createNewTab("https://eshiponline.purolator.com/ShipOnline/SecurePages/Public/FormsLogin.aspx?ReturnUrl=/ShipOnline/Welcome.aspx&lang=E", "purolator")
+                    PurolatorFunctions.login("jpaquete", "eusteam")
+                    PurolatorFunctions.purolatorOpen = true
+                    PurolatorFunctions.clickCreateShipmentButtonFromHomeScreen()
+                    //PurolatorFunctions.enterShippingInformation("Nicholas Pinney","L6H 5T8", "2140", "Winding Woods Drive", "905", "2575603")
+                    PurolatorFunctions.selectDropOff()
+                }
+            }
+
         }
 
         this.children.addAll(instructionsLabel, configureAttentionToGrid(), configureAddressFieldsGrid())
