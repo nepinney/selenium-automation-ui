@@ -14,6 +14,9 @@ object ScreenController {
     var scene: Scene? = null
     private val mapOfCustomPanes = HashMap<String, Pane>()
 
+    private var activeScreen: String? = null
+    private var previousScreen = "taskSelectionScene"
+
     fun bindSceneWithStage() {
         stage!!.scene = scene!!
     }
@@ -27,6 +30,18 @@ object ScreenController {
     }
 
     fun activateScene(name: String?) {
+        if (!activeScreen.isNullOrBlank()) {
+            previousScreen = activeScreen!!
+        }
+        activeScreen = name
+        /*println("Active Screen: $activeScreen")
+        println("Previous Screen: $previousScreen")
+        println()*/
         scene!!.root = mapOfCustomPanes[name]
+    }
+
+    fun activatePreviousScreen() {
+        scene!!.root = mapOfCustomPanes[previousScreen]
+        activeScreen = previousScreen
     }
 }

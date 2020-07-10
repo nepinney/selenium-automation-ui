@@ -1,0 +1,38 @@
+Order number : 200629274601
+Order date : 2020/06/29 12:48:03 PM
+Requestor
+Robert Lavigne (6090707)	Email : ROBERT.LAVIGNE@BELL.CA
+Telephone		Company	BELL CANADA (1000)
+Owner
+Robert Lavigne (6090707)	Email : ROBERT.LAVIGNE@BELL.CA
+Telephone		Company	BELL CANADA(1000)
+Org. Code	H80L0111	Province	Ontario
+Title	DMA - CONSUMER MARKET	Building code	TOROON66
+Item summary
+Robert Lavigne (6090707)
+Product	Agent	Status
+Return to Reuse Bell - Computer or Thin Client	Depot 100 Wynford (416) 446-2647	Assigned
+Item details
+Robert Lavigne (6090707)
+200629-2746-0103	Return to Reuse Bell - Computer or Thin Client
+Status	Assigned
+Agent	Depot 100 Wynford (416) 446-2647
+Billing Reference Number	001139757
+Contact Information	Toronto Depot (DPTORO)
+Services - Entity - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G25CG81408D1 (Return to Reuse Bell - Computer or Thin Client) - 20062927460103
+Entity	Bell Canada - Bell Aliant – BCE Inc.
+Configuration - Return - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G25CG81408D1 (Return to Reuse Bell - Computer or Thin Client) - 20062927460103
+A separate item is required per computer to manage inventories.	Laptop
+Configuration - Details - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G25CG81408D1 (Return to Reuse Bell - Computer or Thin Client) - 20062927460103
+Computer, peripherals, accessories and/or videozone devices to be returned	Mouse
+Please validate and update	LAVIGNE ROBERT
+100 Borough Dr. - Floor 4
+Toronto - ON M1P 4W2
+Configuration - Method - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G25CG81408D1 (Return to Reuse Bell - Computer or Thin Client) - 20062927460103
+You may return the computer and accessories to a DEPOT or request a pickup.	I will bring back the hardware to a depot; no appointment required.
+Your answer will determine which group will handle this request.	DEPOT 100 Wynford
+Configuration - Contacts - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G25CG81408D1 (Return to Reuse Bell - Computer or Thin Client) - 20062927460103
+Primary (on-site)	LAVIGNE ROBERT () - ROBERT.LAVIGNE@BELL.CA
+Secondary (on-site)	LAVIGNE ROBERT () - ROBERT.LAVIGNE@BELL.CA
+Billing, Shipping & Installation - Desired Due Date - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G25CG81408D1 (Return to Reuse Bell - Computer or Thin Client) - 20062927460103
+Desired Due Date	2020/07/31

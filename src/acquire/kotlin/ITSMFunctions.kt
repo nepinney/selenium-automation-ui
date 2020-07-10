@@ -3,12 +3,15 @@ package acquire.kotlin
 import acquire.kotlin.DriverFunctions.driver
 import org.openqa.selenium.*
 import org.openqa.selenium.NoSuchElementException
-import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.interactions.Actions
+import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.Wait
 import org.openqa.selenium.support.ui.WebDriverWait
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 /**
  * @Author Nicholas Pinney
@@ -86,33 +89,22 @@ object ITSMFunctions {
     fun getNotesFromTicket(alreadyOpen: Boolean): String {
         //Once the ticket has been opened, get the information from the notes textArea
 
-        //if (infoTextArea == null) {
         //NEW IMPLEMENTATION
         val timeOut = if (alreadyOpen) 1 else 8
         var infoTextArea: WebElement? = null
         try {
             infoTextArea = WebDriverWait(driver, timeOut.toLong())
                 .until(ExpectedConditions.elementToBeClickable(By.id("arid_WIN_4_1000000151")))
-            println("Getting Notes - Try 1 Successfull")
+            println("Fetched notes successfully")
         } catch (e: Exception) {
             try {
                 infoTextArea = WebDriverWait(driver, timeOut.toLong())
                     .until(ExpectedConditions.elementToBeClickable(By.id("arid_WIN_3_1000000151")))
-                println("Getting Notes - Try 1 Failed: $e")
+                println("Fetched notes successfully")
             } catch (j: Exception) {
-                println("Getting Notes - Try 2 Failed: $e")
+                println("Fetched notes failed")
             }
         }
-        //}
-
-        //OLD IMPLEMENTATION
-        /*if (WebDriverWait(driver, 12)
-                .until(ExpectedConditions.elementToBeClickable(By.id("arid_WIN_4_1000000151")))
-                .also { infoTextArea = it } == null
-        ) {
-            infoTextArea = WebDriverWait(driver, 2)
-                .until(ExpectedConditions.elementToBeClickable(By.id("arid_WIN_3_1000000151")))
-        }*/
         return (infoTextArea!!.getAttribute("value"))
     }
 
@@ -230,6 +222,74 @@ object ITSMFunctions {
         } catch (e: Exception) {
             println("Caught error when sending keys for file upload: $e")
         }
+    }
+
+    fun sortTicketsBasedOnStatus() {
+        //TODO: Below commented code works
+        val status = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div/div[1]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[1]/div[6]"))
+        status.click()
+    }
+
+    fun clickOnBackButton() {
+        //val backBtn = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[2]/fieldset/div/a[1]/div"))
+        val backBtn = driver!!.findElement(By.id("WIN_0_304248620"))
+        backBtn.click()
+    }
+
+    fun getIncidentID(): String {
+        val idField = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[2]/fieldset/div/div/fieldset/div[1]/fieldset/div[1]/textarea"))
+        return idField.getAttribute("value")
+    }
+
+    fun fetchAllInProgressTickets(): List<Ticket> {
+
+/*        val status2 = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div/div[1]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[6]/nobr/span"))
+        println("Status of first ticket meth1: ${status2.getAttribute("textContent")}")
+        status2.click()*/
+
+        //WebDriverWait(driver, 5).until { webDriver: WebDriver -> (webDriver as JavascriptExecutor).executeScript("return document.readyState") == "complete" }
+        //driver!!.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS)
+        var i = 2
+        var tempINC: String? = null
+
+        val shortWait = WebDriverWait(driver, 3.toLong())
+        var tickets = mutableListOf<Ticket>()
+        try {
+            while (tickets.count() < 5) {
+                println("\nTicket $i")
+                //val aTicket = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div/div[1]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[$i]/td[6]/nobr/span"))
+                var aTicket: WebElement? = null
+                try {
+                    aTicket = WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div/div[1]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[$i]/td[6]/nobr/span")))
+                } catch (n: NoSuchElementException) { throw Exception() }
+                if (aTicket!!.getAttribute("textContent") == "In Progress") {
+                    println("\tDouble Clicking...")
+                    val dClick = Actions(driver)
+                    dClick.doubleClick(aTicket!!).perform()
+                    //println("\tWaiting...")
+                    //WebDriverWait(driver, 5).until { webDriver: WebDriver -> (webDriver as JavascriptExecutor).executeScript("return document.readyState") == "complete" }
+                    /*if (tempINC != null) {
+                        WebDriverWait(driver, 5).until { webDriver: WebDriver -> (webDriver as JavascriptExecutor).executeScript("return document.readyState") == "complete" }
+                        println("\nAfter double clicking second ticket incident ID is ${getIncidentID()} and tempINC is $tempINC")
+                        *//*try {
+                            shortWait.until(ExpectedCondition { getIncidentID() != tempINC.toString() } as ExpectedCondition<Boolean>)!!
+                        } catch (e: Exception) { println("Waited too long for ticket to refresh.") }*//*
+                    }*/
+                    println("\tFetching notes and adding to array...")
+                    tickets.add(0, Ticket(getNotesFromTicket(false)))
+                    //tempINC = getIncidentID()
+                    //println("Temp INC: $tempINC")
+                    println("\tClicking on back button...")
+                    clickOnBackButton()
+                }
+                println("\tIncrementing index...")
+                i++
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("No more tickets to scan.")
+        }
+        return tickets
     }
 
     fun logout() {

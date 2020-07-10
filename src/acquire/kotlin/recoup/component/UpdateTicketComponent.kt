@@ -1,7 +1,7 @@
 package acquire.kotlin.recoup.component
 
 import acquire.kotlin.ITSMFunctions
-import acquire.kotlin.recoup.RecoupActionTypes
+import acquire.kotlin.recoup.manual.ManualActionTypes
 import javafx.geometry.HPos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -9,7 +9,7 @@ import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 
 class UpdateTicketComponent(
-        private val actionType: RecoupActionTypes
+        private val actionType: ManualActionTypes
 ) : GridPane() {
     private val instructionLabel = Label("3. Update ticket status")
     private val updateButton = Button("Update Ticket")
@@ -31,8 +31,8 @@ class UpdateTicketComponent(
         configureUpdateComponent()
         updateButton.onAction = javafx.event.EventHandler {
             when (actionType) {
-                RecoupActionTypes.LOCALREQUEST -> { ITSMFunctions.setStatusField("in progress") }
-                RecoupActionTypes.CONFIRMATION -> {
+                ManualActionTypes.LOCALREQUEST -> { ITSMFunctions.setStatusField("in progress") }
+                ManualActionTypes.CONFIRMATION -> {
                     ITSMFunctions.setStatusField("pending")
                     ITSMFunctions.setStatusReasonField()
                     ITSMFunctions.setResolution("Recoup completed.")

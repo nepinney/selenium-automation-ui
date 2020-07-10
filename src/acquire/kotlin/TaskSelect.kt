@@ -1,8 +1,8 @@
 package acquire.kotlin
 
-import acquire.kotlin.recoup.RecoupInterface
-import acquire.kotlin.recoup.RecoupMenuComponent
-import acquire.kotlin.recoup.action.LocalRequest
+import acquire.kotlin.recoup.manual.ManualInterface
+import acquire.kotlin.recoup.manual.ManualMenuComponent
+import acquire.kotlin.recoup.scan.ScanInterface
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Pos
@@ -22,9 +22,19 @@ class TaskSelect : AnchorPane() {
         val rootContainer = VBox()
 
         val sceneTitle = Label("Select Task")
-        val recoupButton = Button("Recoup")
+        sceneTitle.style = "-fx-font-size: 200%;"
+
+        val recoupTitle = Label("Recuperation")
+        recoupTitle.style = "-fx-font-weight: bold;"
+
+        val recoupManualTasksButton = Button("Manual tasks")
+        val recoupScanButton = Button("Bulk Operations")
+
+        val macTitle = Label("MACs")
+        macTitle.style = "-fx-font-weight: bold;"
+
         val macButton = Button("MAC Provisioning")
-        val taskButtons = listOf(recoupButton, macButton)
+        val nodesAddedToVbox = listOf(sceneTitle, recoupTitle, recoupManualTasksButton, recoupScanButton, macTitle, macButton)
 
         AnchorPane.setBottomAnchor(rootContainer, 0.0)
         AnchorPane.setLeftAnchor(rootContainer, 0.0)
@@ -33,12 +43,17 @@ class TaskSelect : AnchorPane() {
         rootContainer.spacing = 5.0
         rootContainer.alignment = Pos.CENTER
 
-        rootContainer.children.add(sceneTitle)
-        taskButtons.forEach { rootContainer.children.add(it) }
+        nodesAddedToVbox.forEach { rootContainer.children.add(it) }
 
-        recoupButton.onAction = javafx.event.EventHandler {
-            ScreenController.addScene("recoupInterface", RecoupInterface(RecoupMenuComponent()))
+        recoupManualTasksButton.onAction = javafx.event.EventHandler {
+            ScreenController.addScene("recoupInterface", ManualInterface(ManualMenuComponent()))
             ScreenController.activateScene("recoupInterface")
+        }
+
+        recoupScanButton.onAction = javafx.event.EventHandler {
+            //ITSMFunctions.sortTicketsBasedOnStatus()
+            ScreenController.addScene("recoupScan", ScanInterface())
+            ScreenController.activateScene("recoupScan")
         }
 
         macButton.onAction = javafx.event.EventHandler {

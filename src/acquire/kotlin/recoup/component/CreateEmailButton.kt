@@ -3,7 +3,7 @@ package acquire.kotlin.recoup.component
 import acquire.kotlin.Config
 import acquire.kotlin.Ticket
 import acquire.kotlin.exception.TicketIsNullException
-import acquire.kotlin.recoup.RecoupActionTypes
+import acquire.kotlin.recoup.manual.ManualActionTypes
 import javafx.beans.property.ObjectProperty
 import javafx.scene.control.Button
 import java.io.File
@@ -20,7 +20,7 @@ import javax.mail.internet.MimeMessage
 import javax.mail.internet.MimeMultipart
 
 class CreateEmailButton(
-        private val actionType: RecoupActionTypes,
+        private val actionType: ManualActionTypes,
         private val ticket: ObjectProperty<Ticket>
 ) : Button("Create Email") {
 
@@ -71,7 +71,7 @@ class CreateEmailButton(
             multipart.addBodyPart(content)
 
             when (actionType) {
-                RecoupActionTypes.CONFIRMATION -> {
+                ManualActionTypes.CONFIRMATION -> {
                     message.setRecipients(
                             Message.RecipientType.TO, InternetAddress.parse(
                             if (validRecipients.contains(ticket.value.requestorEmail))
@@ -177,21 +177,21 @@ class CreateEmailButton(
                 if (ticket.value == null)
                     throw TicketIsNullException()
                 when (actionType) {
-                    RecoupActionTypes.LOCALREQUEST -> {
+                    ManualActionTypes.LOCALREQUEST -> {
                         //println("LOCALREQUEST EMAIL")
                         buildEmail(generateEmailContent(Config.readLocalRequestEmailLocation()))
                         launchOutlook()
                     }
-                    RecoupActionTypes.OUTSIDEREQUEST -> {
+                    ManualActionTypes.OUTSIDEREQUEST -> {
                         //println("OUTSIDEREQUEST EMAIL")
                         buildEmail(generateEmailContent(Config.readOutsideRequestEmailLocation()))
                         launchOutlook()
                     }
-                    RecoupActionTypes.CREATEWAYBILL -> {
+                    ManualActionTypes.CREATEWAYBILL -> {
                         buildEmail(generateEmailContent(Config.readConfirmShipmentEmailLocation()))
                         launchOutlook()
                     }
-                    RecoupActionTypes.CONFIRMATION -> {
+                    ManualActionTypes.CONFIRMATION -> {
                         //println("CONFIRMATION EMAIL")
                         buildEmail(generateEmailContent(Config.readConfirmationRequestEmailLocation()))
                         launchOutlook()

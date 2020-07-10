@@ -1,7 +1,7 @@
 package acquire.kotlin.recoup.component
 
 import acquire.kotlin.Ticket
-import acquire.kotlin.recoup.RecoupActionTypes
+import acquire.kotlin.recoup.manual.ManualActionTypes
 import javafx.beans.property.ObjectProperty
 import javafx.geometry.HPos
 import javafx.scene.control.Label
@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane
 class EmailComponent(
         private val labelText: String,
         private val ticket: ObjectProperty<Ticket>,
-        private val actionType: RecoupActionTypes
+        private val actionType: ManualActionTypes
 ) : GridPane() {
 
     private val label = Label(labelText)

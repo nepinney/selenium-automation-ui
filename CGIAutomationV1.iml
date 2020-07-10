@@ -12,5 +12,7 @@
     <orderEntry type="library" name="javax.activation-1.2.0" level="project" />
     <orderEntry type="library" name="byte-buddy-1.8.15" level="project" />
     <orderEntry type="library" name="poi-4.1.2" level="project" />
+    <orderEntry type="library" name="lib1" level="project" />
+    <orderEntry type="library" name="poi-ooxml-4.1.2" level="project" />
   </component>
 </module>
