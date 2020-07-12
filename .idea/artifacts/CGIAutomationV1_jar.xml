@@ -2,7 +2,7 @@
   <artifact type="jar" name="CGIAutomationV1:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/CGIAutomationV1_jar</output-path>
     <root id="archive" name="CGIAutomationV1.jar">
-      <element id="module-output" name="CGIAutomationV1" />
+      <element id="module-output" name="CGIAutomation" />
       <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-stdlib.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-reflect.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$KOTLIN_BUNDLED$/lib/kotlin-test.jar" path-in-jar="/" />

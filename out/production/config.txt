@@ -8,10 +8,10 @@ Note:
     *DO NOT CHANGE FORMATTING OR ANYTHING LEFT OF SEMICOLONS
 
 Entire path
-pathToOutlookExe: C:\Program Files\Microsoft Office\Office16\outlook.exe
-C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
-saveBuiltExcelConfirmation: C:\Users\nick.pinney\Desktop\
-E:\Desktop\
+pathToOutlookExe: C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
+C:\Program Files\Microsoft Office\Office16\outlook.exe
+saveBuiltExcelConfirmation: E:\Desktop\
+C:\Users\nick.pinney\Desktop\
 
 File name only
 chromeDriverLocation: chromedriver.exe
@@ -21,6 +21,8 @@ confirmationEmailTemplate: ConfirmationEmailTemplate.txt
 confirmShipmentTemplate: ShipmentConfirmationEmail.txt
 excelConfirmationTemplate: confirmationTemplate.xls
 pathToCredFile: Cred.txt
+scanTicketsExcelTemplate: ticketAnalysisTemplate.xlsx
+ticketsAnalysisExcelSheet: ticketAnalysis.xlsx
 
 Save
 saveBuiltEmailLocation:
