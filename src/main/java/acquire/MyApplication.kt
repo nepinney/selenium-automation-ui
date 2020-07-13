@@ -28,24 +28,24 @@ class MyApplication : Application() {
         ScreenController.addScene("taskSelectionScene", TaskSelect())
 
 
-        /*try { //TODO: 3 - To test acquire.kotlin.main interface quickly, comment this try catch & up to line 40
+        try { //TODO: 3 - To test acquire.kotlin.main interface quickly, comment this try catch & up to line 40
             val file = File(Config.readPathToCredFile())
             if (!file.exists()) {
                 throw FileNotFoundException()
             }
-            acquire.kotlin.ScreenController.activateScene("pinLogin")
+            ScreenController.activateScene("pinLogin")
         } catch (e: FileNotFoundException) {
             println("Cred.txt not found")
-            acquire.kotlin.ScreenController.activateScene("firstLogin")
+            ScreenController.activateScene("firstLogin")
         }
         primaryStage.setOnCloseRequest {
-            acquire.kotlin.ITSMFunctions.exitDriver()
-        }*/
+            ITSMFunctions.exitDriver()
+        }
 
         ScreenController.stage!!.title = "Recoup Automation Software"
         ScreenController.stage!!.isResizable = true
-        ScreenController.stage!!.show() //TODO: 5
-        ScreenController.activateScene("taskSelectionScene") //TODO: 6 - Uncomment if testing interface
+//        ScreenController.stage!!.show() //TODO: 5
+//        ScreenController.activateScene("taskSelectionScene") //TODO: 6 - Uncomment if testing interface
         //ScreenController.activateScene("mainInterface") //TODO: 7 - Last
     }
 }

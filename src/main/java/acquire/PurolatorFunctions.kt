@@ -49,7 +49,7 @@ object PurolatorFunctions {
     fun checkAndFillStreetNumber(stNumber: String) {
         val shortWait = WebDriverWait(driver, 0.5.toLong())
         try {
-            shortWait.until(ExpectedCondition { driver: WebDriver? -> driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetNumber")).getAttribute("value").isNotEmpty() } as ExpectedCondition<Boolean>)!!
+            shortWait.until(ExpectedCondition { driver: WebDriver? -> driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetNumber")).getAttribute("value").isNotEmpty() } )!!
         } catch (e: TimeoutException) {
             println("The street number field was blank.")
             val streetNumberField = driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetNumber"))
@@ -60,7 +60,7 @@ object PurolatorFunctions {
     fun checkAndFillStreetName(stName: String) {
         val shortWait = WebDriverWait(driver, 0.5.toLong())
         try {
-            shortWait.until(ExpectedCondition { driver: WebDriver? -> driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetName")).getAttribute("value").isNotEmpty() } as ExpectedCondition<Boolean>)!!
+            shortWait.until(ExpectedCondition { driver: WebDriver? -> driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetName")).getAttribute("value").isNotEmpty() } )!!
         } catch (e: TimeoutException) {
             println("The street name field was blank.")
             val streetNumberField = driver!!.findElement(By.id("ctl00_CPPC_ToAd_txtStreetName"))

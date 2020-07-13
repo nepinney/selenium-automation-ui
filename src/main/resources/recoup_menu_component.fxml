@@ -4,7 +4,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.*?>
-<?import acquire.kotlin.recoup.manual.ManualActionTypes?>
+<?import acquire.recoup.manual.ManualActionTypes?>
 <fx:root type="javafx.scene.layout.GridPane" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="50" vgap="10">
 
 <!--    <Label text="Select an email type to generate" fx:id="title">

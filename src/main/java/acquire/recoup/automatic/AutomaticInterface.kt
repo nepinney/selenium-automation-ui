@@ -1,18 +1,25 @@
 package acquire.recoup.automatic
 
-import acquire.BackButton
-import acquire.Config
-import acquire.ITSMFunctions
-import acquire.ScreenController
+import acquire.*
 import acquire.exception.TicketIsNullException
 import acquire.recoup.RecoupNotesParser
+import acquire.recoup.automatic.buttongroups.AssignedLocal
+import acquire.recoup.automatic.buttongroups.AssignedOutside
+import acquire.recoup.automatic.buttongroups.InProgressLocal
+import acquire.recoup.automatic.buttongroups.InProgressOutside
 import acquire.recoup.components.TicketModel
+import javafx.geometry.HPos
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
+import javafx.geometry.VPos
+import javafx.scene.Group
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.*
+import javafx.scene.text.Text
+import javafx.scene.text.TextAlignment
+import javafx.scene.text.TextFlow
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileInputStream
@@ -22,6 +29,8 @@ import java.text.SimpleDateFormat
 class AutomaticInterface : AnchorPane() {
 
     private val splitRoot = SplitPane()
+    private val bPane = BorderPane()
+    private val ticketActionGrid = GridPane()
 
     private val ticketModel = TicketModel()
 
@@ -29,6 +38,11 @@ class AutomaticInterface : AnchorPane() {
     private val endBtn = Button("End")
     private val instructionsBtn = Button("Instructions")
     private val instructionScreen = AutomaticInstructions()
+
+    private val assignedLocal = AssignedLocal()
+    private val assignedOutside = AssignedOutside()
+    private val inProgressLocal = InProgressLocal()
+    private val inProgressOutside = InProgressOutside()
 
     private fun configureHeader(): HBox {
         val box = HBox()
@@ -39,49 +53,125 @@ class AutomaticInterface : AnchorPane() {
     }
 
     private fun configureMainRegionHeader(): GridPane {
-        val grid = GridPane()
+        val labelsGrid = GridPane()
+        val noteGrid = GridPane()
+
         val tscLabel = Label("TSC #: ")
-        val tsc = Label("")
+        val tsc = AutoLabel("")
         val statusLabel = Label("Status: ")
         val status = Label("")
-        val lastUpdatedLabel = Label("Ticket last updated: ")
+        val lastUpdatedLabel = Label("Note date: ")
         val lastUpdated = Label("")
         val typeLabel = Label("Type: ")
         val type = Label("")
 
-        val textItems = listOf(tscLabel, tsc, statusLabel, status, lastUpdatedLabel, lastUpdated, typeLabel, type)
+        //val noteLabel = Label("Note: ")
+        //GridPane.setValignment(noteLabel, VPos.TOP)
+
+
+        val textItems = listOf(tscLabel, Label(), statusLabel, status, lastUpdatedLabel, lastUpdated, typeLabel, type)
         textItems.forEach{ it.style = "-fx-font-size: 150%;" }
         textItems.filter { textItems.indexOf(it) % 2 == 1 }
                  .forEach { it.style = "-fx-font-weight: bold; -fx-font-size: 150%;" }
 
         ticketModel.currentTicket.addListener { p0, p1, p2 ->
             tsc.text = RecoupNotesParser.tscNumber(p0.value.notes)
+            status.text = p0.value.status
+            lastUpdated.text = p0.value.lastModified?.takeWhile { it != ' ' }
+            type.text = p0.value.ticketType
+            //note.text = p0.value.lastNote
         }
 
-        grid.add(tscLabel, 0, 0)
-        grid.add(tsc, 1, 0)
-        grid.add(statusLabel, 2, 0)
-        grid.add(status, 3, 0)
-        grid.add(typeLabel, 0, 1)
-        grid.add(type, 1, 1)
-        grid.add(lastUpdatedLabel, 2, 1)
-        grid.add(lastUpdated, 3, 1)
+        labelsGrid.add(tscLabel, 0, 0)
+        labelsGrid.add(tsc, 1, 0)
+        labelsGrid.add(statusLabel, 2, 0)
+        labelsGrid.add(status, 3, 0)
+        labelsGrid.add(typeLabel, 0, 1)
+        labelsGrid.add(type, 1, 1)
+        labelsGrid.add(lastUpdatedLabel, 2, 1)
+        labelsGrid.add(lastUpdated, 3, 1)
+
+       // noteGrid.add(noteLabel, 0, 0)
+        //noteGrid.add(TextFlow(note), 0, 0)
 
         val col1 = ColumnConstraints()
-        col1.percentWidth = 12.0
+        col1.percentWidth = 14.0
         val col2 = ColumnConstraints()
-        col2.percentWidth = 28.0
+        col2.percentWidth = 34.0
         val col3 = ColumnConstraints()
-        col3.percentWidth = 25.0
+        col3.percentWidth = 20.0
         val col4 = ColumnConstraints()
-        col3.percentWidth = 35.0
-        grid.columnConstraints.addAll(col1,col2,col3, col4)
+        col4.percentWidth = 32.0
+        labelsGrid.columnConstraints.addAll(col1, col2, col3, col4)
 
-        return grid
+        val col11 = ColumnConstraints()
+        col11.percentWidth = 100.0
+/*        val col12 = ColumnConstraints()
+        col12.percentWidth = 86.0*/
+        noteGrid.columnConstraints.addAll(col11) //col12)
+
+        val headerGrid = GridPane()
+        headerGrid.add(labelsGrid, 0, 0)
+        headerGrid.add(noteGrid, 0, 1)
+
+        val headerCol = ColumnConstraints()
+        headerCol.percentWidth = 100.0
+        headerGrid.columnConstraints.add(headerCol)
+
+        //headerGrid.isGridLinesVisible = true
+
+        return headerGrid
     }
 
-    private fun configureMainRegion(): BorderPane {
-        val scanTicketsButton = Button("Scan in progress tickets & create excel status sheet")
+    private fun selectAssignedLocalGroup() {
+        //GridPane.setValignment(assignedLocal, VPos.CENTER)
+        //GridPane.setHalignment(assignedLocal, HPos.CENTER)
+        ticketActionGrid.add(assignedLocal, 1, 0)
+    }
+
+    private fun selectAssignedOutsideGroup() {
+        //GridPane.setValignment(assignedOutside, VPos.CENTER)
+        //GridPane.setHalignment(assignedOutside, HPos.CENTER)
+        ticketActionGrid.add(assignedOutside, 1, 0)
+    }
+
+    private fun selectInProgressLocalGroup() {
+        //GridPane.setValignment(inProgressLocal, VPos.CENTER)
+        //GridPane.setHalignment(inProgressLocal, HPos.CENTER)
+        ticketActionGrid.add(inProgressLocal, 1, 0)
+    }
+
+    private fun selectInProgressOutsideGroup() {
+        //GridPane.setValignment(inProgressOutside, VPos.CENTER)
+        //GridPane.setHalignment(inProgressOutside, HPos.CENTER)
+        ticketActionGrid.add(inProgressOutside, 1, 0)
+    }
+
+    private fun configureTicketActionGrid() {
+
+        val note = Text("")
+        val viewNote = TextFlow(note)
+        ticketModel.currentTicket.addListener { p0, p1, p2 ->
+            note.text = p0.value.lastNote
+        }
+        GridPane.setValignment(viewNote, VPos.CENTER)
+        GridPane.setHalignment(viewNote, HPos.CENTER)
+        ticketActionGrid.add(viewNote, 0, 0)
+
+        val col1 = ColumnConstraints()
+        col1.percentWidth = 48.0
+        val col2 = ColumnConstraints()
+        col2.percentWidth = 52.0
+        ticketActionGrid.columnConstraints.addAll(col1, col2)
+
+        val row1 = RowConstraints()
+        row1.percentHeight = 100.0
+        ticketActionGrid.rowConstraints.addAll(row1)
+
+    }
+
+    private fun configureBorderPane() {
+        /*val scanTicketsButton = Button("Scan in progress tickets & create excel status sheet")
 
         scanTicketsButton.onAction = javafx.event.EventHandler {
 
@@ -101,7 +191,7 @@ class AutomaticInterface : AnchorPane() {
                 val dateStyle = workbook.createCellStyle()
                 dateStyle.dataFormat = format.getFormat("d/m/yyyy h:mm")
 
-                var startOfTableRowIndex = 4
+                val startOfTableRowIndex = 4
                 //val tscColumn = 1
                 tickets.forEach {
                     val inputRow = sheet.createRow(startOfTableRowIndex+(tickets.indexOf(it)))
@@ -130,16 +220,23 @@ class AutomaticInterface : AnchorPane() {
             //loop through all the in progress tickets until there are no more
             //get information and store in lists
             //input all information from lists into excel document
-        }
+        }*/
 
+        //Header Config
         val header = configureMainRegionHeader()
         BorderPane.setAlignment(header, Pos.TOP_CENTER)
-        BorderPane.setAlignment(scanTicketsButton, Pos.CENTER)
 
-        val bPane = BorderPane()
+        configureTicketActionGrid()
+        BorderPane.setAlignment(ticketActionGrid, Pos.CENTER)
+        //Right (Action buttons) Config
+
+        //BorderPane.setAlignment(scanTicketsButton, Pos.CENTER)
+
+        //val bPane = BorderPane()
         bPane.top = header
-        bPane.center = scanTicketsButton
-        return bPane
+        bPane.center = ticketActionGrid
+        //bPane.center = scanTicketsButton
+        //return bPane
     }
 
     private fun configureSplitRoot() {
@@ -148,18 +245,37 @@ class AutomaticInterface : AnchorPane() {
         AnchorPane.setRightAnchor(splitRoot, 0.0)
         AnchorPane.setTopAnchor(splitRoot, 0.0)
 
-        splitRoot.items.addAll(configureHeader(), configureMainRegion())
+        splitRoot.items.addAll(configureHeader(), bPane)
         splitRoot.orientation = Orientation.VERTICAL
 
     }
 
     init {
+        ticketModel.setCurrentTicket(Ticket("", "", ticketIndex = 2))
+
+        configureBorderPane()
         configureSplitRoot()
-        splitRoot.setDividerPosition(0, 90.0)
+        splitRoot.setDividerPosition(0, 0.10)
 
         ScreenController.addScene("scanInstructions", instructionScreen)
         instructionsBtn.onAction = javafx.event.EventHandler {
             ScreenController.activateScene("scanInstructions")
+        }
+
+        //Make it so that when tickets are changed the button groups are changed similar to manual interface
+        ticketModel.currentTicket.addListener { p0, oldValue, newValue ->
+            when (oldValue.automaticButtonGroup) {
+                ButtonGroups.ASSIGNEDLOCAL -> { ticketActionGrid.children.remove(assignedLocal) }
+                ButtonGroups.ASSIGNEDOUTSIDE -> { ticketActionGrid.children.remove(assignedOutside) }
+                ButtonGroups.INPROGRESSLOCAL -> { ticketActionGrid.children.remove(inProgressLocal) }
+                ButtonGroups.INPROGRESSOUTSIDE -> { ticketActionGrid.children.remove(inProgressOutside) }
+            }
+            when (newValue.automaticButtonGroup) {
+                ButtonGroups.ASSIGNEDLOCAL -> { selectAssignedLocalGroup() }
+                ButtonGroups.ASSIGNEDOUTSIDE -> { selectAssignedOutsideGroup() }
+                ButtonGroups.INPROGRESSLOCAL -> { selectInProgressLocalGroup() }
+                ButtonGroups.INPROGRESSOUTSIDE -> { selectInProgressOutsideGroup() }
+            }
         }
 
         this.children.add(splitRoot)

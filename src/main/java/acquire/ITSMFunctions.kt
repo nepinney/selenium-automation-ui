@@ -1,6 +1,7 @@
 package acquire
 
 import acquire.DriverFunctions.driver
+import acquire.recoup.automatic.ButtonGroups
 import org.openqa.selenium.*
 import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.interactions.Actions
@@ -87,7 +88,7 @@ object ITSMFunctions {
         //Once the ticket has been opened, get the information from the notes textArea
 
         //NEW IMPLEMENTATION
-        val timeOut = if (alreadyOpen) 1 else 8
+        val timeOut = if (alreadyOpen) 1 else 4
         var infoTextArea: WebElement? = null
         try {
             infoTextArea = WebDriverWait(driver, timeOut.toLong())
@@ -239,8 +240,103 @@ object ITSMFunctions {
     }
 
     fun getLastModified(): String {
-        val lastModifiedDate = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[5]/nobr/span"))
-        return lastModifiedDate.getAttribute("textContent")
+        return try {
+            val lastModifiedDate = WebDriverWait(driver, 3)
+                    .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[5]/nobr/span")))
+            //val lastModifiedDate = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[5]/nobr/span"))
+            lastModifiedDate.getAttribute("textContent")
+        } catch (e: NoSuchElementException) {
+            "Null"
+        }
+    }
+
+    fun getTicketRecoupType(): String {
+        val summaryField = driver!!.findElement(By.id("arid_WIN_3_1000000000"))
+        return when (summaryField.getAttribute("value").contains("Creekbank")) {
+            true -> { "Local" }
+            false -> { "Outside" }
+        }
+    }
+
+    fun getTicketsLastNote(): String {
+        val latestNote = WebDriverWait(driver, 3)
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[3]/nobr/span")))
+        //val latestNote = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[3]/nobr/span"))
+        /*        var newline: Boolean
+        for (letterIndex in 0..formattedEntry.length) {
+            newline = formattedEntry[letterIndex] == '\n'
+            if (letterIndex % 74 == 0 && !newline) {
+                //get second half
+                val firstHalf = formattedEntry.slice(0..letterIndex)
+                val secondHalf = formattedEntry.slice(letterIndex..formattedEntry.lastIndex)
+                formattedEntry = firstHalf + secondHalf.replaceFirst(" ", "\n")
+                //input \n at next space
+                //put two back together+
+            }
+        }*/
+        return latestNote.getAttribute("textContent")
+    }
+
+    fun determineButtonGroup(status: String, type: String): ButtonGroups {
+        return when (status) {
+            "In Progress" -> {
+                when (type) {
+                    "Local"-> {
+                        ButtonGroups.INPROGRESSLOCAL
+                    }
+                    "Outside" -> {
+                        ButtonGroups.INPROGRESSOUTSIDE
+                    }
+                    else -> {
+                        println("Error determining button group")
+                        ButtonGroups.ASSIGNEDLOCAL
+                    }
+                }
+            }
+            "Assigned" -> {
+                when (type) {
+                    "Local"-> {
+                        ButtonGroups.ASSIGNEDLOCAL
+                    }
+                    "Outside" -> {
+                        ButtonGroups.ASSIGNEDOUTSIDE
+                    }
+                    else -> {
+                        println("Error determining button group")
+                        ButtonGroups.ASSIGNEDLOCAL
+                    }
+                }
+            }
+            else -> {
+                println("Error determining button group")
+                ButtonGroups.ASSIGNEDLOCAL
+            }
+        }
+    }
+
+    fun fetchNextActiveTicket(index: Int): Ticket? {
+        var i = index
+        var aTicket: WebElement?
+        var nextActiveTicket: Ticket? = null
+        while (true) {
+            try {
+                println("\nTicket $i")
+                aTicket = WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div/div[1]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[$i]/td[6]/nobr/span")))
+            } catch (e: Exception) {
+                println("No more tickets")
+                break
+            }
+            if (aTicket!!.getAttribute("textContent") == "In Progress" || aTicket.getAttribute("textContent") == "Assigned") {
+                println("\tDouble Clicking...")
+                val dClick = Actions(driver)
+                dClick.doubleClick(aTicket).perform()
+                println("\tFetching notes, INC, last modified Date and adding to array...")
+                nextActiveTicket = Ticket(getNotesFromTicket(false), getIncidentID(), aTicket.getAttribute("textContent") ,getLastModified(), getTicketRecoupType(), ticketIndex = i+1, lastNote = getTicketsLastNote(), automaticButtonGroup = determineButtonGroup(aTicket.getAttribute("textContent"), getTicketRecoupType())) //getTicketRecoupType()
+                break
+            }
+            i++
+        }
+        return nextActiveTicket
     }
 
     fun fetchAllInProgressTickets(): List<Ticket> {

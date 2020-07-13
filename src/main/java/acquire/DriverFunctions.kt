@@ -3,6 +3,7 @@ package acquire
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
+import io.github.bonigarcia.wdm.WebDriverManager
 import kotlin.collections.ArrayList
 
 object DriverFunctions {
@@ -15,7 +16,8 @@ object DriverFunctions {
      * Starts the ChromeDriver and sets the isRunning property to true
      */
     fun createDriver() {
-        System.setProperty("webdriver.chrome.driver", Config.readChromeDriverLocation())
+        WebDriverManager.chromedriver().setup()
+        //System.setProperty("webdriver.chrome.driver", Config.readChromeDriverLocation())
         driver = ChromeDriver()
         //val tabHandles = driver!!.windowHandles.toList()
         //tabs = mutableMapOf(Pair(tabHandles.first(), "itsm"))

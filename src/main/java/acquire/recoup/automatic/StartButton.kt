@@ -1,5 +1,6 @@
 package acquire.recoup.automatic
 
+import acquire.ITSMFunctions
 import acquire.Ticket
 import acquire.recoup.components.TicketModel
 import javafx.scene.control.Button
@@ -10,7 +11,7 @@ class StartButton(
 
     init {
         this.onAction = javafx.event.EventHandler {
-        val ticket = Ticket("Submit\n" +
+        /*val ticket = Ticket("Submit\n" +
             "ITEM DETAILS\n" +
             "Order number : 200528584702\n" +
             "Order date : 2020/05/28 10:01:43 AM\n" +
@@ -56,10 +57,45 @@ class StartButton(
             "Primary (on-site)\tShuo Wang (6085588) - (416) 353-4120 - SHUO.WANG@BELL.CA\n" +
             "Secondary (on-site)\tJesung Park (6065773) - (416) 353-3987 - JESUNG.PARK@BELL.CA\n" +
             "Billing, Shipping & Installation - Desired Due Date - Computer Name or Serial # (in Upper Case):HP PROBOOK 640 G35CG74423NL (Return to Reuse Bell - Computer or Thin Client) - 20052858470201\n" +
-            "Desired Due Date\t2020/05/29", "1")
+            "Desired Due Date\t2020/05/29", "1")*/
 
-            ticketModel.setCurrentTicket(ticket)
-            println("Starting automatic process...")
+
+
+            //var ticketIndex = 2 //Start of tickets
+            println("Fetching next ticket from index: ${ticketModel.currentTicket.value.ticketIndex}")
+            when (ticketModel.currentTicket.value.ticketIndex!! > 2) {
+                true -> { ITSMFunctions.clickOnBackButton() }
+                false -> { }
+            }
+
+            var ticket: Ticket? = ITSMFunctions.fetchNextActiveTicket(ticketModel.currentTicket.value.ticketIndex!!)
+            if (ticket != null) {
+                ticketModel.setCurrentTicket(ticket)
+                this.text = "Next"
+            }
+            else {
+                println("No more tickets!")
+                this.text = "Start"
+            }
+
+/*            while (nextTicketReady) {
+                val indexAndTicket = ITSMFunctions.fetchNextActiveTicket(ticketIndex)
+                ticketIndex = indexAndTicket.first
+                ticket = indexAndTicket.second
+                if (ticket != null) {
+                    ticketModel.setCurrentTicket(ticket)
+                }
+
+            }*/
+            //fetch ticket
+
+            //Display the interface
+                //interface will do the tasks on current ticket
+
+            //fetch next ticket
+
+            //ticketModel.setCurrentTicket(ticket)
+            //println("Starting automatic process...")
         }
     }
 
