@@ -1,30 +1,24 @@
 package acquire.recoup.automatic
 
 import acquire.*
-import acquire.exception.TicketIsNullException
 import acquire.recoup.RecoupNotesParser
 import acquire.recoup.automatic.buttongroups.AssignedLocal
 import acquire.recoup.automatic.buttongroups.AssignedOutside
 import acquire.recoup.automatic.buttongroups.InProgressLocal
 import acquire.recoup.automatic.buttongroups.InProgressOutside
+import acquire.recoup.automatic.buttons.StartButton
 import acquire.recoup.components.TicketModel
 import javafx.geometry.HPos
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.geometry.VPos
-import javafx.scene.Group
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.SplitPane
 import javafx.scene.layout.*
 import javafx.scene.text.Text
-import javafx.scene.text.TextAlignment
 import javafx.scene.text.TextFlow
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.text.SimpleDateFormat
+import javafx.stage.Screen
 
 class AutomaticInterface : AnchorPane() {
 
@@ -39,10 +33,12 @@ class AutomaticInterface : AnchorPane() {
     private val instructionsBtn = Button("Instructions")
     private val instructionScreen = AutomaticInstructions()
 
-    private val assignedLocal = AssignedLocal()
-    private val assignedOutside = AssignedOutside()
-    private val inProgressLocal = InProgressLocal()
-    private val inProgressOutside = InProgressOutside()
+    private val emailInterface = EmailInterface(ticketModel)
+
+    private val assignedLocal = AssignedLocal(emailInterface)
+    private val assignedOutside = AssignedOutside(emailInterface)
+    private val inProgressLocal = InProgressLocal(emailInterface)
+    private val inProgressOutside = InProgressOutside(emailInterface)
 
     private fun configureHeader(): HBox {
         val box = HBox()
@@ -124,26 +120,18 @@ class AutomaticInterface : AnchorPane() {
     }
 
     private fun selectAssignedLocalGroup() {
-        //GridPane.setValignment(assignedLocal, VPos.CENTER)
-        //GridPane.setHalignment(assignedLocal, HPos.CENTER)
         ticketActionGrid.add(assignedLocal, 1, 0)
     }
 
     private fun selectAssignedOutsideGroup() {
-        //GridPane.setValignment(assignedOutside, VPos.CENTER)
-        //GridPane.setHalignment(assignedOutside, HPos.CENTER)
         ticketActionGrid.add(assignedOutside, 1, 0)
     }
 
     private fun selectInProgressLocalGroup() {
-        //GridPane.setValignment(inProgressLocal, VPos.CENTER)
-        //GridPane.setHalignment(inProgressLocal, HPos.CENTER)
         ticketActionGrid.add(inProgressLocal, 1, 0)
     }
 
     private fun selectInProgressOutsideGroup() {
-        //GridPane.setValignment(inProgressOutside, VPos.CENTER)
-        //GridPane.setHalignment(inProgressOutside, HPos.CENTER)
         ticketActionGrid.add(inProgressOutside, 1, 0)
     }
 
@@ -251,6 +239,9 @@ class AutomaticInterface : AnchorPane() {
     }
 
     init {
+
+        ScreenController.addScene("emailInterface", emailInterface)
+
         ticketModel.setCurrentTicket(Ticket("", "", ticketIndex = 2))
 
         configureBorderPane()

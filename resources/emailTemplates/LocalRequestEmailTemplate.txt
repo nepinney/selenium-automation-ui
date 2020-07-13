@@ -7,7 +7,7 @@ This is in regards to the <deviceL> return for <owner> with order number <tsc>. 
 Model: <model>
 Serial number: <sn>
 
-If the hardware is at Creekbank and is accessible (not locked up), please let me know exact location so I may pick it up for you. Otherwise, please inform if you able to ship it back via prepaid Purolator box or will not be able to return the until further notice.
+If the hardware is at Creekbank and is accessible (not locked up), please let me know exact location so I may pick it up for you. Otherwise, please inform if you able to ship it back via prepaid Purolator box, drop it off, or will not be able to return the until further notice.
 
 Thanks,
 Nick Pinney-CGI

@@ -251,7 +251,11 @@ object ITSMFunctions {
     }
 
     fun getTicketRecoupType(): String {
-        val summaryField = driver!!.findElement(By.id("arid_WIN_3_1000000000"))
+        var summaryField: WebElement = try {
+            driver!!.findElement(By.id("arid_WIN_3_1000000000"))
+        } catch (e: NoSuchElementException) {
+            driver!!.findElement(By.id("arid_WIN_4_1000000000"))
+        }
         return when (summaryField.getAttribute("value").contains("Creekbank")) {
             true -> { "Local" }
             false -> { "Outside" }

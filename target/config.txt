@@ -8,8 +8,7 @@ Note:
     *DO NOT CHANGE FORMATTING OR ANYTHING LEFT OF SEMICOLONS
 
 Entire path
-pathToOutlookExe: C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
-C:\Program Files\Microsoft Office\Office16\outlook.exe
+pathToOutlookExe: C:\Program Files\Microsoft Office\Office16\outlook.exe
 saveBuiltExcelConfirmation: E:\Desktop\
 C:\Users\nick.pinney\Desktop\
 
