@@ -40,6 +40,11 @@ class AutomaticInterface : AnchorPane() {
     private val inProgressLocal = InProgressLocal(emailInterface)
     private val inProgressOutside = InProgressOutside(emailInterface)
 
+    private val rootGrid = GridPane()
+    private val buttonsGrid = GridPane()
+
+    private val backButton = BackButton("taskSelectionScene")
+
     private fun configureHeader(): HBox {
         val box = HBox()
         box.spacing = 5.0
@@ -237,6 +242,42 @@ class AutomaticInterface : AnchorPane() {
         splitRoot.orientation = Orientation.VERTICAL
 
     }
+
+
+
+    private fun configureRootGrid() {
+        AnchorPane.setBottomAnchor(rootGrid, 0.0)
+        AnchorPane.setLeftAnchor(rootGrid, 0.0)
+        AnchorPane.setRightAnchor(rootGrid, 0.0)
+        AnchorPane.setTopAnchor(rootGrid, 0.0)
+        rootGrid.hgap = 5.0
+        rootGrid.vgap = 5.0
+    }
+
+    private fun configureButtonsGrid() {
+        val col1 = ColumnConstraints()
+        col1.percentWidth = 25.0
+        val col2 = ColumnConstraints()
+        col2.percentWidth = 25.0
+        val col3 = ColumnConstraints()
+        col3.percentWidth = 25.0
+        val col4 = ColumnConstraints()
+        col4.percentWidth = 25.0
+
+        buttonsGrid.columnConstraints.addAll(col1, col2, col3, col4)
+        buttonsGrid.hgap = 5.0
+        buttonsGrid.vgap = 5.0
+        buttonsGrid.add(startBtn, 0, 0)
+        buttonsGrid.add(endBtn, 1, 0)
+        buttonsGrid.add(instructionsBtn, 2, 0)
+        buttonsGrid.add(backButton, 3, 0)
+    }
+
+    private fun configureTicketInformationGrid() {
+
+    }
+
+
 
     init {
 

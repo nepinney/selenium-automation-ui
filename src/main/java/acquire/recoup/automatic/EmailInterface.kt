@@ -41,10 +41,10 @@ class EmailInterface(
                 CreateEmail.generateEmailSubjectAndBodyFromTemplate(Config.readOutsideRequestEmailLocation(), ticketModel)
             }
             ButtonGroups.INPROGRESSLOCAL -> {
-                CreateEmail.generateEmailSubjectAndBodyFromTemplate("", ticketModel)
+                CreateEmail.generateEmailSubjectAndBodyFromTemplate(Config.readLocalReminderEmailLocation(), ticketModel)
             }
             ButtonGroups.INPROGRESSOUTSIDE -> {
-                CreateEmail.generateEmailSubjectAndBodyFromTemplate("", ticketModel)
+                CreateEmail.generateEmailSubjectAndBodyFromTemplate(Config.readOutsideReminderEmailLocation(), ticketModel)
             }
             else -> {
                 listOf("Failed reading email")
@@ -76,6 +76,7 @@ class EmailInterface(
                     bodyArea.text)
             CreateEmail.buildEmail(email!!)
             CreateEmail.launchOutlook()
+            AddNote.processNote(email, null, NoteType.EMAILNOTE)
         }
 
 /*        if (loadEmail != null) {

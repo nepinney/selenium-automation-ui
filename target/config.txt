@@ -9,6 +9,7 @@ Note:
 
 Entire path
 pathToOutlookExe: C:\Program Files\Microsoft Office\Office16\outlook.exe
+C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE
 saveBuiltExcelConfirmation: E:\Desktop\
 C:\Users\nick.pinney\Desktop\
 
@@ -18,6 +19,8 @@ localEmailTemplate: LocalRequestEmailTemplate.txt
 outsideEmailTemplate: OutsideRequestEmailTemplate.txt
 confirmationEmailTemplate: ConfirmationEmailTemplate.txt
 confirmShipmentTemplate: ShipmentConfirmationEmail.txt
+localReminderTemplate: LocalReminderTemplate.txt
+outsideReminderTemplate: OutsideReminderTemplate.txt
 excelConfirmationTemplate: confirmationTemplate.xls
 pathToCredFile: Cred.txt
 scanTicketsExcelTemplate: ticketAnalysisTemplate.xlsx

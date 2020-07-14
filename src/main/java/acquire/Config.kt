@@ -40,6 +40,16 @@ object Config {
         return workingDirectory + read(id) //good
     }
 
+    fun readLocalReminderEmailLocation(): String {
+        val id = "localReminderTemplate:"
+        return workingDirectory + read(id)
+    }
+
+    fun readOutsideReminderEmailLocation(): String {
+        val id = "outsideReminderTemplate:"
+        return workingDirectory + read(id)
+    }
+
     fun readExcelConfirmationTemplateLocation(): String {
         val id = "excelConfirmationTemplate:"
         return "${workingDirectory}${read(id)}" //good
