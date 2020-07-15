@@ -1,12 +1,11 @@
 package acquire.recoup.automatic.buttongroups
 
-import acquire.recoup.automatic.EmailInterface
+import acquire.ScreenController
+import acquire.recoup.automatic.interfaces.EmailInterface
 import acquire.recoup.automatic.buttons.AddNoteButton
 import acquire.recoup.automatic.buttons.CreateEmailFromTemplateButton
-import acquire.recoup.automatic.buttons.CreateWaybillButton
-import acquire.recoup.automatic.buttons.SendNudgeButton
-import acquire.recoup.manual.ManualActionTypes
 import javafx.geometry.Pos
+import javafx.scene.control.Button
 import javafx.scene.layout.VBox
 
 class InProgressLocal(
@@ -14,7 +13,7 @@ class InProgressLocal(
 ) : VBox() {
 
     private val emailButtonFromTemplate = CreateEmailFromTemplateButton(emailInterface)
-    private val waybillButton = CreateWaybillButton()
+    private val waybillButton = Button("Create Waybill")
     private val noteButton = AddNoteButton()
 
     init {
@@ -22,6 +21,11 @@ class InProgressLocal(
         this.spacing = 5.0
         this.alignment = Pos.CENTER
         this.children.addAll(emailButtonFromTemplate, waybillButton, noteButton)
+
+        waybillButton.onAction = javafx.event.EventHandler {
+            ScreenController.activateScene("addressInterface")
+        }
+
     }
 
 }

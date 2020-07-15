@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox
 class CreateWaybill(private val ticketModel: TicketModel) : VBox() {
 
     private val tscInstructionLabel = Label("1. Open ticket on browser or enter tsc number to generate address")
+    private val addressInstructionsLabel = Label("2. Create waybill to recipient below")
     private val tscComponent = TscComponent(ticketModel)
 
     private fun addTscComponent() {
@@ -17,7 +18,7 @@ class CreateWaybill(private val ticketModel: TicketModel) : VBox() {
     }
 
     private fun addAddressComponent() {
-        this.children.add(AddressComponent("2. Create waybill to recipient below", ticketModel.currentTicket))
+        this.children.addAll(addressInstructionsLabel, AddressComponent(ticketModel.currentTicket))
     }
 
     private fun addEmailComponent() {

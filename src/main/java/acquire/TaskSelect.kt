@@ -2,7 +2,7 @@ package acquire
 
 import acquire.recoup.manual.ManualInterface
 import acquire.recoup.manual.ManualMenuComponent
-import acquire.recoup.automatic.AutomaticInterface
+import acquire.recoup.automatic.interfaces.AutomaticInterface
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.geometry.Pos

@@ -1,9 +1,8 @@
 package acquire.recoup.automatic.buttongroups
 
-import acquire.recoup.automatic.EmailInterface
+import acquire.recoup.automatic.interfaces.EmailInterface
 import acquire.recoup.automatic.buttons.AddNoteButton
 import acquire.recoup.automatic.buttons.CreateEmailFromTemplateButton
-import acquire.recoup.manual.ManualActionTypes
 import javafx.geometry.Pos
 import javafx.scene.layout.VBox
 

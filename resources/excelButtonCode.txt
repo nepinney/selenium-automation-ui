@@ -1,0 +1,39 @@
+try {
+                val template = FileInputStream(Config.readPathToTicketAnalysisTemplate())
+
+                // Instantiate a Workbook object that represents an Excel file
+                val workbook = XSSFWorkbook(template)
+                val sheet = workbook.getSheetAt(0)
+
+                val format = workbook.createDataFormat()
+                val tscStyle = workbook.createCellStyle()
+                tscStyle.dataFormat = format.getFormat("0")
+                val dateStyle = workbook.createCellStyle()
+                dateStyle.dataFormat = format.getFormat("d/m/yyyy h:mm")
+
+                val startOfTableRowIndex = 4
+                //val tscColumn = 1
+                tickets.forEach {
+                    val inputRow = sheet.createRow(startOfTableRowIndex+(tickets.indexOf(it)))
+                    val incCell = inputRow.createCell(0)
+                    incCell.setCellValue(it.incNumber)
+                    val tscCell = inputRow.createCell(1)
+                    tscCell.setCellValue(RecoupNotesParser.tscNumber(it.notes).toDouble())
+                    tscCell.cellStyle = tscStyle
+                    val lastModifiedCell = inputRow.createCell(3)
+                    val dateFormatter = SimpleDateFormat("M/dd/yyyy hh:mm:ss aa")
+                    lastModifiedCell.setCellValue(dateFormatter.parse(it.lastModified))
+                    lastModifiedCell.cellStyle = dateStyle
+                }
+
+                template.close()
+                val outFile = FileOutputStream(File(Config.readPathToTicketAnalysisSheet()))
+                workbook.write(outFile)
+                outFile.close()
+                println("Excel file created and closed.")
+
+            } catch (t: TicketIsNullException) {
+                println("Must first fetch ticket.")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }

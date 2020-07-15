@@ -1,4 +1,4 @@
-package acquire.recoup.automatic
+package acquire.recoup.automatic.interfaces
 
 import acquire.recoup.automatic.buttons.AddNoteButton
 import javafx.geometry.HPos

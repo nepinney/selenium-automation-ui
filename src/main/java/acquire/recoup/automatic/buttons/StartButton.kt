@@ -64,7 +64,7 @@ class StartButton(
                 ticketType = "Outside",
                 status = "Assigned",
                 lastNote = "This is a test ticket",
-                automaticButtonGroup = ButtonGroups.INPROGRESSLOCAL,
+                automaticButtonGroup = ButtonGroups.ASSIGNEDOUTSIDE,
                 lastModified = "7/13/2020")
 
 

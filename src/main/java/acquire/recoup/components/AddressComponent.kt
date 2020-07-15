@@ -3,7 +3,9 @@ package acquire.recoup.components
 import acquire.DriverFunctions
 import acquire.PurolatorFunctions
 import acquire.Ticket
+import acquire.recoup.MailingAddress
 import acquire.recoup.RecoupNotesParser
+import acquire.recoup.automatic.CreateWaybill
 import javafx.beans.property.ObjectProperty
 import javafx.geometry.HPos
 import javafx.scene.control.Button
@@ -14,11 +16,8 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
 
 class AddressComponent(
-        private val componentInstructions: String,
         private val ticketProperty: ObjectProperty<Ticket>
 ) : VBox() {
-
-    private val instructionsLabel = Label(componentInstructions)
 
     private val attentionToField = TextField("Attention To")
     private val phoneNumberField = TextField("Phone #")
@@ -34,7 +33,7 @@ class AddressComponent(
 
     private fun addListenersToTextFields() {
         ticketProperty.addListener { p0, p1, p2 ->
-            if (RecoupNotesParser.clientToUpdateAndValidate(ticketProperty.value.notes).isBlank())
+            if (RecoupNotesParser.clientToUpdateAndValidate(p0.value.notes).isBlank())
                 println("Client to address not mentioned in ticket")
             else {
                 attentionToField.text = RecoupNotesParser.attentionTo(p0.value.notes)
@@ -96,7 +95,10 @@ class AddressComponent(
         addListenersToTextFields()
 
         createWaybillButton.onAction = javafx.event.EventHandler {
-            println("Creating Waybill")
+            //CreateWaybill.createWaybill(MailingAddress("Bell", ...)) //TODO
+
+
+            /*println("Creating Waybill")
             when (PurolatorFunctions.purolatorOpen) {
                 true -> {
                     DriverFunctions.switchToTab("purolator")
@@ -110,11 +112,11 @@ class AddressComponent(
                     //PurolatorFunctions.enterShippingInformation("Nicholas Pinney","L6H 5T8", "2140", "Winding Woods Drive", "905", "2575603")
                     PurolatorFunctions.selectDropOff()
                 }
-            }
+            }*/
 
         }
 
-        this.children.addAll(instructionsLabel, configureAttentionToGrid(), configureAddressFieldsGrid())
+        this.children.addAll(configureAttentionToGrid(), configureAddressFieldsGrid())
     }
 
 }
