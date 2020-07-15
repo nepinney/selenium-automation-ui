@@ -1,8 +1,8 @@
 package acquire.recoup.automatic.buttongroups
 
 import acquire.ScreenController
+import acquire.recoup.automatic.buttons.ActivateAddNoteInterfaceButton
 import acquire.recoup.automatic.interfaces.EmailInterface
-import acquire.recoup.automatic.buttons.AddNoteButton
 import acquire.recoup.automatic.buttons.CreateEmailFromTemplateButton
 import javafx.geometry.Pos
 import javafx.scene.control.Button
@@ -14,7 +14,7 @@ class InProgressLocal(
 
     private val emailButtonFromTemplate = CreateEmailFromTemplateButton(emailInterface)
     private val waybillButton = Button("Create Waybill")
-    private val noteButton = AddNoteButton()
+    private val noteButton = ActivateAddNoteInterfaceButton()
 
     init {
         emailButtonFromTemplate.text = "Send Reminder"

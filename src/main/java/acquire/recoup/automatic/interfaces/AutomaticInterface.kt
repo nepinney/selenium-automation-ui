@@ -39,6 +39,7 @@ class AutomaticInterface : BorderPane() {
     //Interface reference
     private val emailInterface = EmailInterface(ticketModel)
     private val addressInterface = AddressInterface(ticketModel)
+    private val addNoteInterface = AddNoteInterface()
 
     //Button Groups
     private val assignedLocal = AssignedLocal(emailInterface)
@@ -149,6 +150,7 @@ class AutomaticInterface : BorderPane() {
         ScreenController.addScene("emailInterface", emailInterface)
         ScreenController.addScene("scanInstructions", instructionScreen)
         ScreenController.addScene("addressInterface", addressInterface)
+        ScreenController.addScene("addNoteInterface", addNoteInterface)
 
         //Configure instructions button
         instructionsBtn.onAction = javafx.event.EventHandler {

@@ -13,7 +13,7 @@ class InProgressOutside(
 
     private val emailButtonFromTemplate = CreateEmailFromTemplateButton(emailInterface)
     private val waybillButton = Button("Create Waybill")
-    private val noteButton = AddNoteButton()
+    private val noteButton = ActivateAddNoteInterfaceButton()
     private val puroStatusButton = PurolatorStatusButton()
 
     init {

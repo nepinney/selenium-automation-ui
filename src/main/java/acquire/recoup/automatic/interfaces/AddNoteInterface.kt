@@ -1,19 +1,42 @@
 package acquire.recoup.automatic.interfaces
 
-import acquire.recoup.automatic.buttons.AddNoteButton
-import javafx.geometry.HPos
-import javafx.scene.control.TextField
-import javafx.scene.layout.GridPane
+import acquire.BackButton
+import acquire.recoup.automatic.buttons.ActivateAddNoteInterfaceButton
+import javafx.geometry.Insets
+import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.control.TextArea
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
 
-class AddNoteInterface : GridPane() {
+class AddNoteInterface : BorderPane() {
 
-    private val notesField = TextField()
-    private val addNotesBtn = AddNoteButton()
+    private val buttonsBox = HBox()
+
+    private val notesField = TextArea()
+    private val addNotesBtn = Button("Add note to ticket")
+
+    private val backBtn = BackButton("recoupScan")
+
+    private fun configureButtonsBox() {
+        buttonsBox.spacing = 5.0
+        buttonsBox.children.addAll(addNotesBtn, backBtn)
+    }
 
     init {
-        GridPane.setHalignment(addNotesBtn, HPos.RIGHT)
-        this.add(notesField, 0, 0)
-        this.add(addNotesBtn, 0, 1)
+
+        addNotesBtn.onAction = javafx.event.EventHandler {
+            //TODO: Add whatever in textArea to note via itsmFunctions
+        }
+
+        configureButtonsBox()
+        val lb = Label("Add content of box to notes:")
+        this.top = lb
+        BorderPane.setMargin(lb, Insets(5.0))
+        this.center = notesField
+        BorderPane.setMargin(notesField, Insets(0.0, 5.0, 5.0, 5.0))
+        this.bottom = buttonsBox
+        BorderPane.setMargin(buttonsBox, Insets(0.0, 5.0, 5.0, 5.0))
     }
 
 }
