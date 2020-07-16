@@ -1,9 +1,11 @@
 package acquire
 
 import acquire.DriverFunctions.driver
+import acquire.recoup.MailingAddress
 import okio.Timeout
 import org.openqa.selenium.By
 import org.openqa.selenium.Keys
+import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.TimeoutException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedCondition
@@ -15,6 +17,57 @@ object PurolatorFunctions {
 
     var purolatorOpen = false
 
+    fun createWaybillFromScratch(address: MailingAddress) {
+        //Open new tab
+        DriverFunctions.switchToTab("purolator")
+        //Navigate to Purolator
+        DriverFunctions.createNewTab("https://eshiponline.purolator.com/ShipOnline/SecurePages/Public/FormsLogin.aspx?ReturnUrl=/ShipOnline/Welcome.aspx&lang=E", "purolator")
+        purolatorOpen = true
+        try {
+            //Login
+            login("jpaquete", "eusteam")
+            clickCreateShipmentButtonFromHomeScreen()
+            //Fill fields
+            fillCompanyName(address.company)
+            //Fill atn to
+            fillAttentionTo(address.atnTo)
+            //fill ps code
+            fillPostalCode(address.postalcode)
+            //fill street #
+            checkAndFillStreetNumber(address.streetNumber)
+            //fill street name
+            checkAndFillStreetName(address.streetName)
+            //fill phone number
+            fillPhoneNumber(address.phoneNumberArea, address.phoneNumber)
+            selectDropOff()
+        } catch (e: NoSuchElementException) {
+            e.printStackTrace()
+            println("\nCaught an error finding an element")
+        }
+    }
+
+    fun createNewWaybill(address: MailingAddress) {
+        try {
+            goToHome()
+            clickCreateShipmentButtonFromHomeScreen()
+            //Fill fields
+            fillCompanyName(address.company)
+            //Fill atn to
+            fillAttentionTo(address.atnTo)
+            //fill ps code
+            fillPostalCode(address.postalcode)
+            //fill street #
+            checkAndFillStreetNumber(address.streetNumber)
+            //fill street name
+            checkAndFillStreetName(address.streetName)
+            //fill phone number
+            fillPhoneNumber(address.phoneNumberArea, address.phoneNumber)
+            selectDropOff()
+        } catch (e: NoSuchElementException) {
+            e.printStackTrace()
+        }
+    }
+
     fun login(usr: String, ps: String) {
         val usernameField = driver!!.findElement(By.id("ctl00_Login_TxtBoxUserName"))
         usernameField.sendKeys(usr)
@@ -24,16 +77,21 @@ object PurolatorFunctions {
         loginButton.click()
     }
 
+    fun goToHome() {
+        val homeBtn = driver!!.findElement(By.id("ctl00_PageHeader_ImgBtnPurolatorHome"))
+        homeBtn.click()
+    }
+
     fun clickCreateShipmentButtonFromHomeScreen() {
         val createNewLabelLink = WebDriverWait(driver, 10)
                 .until(ExpectedConditions.elementToBeClickable(By.id("ctl00_CPPC_btnCreateShipment")))
         createNewLabelLink.click()
     }
 
-    fun fillCompanyName() {
+    private fun fillCompanyName(str: String) {
         val wait = WebDriverWait(driver, 4)
         val company = wait.until(ExpectedConditions.elementToBeClickable(By.id("ctl00_CPPC_ToAd_txtName")))
-        company.sendKeys("Bell")
+        company.sendKeys(str)
     }
 
     fun fillAttentionTo(atnTo: String) {

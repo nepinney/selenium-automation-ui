@@ -23,15 +23,16 @@ class AddressComponent(
     private val attentionToGrid = GridPane()
     private val addressGrid = GridPane()
 
-    private val attentionToField = TextField("Attention To")
-    private val phoneNumberField = TextField("Phone #")
+    val attentionToField = TextField("Attention To")
+    val phoneNumberAreaField = TextField("Area")
+    val phoneNumberField = TextField("Phone #")
 
-    private val streetNumberField = TextField("Street #")
-    private val streetNameField = TextField("Street Name")
-    private val postalCodeField = TextField("Postal Code")
-    private val cityField = TextField("City")
-    private val suiteNumberField = TextField("Suite #")
-    private val floorNumberField = TextField("Floor #")
+    val streetNumberField = TextField("Street #")
+    val streetNameField = TextField("Street Name")
+    val postalCodeField = TextField("Postal Code")
+    val cityField = TextField("City")
+    val suiteNumberField = TextField("Suite #")
+    val floorNumberField = TextField("Floor #")
 
     //private val createWaybillButton = Button("Create Waybill")
 
@@ -52,12 +53,15 @@ class AddressComponent(
     private fun configureAttentionToGrid() {
         val col1 = ColumnConstraints()
         val col2 = ColumnConstraints()
+        val col3 = ColumnConstraints()
         col1.percentWidth = 55.0
-        col2.percentWidth = 45.0
+        col2.percentWidth = 10.0
+        col3.percentWidth = 35.0
 
         attentionToGrid.add(attentionToField, 0, 0)
-        attentionToGrid.add(phoneNumberField, 1, 0)
-        attentionToGrid.columnConstraints.addAll(col1, col2)
+        attentionToGrid.add(phoneNumberAreaField, 1, 0)
+        attentionToGrid.add(phoneNumberField, 2, 0)
+        attentionToGrid.columnConstraints.addAll(col1, col2, col3)
         attentionToGrid.hgap = 5.0
         //GridPane.setHgrow(attentionToGridPane, Priority.NEVER)
     }

@@ -1,6 +1,9 @@
 package acquire.recoup.automatic.interfaces
 
 import acquire.BackButton
+import acquire.DriverFunctions
+import acquire.PurolatorFunctions
+import acquire.recoup.MailingAddress
 import acquire.recoup.components.AddressComponent
 import acquire.recoup.components.TicketModel
 import javafx.geometry.Insets
@@ -87,6 +90,31 @@ class AddressInterface(private val ticketModel: TicketModel) : BorderPane() {
         BorderPane.setMargin(rootPane, Insets(5.0))
         this.bottom = buttonsBox
         BorderPane.setMargin(buttonsBox, Insets(0.0, 5.0, 5.0, 5.0))
+
+        createWaybillBtn.onAction = javafx.event.EventHandler {
+            val address = MailingAddress(
+                    "Bell",
+                    addressComponent.attentionToField.text,
+                    addressComponent.streetNumberField.text,
+                    addressComponent.streetNameField.text,
+                    addressComponent.postalCodeField.text,
+                    addressComponent.cityField.text,
+                    addressComponent.phoneNumberAreaField.text,
+                    addressComponent.phoneNumberField.text,
+                    if (addressComponent.floorNumberField.text.isBlank()) null else addressComponent.floorNumberField.text,
+                    if (addressComponent.suiteNumberField.text.isBlank()) null else addressComponent.suiteNumberField.text)
+            when (PurolatorFunctions.purolatorOpen) {
+                true -> {
+                    PurolatorFunctions.createNewWaybill(address)
+
+                }
+                false -> {
+                    PurolatorFunctions.createWaybillFromScratch(address)
+                }
+            }
+            //PurolatorFunctions.enterShippingInformation("Nicholas Pinney","L6H 5T8", "2140", "Winding Woods Drive", "905", "2575603")
+        }
+
     }
 
 }

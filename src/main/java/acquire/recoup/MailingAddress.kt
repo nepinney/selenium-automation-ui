@@ -7,6 +7,8 @@ data class MailingAddress(
         val streetName: String,
         val postalcode: String,
         val city: String,
+        val phoneNumberArea: String,
+        val phoneNumber: String,
         val suiteNumber: String? = null,
         val floorNumber: String? = null
 
