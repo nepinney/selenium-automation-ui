@@ -108,40 +108,34 @@ object ITSMFunctions {
 
     /*Helper methods to update ticket*/
     fun setStatusField(status: String) {
-        //if (statusField == null) {
         val statusField = try {
             driver!!.findElement(By.id("arid_WIN_3_7"))
         } catch (e: NoSuchElementException) {
             driver!!.findElement(By.id("arid_WIN_4_7"))
         }
-        //}
-        statusField!!.click()
-        var element: WebElement? = null
-        if (status == "pending") {
-            //try {
-                element = WebDriverWait(driver, 3)
-                    .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[4]/div[2]/table/tbody/tr[4]/td[1]")))
-/*            } catch (e: NoSuchElementException) {
-                try {
-                    element = WebDriverWait(driver, 3)
+        if (statusField.text == "Assigned") {
+            var element: WebElement? = null
+            statusField!!.click()
+            when (status) {
+                "pending" -> { element = WebDriverWait(driver, 3)
                         .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[4]/div[2]/table/tbody/tr[4]/td[1]")))
                 }
-            }*/
-
-        } else {
-            try {
-                element = WebDriverWait(driver, 3)
-                    .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[4]/div[2]/table/tbody/tr[3]/td[1]")))
-            } catch (e: TimeoutException) {
-                try {
-                    element = WebDriverWait(driver, 3)
-                        .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[5]/div[2]/table/tbody/tr[3]/td[1]")))
-                } catch (t: TimeoutException) {
-                    println("No Pending box: $t")
+                else -> {
+                    try {
+                        element = WebDriverWait(driver, 3)
+                                .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[4]/div[2]/table/tbody/tr[3]/td[1]")))
+                    } catch (e: TimeoutException) {
+                        try {
+                            element = WebDriverWait(driver, 3)
+                                    .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[5]/div[2]/table/tbody/tr[3]/td[1]")))
+                        } catch (t: TimeoutException) {
+                            println("No Pending box: $t")
+                        }
+                    }
                 }
             }
+            element?.click()
         }
-        element?.click()
     }
 
     fun setStatusReasonField() {
@@ -205,21 +199,13 @@ object ITSMFunctions {
         notesField?.sendKeys(note)
     }
 
-    fun attachSpreadsheet() {
-        try {
-            val uploadField = driver!!.findElement(By.id("WIN_4_304247100"))
-            uploadField.click()
-            /*WebElement up2 = new WebDriverWait(driver, 3)
-                    .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/table/tbody/tr/td/form/table/tbody/tr/td[2]/input")));
-            up2.click();*/
-            //up2.sendKeys("C:\\Users\\nick.pinney\\Desktop\\PendingXpath.txt");
-            //WebElement okButton = driver.findElement(By.xpath("//*[@id=\"PopupAttFooter\"]/a[1]"));
-            //okButton.click();
-        } catch (e: NoSuchElementException) {
-            println("Counldn't get element: $e")
-        } catch (e: Exception) {
-            println("Caught error when sending keys for file upload: $e")
-        }
+    fun addWorkInfo() {
+        val moreDetailsButton = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[4]/div/a"))
+        moreDetailsButton.click()
+        val radioInternal = driver!!.findElement(By.id("WIN_3_rc0id1000000761"))
+        radioInternal.click()
+        val addButton = driver!!.findElement(By.id("WIN_3_304247110"))
+        addButton.click()
     }
 
     fun sortTicketsBasedOnStatus() {

@@ -1,5 +1,6 @@
 package acquire.recoup.automatic.buttons
 
+import acquire.DriverFunctions
 import acquire.ITSMFunctions
 import acquire.Ticket
 import acquire.recoup.automatic.ButtonGroups
@@ -13,7 +14,8 @@ class StartButton(
 
     init {
         this.onAction = javafx.event.EventHandler {
-        val ticket = Ticket("Submit\n" +
+            DriverFunctions.switchToTab("itsm")
+        /*val ticket = Ticket("Submit\n" +
             "ITEM DETAILS\n" +
             "Order number : 200528584702\n" +
             "Order date : 2020/05/28 10:01:43 AM\n" +
@@ -65,18 +67,18 @@ class StartButton(
                 status = "Assigned",
                 lastNote = "This is a test ticket",
                 automaticButtonGroup = ButtonGroups.INPROGRESSOUTSIDE,
-                lastModified = "7/13/2020")
+                lastModified = "7/13/2020")*/
 
 
 
             //var ticketIndex = 2 //Start of tickets
-            /*println("Fetching next ticket from index: ${ticketModel.currentTicket.value.ticketIndex}")
+            println("Fetching next ticket from index: ${ticketModel.currentTicket.value.ticketIndex}")
             when (ticketModel.currentTicket.value.ticketIndex!! > 2) {
                 true -> { ITSMFunctions.clickOnBackButton() }
                 false -> { }
             }
 
-            var ticket: Ticket? = ITSMFunctions.fetchNextActiveTicket(ticketModel.currentTicket.value.ticketIndex!!)*/
+            var ticket: Ticket? = ITSMFunctions.fetchNextActiveTicket(ticketModel.currentTicket.value.ticketIndex!!)
             if (ticket != null) {
                 ticketModel.setCurrentTicket(ticket)
                 this.text = "Next"

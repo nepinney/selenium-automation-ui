@@ -1,6 +1,7 @@
 package acquire.recoup.automatic.interfaces
 
 import acquire.BackButton
+import acquire.ITSMFunctions
 import acquire.recoup.automatic.buttons.ActivateAddNoteInterfaceButton
 import javafx.geometry.Insets
 import javafx.scene.control.Button
@@ -27,6 +28,9 @@ class AddNoteInterface : BorderPane() {
 
         addNotesBtn.onAction = javafx.event.EventHandler {
             //TODO: Add whatever in textArea to note via itsmFunctions
+            ITSMFunctions.setNotes(notesField.text)
+            ITSMFunctions.addWorkInfo()
+            notesField.text = ""
         }
 
         configureButtonsBox()

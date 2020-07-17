@@ -1,7 +1,6 @@
 package acquire.recoup.automatic.interfaces
 
 import acquire.*
-import acquire.recoup.automatic.AddNote
 import acquire.recoup.automatic.ButtonGroups
 import acquire.recoup.automatic.NoteType
 import acquire.recoup.components.TicketModel
@@ -15,6 +14,8 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EmailInterface(
         private val ticketModel: TicketModel
@@ -72,7 +73,14 @@ class EmailInterface(
                     bodyArea.text)
             CreateEmail.buildEmail(email!!)
             CreateEmail.launchOutlook()
-            AddNote.processNote(email, null, NoteType.EMAILNOTE)
+            processEmailAndAddToTicketNotes(email, null, NoteType.EMAILNOTE)
+            when (ticketModel.currentTicket.value.automaticButtonGroup) {
+                ButtonGroups.INPROGRESSOUTSIDE -> {}
+                ButtonGroups.INPROGRESSLOCAL -> {}
+                else -> {
+                    ITSMFunctions.setStatusField("In Progress")
+                }
+            }
             ScreenController.activateScene("recoupScan")
         }
     }
@@ -114,6 +122,30 @@ class EmailInterface(
         ccField.text = ccs
         subjectField.text = bodyAndSubject.first()
         bodyArea.text = bodyAndSubject.last()
+    }
+
+    private fun processEmailAndAddToTicketNotes(email: Email?, note: String?, noteType: NoteType) {
+        var noteToAdd: String
+        when (noteType) {
+            NoteType.EMAILNOTE -> {
+                val date = Date()
+                val formatter = SimpleDateFormat("MMMM dd, yyyy hh:mm aa")
+                val cc = if (email!!.cc != null) "Cc: ${email!!.cc?.joinToString(";")}\n" else ""
+                noteToAdd =
+                        "From: Pinney, Nicholas\n" +
+                                "Sent: ${formatter.format(date).toUpperCase().replace(".", "")}\n" +
+                                "To: ${email!!.recipient.joinToString(";")}\n" +
+                                "$cc" +
+                                "Subject: ${email!!.subject}\n\n" +
+                                "${email!!.body}"
+            }
+            NoteType.CUSTOMNOTE -> {
+                noteToAdd = note!!
+            }
+        }
+        //println("\n$noteToAdd")
+        ITSMFunctions.setNotes(noteToAdd)
+        ITSMFunctions.addWorkInfo()
     }
 
     init {
