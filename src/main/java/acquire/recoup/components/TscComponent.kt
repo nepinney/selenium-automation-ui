@@ -4,6 +4,7 @@ import acquire.DriverFunctions
 import acquire.ITSMFunctions
 import acquire.Ticket
 import acquire.recoup.RecoupNotesParser
+import acquire.recoup.TicketModel
 import javafx.geometry.HPos
 import javafx.scene.control.Button
 import javafx.scene.control.Label

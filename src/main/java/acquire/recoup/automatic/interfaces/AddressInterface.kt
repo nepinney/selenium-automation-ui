@@ -1,11 +1,10 @@
 package acquire.recoup.automatic.interfaces
 
 import acquire.BackButton
-import acquire.DriverFunctions
 import acquire.PurolatorFunctions
 import acquire.recoup.MailingAddress
 import acquire.recoup.components.AddressComponent
-import acquire.recoup.components.TicketModel
+import acquire.recoup.TicketModel
 import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.Label

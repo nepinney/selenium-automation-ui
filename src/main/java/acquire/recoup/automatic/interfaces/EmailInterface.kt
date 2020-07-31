@@ -1,9 +1,9 @@
 package acquire.recoup.automatic.interfaces
 
 import acquire.*
-import acquire.recoup.automatic.ButtonGroups
+import acquire.recoup.automatic.buttongroups.ButtonGroups
 import acquire.recoup.automatic.NoteType
-import acquire.recoup.components.TicketModel
+import acquire.recoup.TicketModel
 import javafx.geometry.HPos
 import javafx.geometry.Insets
 import javafx.scene.control.Button
@@ -17,11 +17,8 @@ import javafx.scene.layout.HBox
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EmailInterface(
-        private val ticketModel: TicketModel
-) : BorderPane() {
-
-    private val emailMetaDataGrid = GridPane()
+class EmailInterface : BorderPane() {
+    private val labelsGrid = GridPane()
     private val buttonsBox = HBox()
 
     private val backButton = BackButton("recoupScan")
@@ -34,7 +31,7 @@ class EmailInterface(
 
     private var email: Email? = null
 
-    private fun configureEmailMetaDataGrid() {
+    private fun configureLabelsGrid() {
         val toLabel = Label("To: ")
         val ccLabel = Label("Cc: ")
         val subjectLabel = Label("Subject: ")
@@ -47,17 +44,17 @@ class EmailInterface(
         col1.percentWidth = 10.0
         val col2 = ColumnConstraints()
         col2.percentWidth = 90.0
-        emailMetaDataGrid.columnConstraints.addAll(col1, col2)
-        emailMetaDataGrid.vgap = 5.0
+        labelsGrid.columnConstraints.addAll(col1, col2)
+        labelsGrid.vgap = 5.0
 
-        emailMetaDataGrid.add(toLabel, 0, 0)
-        emailMetaDataGrid.add(recipientField, 1, 0)
+        labelsGrid.add(toLabel, 0, 0)
+        labelsGrid.add(recipientField, 1, 0)
 
-        emailMetaDataGrid.add(ccLabel, 0, 1)
-        emailMetaDataGrid.add(ccField, 1, 1)
+        labelsGrid.add(ccLabel, 0, 1)
+        labelsGrid.add(ccField, 1, 1)
 
-        emailMetaDataGrid.add(subjectLabel, 0, 2)
-        emailMetaDataGrid.add(subjectField, 1, 2)
+        labelsGrid.add(subjectLabel, 0, 2)
+        labelsGrid.add(subjectField, 1, 2)
 
     }
 
@@ -66,15 +63,20 @@ class EmailInterface(
         buttonsBox.children.addAll(sendButton, backButton)
 
         sendButton.onAction = javafx.event.EventHandler {
-            email = Email(
-                    CreateEmail.determineRecipients(ticketModel).first(),
-                    CreateEmail.determineRecipients(ticketModel).last(),
-                    subjectField.text,
-                    bodyArea.text)
-            CreateEmail.buildEmail(email!!)
-            CreateEmail.launchOutlook()
+            //Set the email variables to the fields of the interface to allow for email 'edit'
+            //TODO: email.recipientList =
+            //TODO: cc.recipientList =
+            email!!.subject = subjectField.text
+            email!!.body = bodyArea.text
+
+            email!!.buildEmlFile()
+            email!!.launchOutlook()
+
+            //Process the email (add metadata) and add the string to the notes of the ticket
             processEmailAndAddToTicketNotes(email, null, NoteType.EMAILNOTE)
-            when (ticketModel.currentTicket.value.automaticButtonGroup) {
+
+            //Change the status of the ticket if it's assigned
+            when (TicketModel.currentTicket.value.automaticButtonGroup) {
                 ButtonGroups.INPROGRESSOUTSIDE -> {}
                 ButtonGroups.INPROGRESSLOCAL -> {}
                 else -> {
@@ -82,46 +84,26 @@ class EmailInterface(
                 }
             }
             ScreenController.activateScene("recoupScan")
+            ScreenController.removeScene("emailInterface")
         }
     }
 
     private fun configureThis() {
-        this.top = emailMetaDataGrid
-        BorderPane.setMargin(emailMetaDataGrid, Insets(5.0, 5.0, 0.0, 5.0))
+        this.top = labelsGrid
+        BorderPane.setMargin(labelsGrid, Insets(5.0, 5.0, 0.0, 5.0))
         this.center = bodyArea
         BorderPane.setMargin(bodyArea, Insets(5.0))
         this.bottom = buttonsBox
         BorderPane.setMargin(buttonsBox, Insets(0.0, 0.0, 5.0, 5.0))
     }
 
-    fun populateFieldsWithCurrentTicket() {
-        val recipientsLists = CreateEmail.determineRecipients(ticketModel)
-        val recipients = recipientsLists.first().joinToString()
-        val ccs = if (recipientsLists.lastIndex == 1)
-            recipientsLists.last().joinToString()
-        else
-            ""
-        val bodyAndSubject = when (ticketModel.currentTicket.value.automaticButtonGroup) {
-            ButtonGroups.ASSIGNEDLOCAL -> {
-                CreateEmail.generateEmailSubjectAndBodyFromTemplate(Config.readLocalRequestEmailLocation(), ticketModel)
-            }
-            ButtonGroups.ASSIGNEDOUTSIDE -> {
-                CreateEmail.generateEmailSubjectAndBodyFromTemplate(Config.readOutsideRequestEmailLocation(), ticketModel)
-            }
-            ButtonGroups.INPROGRESSLOCAL -> {
-                CreateEmail.generateEmailSubjectAndBodyFromTemplate(Config.readLocalReminderEmailLocation(), ticketModel)
-            }
-            ButtonGroups.INPROGRESSOUTSIDE -> {
-                CreateEmail.generateEmailSubjectAndBodyFromTemplate(Config.readOutsideReminderEmailLocation(), ticketModel)
-            }
-            else -> {
-                listOf("Failed reading email")
-            }
-        }
-        recipientField.text = recipients
-        ccField.text = ccs
-        subjectField.text = bodyAndSubject.first()
-        bodyArea.text = bodyAndSubject.last()
+    fun populateFields(email: Email) {
+        this.email = email
+
+        recipientField.text = email.recipientList!!.joinToString()
+        ccField.text = email.ccList!!.joinToString()
+        subjectField.text = email.subject!!
+        bodyArea.text = email.body!!
     }
 
     private fun processEmailAndAddToTicketNotes(email: Email?, note: String?, noteType: NoteType) {
@@ -130,11 +112,11 @@ class EmailInterface(
             NoteType.EMAILNOTE -> {
                 val date = Date()
                 val formatter = SimpleDateFormat("MMMM dd, yyyy hh:mm aa")
-                val cc = if (email!!.cc != null) "Cc: ${email!!.cc?.joinToString(";")}\n" else ""
+                val cc = if (email!!.ccList != null) "Cc: ${email!!.ccList?.joinToString(";")}\n" else ""
                 noteToAdd =
                         "From: Pinney, Nicholas\n" +
                                 "Sent: ${formatter.format(date).toUpperCase().replace(".", "")}\n" +
-                                "To: ${email!!.recipient.joinToString(";")}\n" +
+                                "To: ${email!!.recipientList.joinToString(";")}\n" +
                                 "$cc" +
                                 "Subject: ${email!!.subject}\n\n" +
                                 "${email!!.body}"
@@ -149,7 +131,7 @@ class EmailInterface(
     }
 
     init {
-        configureEmailMetaDataGrid()
+        configureLabelsGrid()
         configureButtonsBox()
         configureThis()
     }

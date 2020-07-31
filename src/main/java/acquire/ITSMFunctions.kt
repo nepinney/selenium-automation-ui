@@ -1,7 +1,7 @@
 package acquire
 
 import acquire.DriverFunctions.driver
-import acquire.recoup.automatic.ButtonGroups
+import acquire.recoup.automatic.buttongroups.ButtonGroups
 import org.openqa.selenium.*
 import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.interactions.Actions
@@ -231,7 +231,7 @@ object ITSMFunctions {
                     .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[5]/nobr/span")))
             //val lastModifiedDate = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[5]/nobr/span"))
             lastModifiedDate.getAttribute("textContent")
-        } catch (e: NoSuchElementException) {
+        } catch (e: TimeoutException) {
             "Null"
         }
     }
@@ -249,8 +249,14 @@ object ITSMFunctions {
     }
 
     fun getTicketsLastNote(): String {
-        val latestNote = WebDriverWait(driver, 3)
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[3]/nobr/span")))
+        return try {
+            val latestNote = WebDriverWait(driver, 3)
+                    .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[3]/nobr/span")))
+            latestNote.getAttribute("textContent")
+        }
+        catch (e: Exception) {
+            "NO NOTE"
+        }
         //val latestNote = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[3]/nobr/span"))
         /*        var newline: Boolean
         for (letterIndex in 0..formattedEntry.length) {
@@ -264,7 +270,6 @@ object ITSMFunctions {
                 //put two back together+
             }
         }*/
-        return latestNote.getAttribute("textContent")
     }
 
     fun determineButtonGroup(status: String, type: String): ButtonGroups {

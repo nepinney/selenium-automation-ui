@@ -1,6 +1,6 @@
 package acquire
 
-import acquire.recoup.automatic.ButtonGroups
+import acquire.recoup.automatic.buttongroups.ButtonGroups
 
 /**
  * @Author Nicholas Pinney
@@ -12,7 +12,7 @@ data class Ticket (
         val lastModified: String? = null,
         val ticketType: String? = null,
         val ticketIndex: Int? = null,
-        val lastNote: String? = null,
+        var lastNote: String? = null,
         val automaticButtonGroup: ButtonGroups? = null) {
 }
 

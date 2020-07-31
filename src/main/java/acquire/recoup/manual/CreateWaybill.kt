@@ -2,7 +2,7 @@ package acquire.recoup.manual
 
 import acquire.recoup.components.AddressComponent
 import acquire.recoup.components.EmailComponent
-import acquire.recoup.components.TicketModel
+import acquire.recoup.TicketModel
 import acquire.recoup.components.TscComponent
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox

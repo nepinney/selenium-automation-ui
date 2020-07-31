@@ -3,13 +3,14 @@ package acquire.recoup.automatic.interfaces
 import acquire.*
 import acquire.recoup.RecoupNotesParser
 import acquire.recoup.automatic.AutoLabel
-import acquire.recoup.automatic.ButtonGroups
+import acquire.recoup.automatic.buttongroups.ButtonGroups
 import acquire.recoup.automatic.buttongroups.AssignedLocal
 import acquire.recoup.automatic.buttongroups.AssignedOutside
 import acquire.recoup.automatic.buttongroups.InProgressLocal
 import acquire.recoup.automatic.buttongroups.InProgressOutside
 import acquire.recoup.automatic.buttons.StartButton
-import acquire.recoup.components.TicketModel
+import acquire.recoup.components.PrintTicketButton
+import acquire.recoup.TicketModel
 import javafx.geometry.HPos
 import javafx.geometry.Insets
 import javafx.geometry.VPos
@@ -26,19 +27,17 @@ class AutomaticInterface : BorderPane() {
     private val labelsGrid = GridPane()
     private val noteAndButtonsGrid = GridPane()
 
-    //Ticket Model
-    private val ticketModel = TicketModel()
-
     //Buttons
-    private val startBtn = StartButton(ticketModel)
+    private val startBtn = StartButton()
     private val backButton = BackButton("taskSelectionScene")
     private val endBtn = Button("End")
+    private val refreshButton = Button("Refresh")
     private val instructionsBtn = Button("Instructions")
     private val instructionScreen = AutomaticInstructionsInterface()
 
     //Interface reference
-    private val emailInterface = EmailInterface(ticketModel)
-    private val addressInterface = AddressInterface(ticketModel)
+    private val emailInterface = EmailInterface()
+    private val addressInterface = AddressInterface()
     private val addNoteInterface = AddNoteInterface()
 
     //Button Groups
@@ -65,7 +64,7 @@ class AutomaticInterface : BorderPane() {
 
     private fun configureButtonsBox() {
         buttonsBox.spacing = 5.0
-        buttonsBox.children.addAll(startBtn, endBtn, instructionsBtn, backButton)
+        buttonsBox.children.addAll(startBtn, PrintTicketButton(TicketModel.currentTicket), endBtn, refreshButton, instructionsBtn, backButton)
     }
 
     private fun configureLabelsGrid() {
@@ -143,6 +142,9 @@ class AutomaticInterface : BorderPane() {
         BorderPane.setMargin(noteAndButtonsGrid, Insets(5.0, 0.0, 0.0, 0.0))
         this.bottom = buttonsBox
         this.style = "-fx-padding: 5;"
+
+        /*refreshButton.onAction = javafx.event.EventHandler {
+            ticketModel.currentTicket.value.lastNote = ITSMFunctions.getTicketsLastNote(=-        }*/
     }
 
     init {

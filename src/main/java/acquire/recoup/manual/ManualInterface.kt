@@ -2,7 +2,7 @@ package acquire.recoup.manual
 
 import acquire.BackButton
 import acquire.recoup.components.PrintTicketButton
-import acquire.recoup.components.TicketModel
+import acquire.recoup.TicketModel
 import javafx.beans.value.ObservableValue
 import javafx.geometry.Orientation
 import javafx.scene.control.SplitPane

@@ -1,21 +1,26 @@
 package acquire.recoup.automatic.buttons
 
-import acquire.DriverFunctions
 import acquire.ITSMFunctions
 import acquire.Ticket
-import acquire.recoup.automatic.ButtonGroups
-import acquire.recoup.components.TicketModel
-import acquire.recoup.manual.ManualActionTypes
+import acquire.recoup.TicketModel
 import javafx.scene.control.Button
 
+/**
+ * StartButton goes through the tickets in your queue 1 of 2 ways
+ * Way 1
+ *  Pressing start from the queue will go through each assigned or in progress ticket from top to bottom
+ * Way 2
+ *  Pressing start from an open ticket will fetch the current open ticket and then next will go
+ *  to the next ticket from there.
+ */
 class StartButton(
         private val ticketModel: TicketModel
 ) : Button("Start") {
 
     init {
         this.onAction = javafx.event.EventHandler {
-            DriverFunctions.switchToTab("itsm")
-        /*val ticket = Ticket("Submit\n" +
+            //DriverFunctions.switchToTab("itsm")
+        /*var ticket = Ticket("Submit\n" +
             "ITEM DETAILS\n" +
             "Order number : 200528584702\n" +
             "Order date : 2020/05/28 10:01:43 AM\n" +
@@ -70,9 +75,8 @@ class StartButton(
                 lastModified = "7/13/2020")*/
 
 
-
             //var ticketIndex = 2 //Start of tickets
-            println("Fetching next ticket from index: ${ticketModel.currentTicket.value.ticketIndex}")
+            //println("Fetching next ticket from index: ${ticketModel.currentTicket.value.ticketIndex}") //TODO: Uncomment for real exe
             when (ticketModel.currentTicket.value.ticketIndex!! > 2) {
                 true -> { ITSMFunctions.clickOnBackButton() }
                 false -> { }

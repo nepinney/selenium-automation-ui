@@ -4,7 +4,7 @@ import acquire.Config
 import acquire.exception.TicketIsNullException
 import acquire.recoup.RecoupNotesParser
 import acquire.recoup.components.EmailComponent
-import acquire.recoup.components.TicketModel
+import acquire.recoup.TicketModel
 import acquire.recoup.components.TscComponent
 import acquire.recoup.components.UpdateTicketComponent
 import javafx.geometry.HPos
