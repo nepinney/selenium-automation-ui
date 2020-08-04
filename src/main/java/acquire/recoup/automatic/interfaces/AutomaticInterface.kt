@@ -44,7 +44,8 @@ class AutomaticInterface : BorderPane(), ListenerHandle, SceneHandle {
         when (newTicketDisplayType.userData == TicketDisplayType.INSTRUCTIONS) {
             true -> {
                 note.text = "Client to update and validate: \n${RecoupNotesParser.clientToUpdateAndValidate(TicketModel.currentTicket.value.notes)}\n\n" +
-                        "Quantity/Instructions: \n${RecoupNotesParser.quantityInstructions(TicketModel.currentTicket.value.notes)}"
+                        "Instructions: \n${RecoupNotesParser.exactLocation(TicketModel.currentTicket.value.notes)}\n\n" +
+                        "Quantity: \n${RecoupNotesParser.quantityInstructions(TicketModel.currentTicket.value.notes)}\n\n"
             }
             false -> {
                 note.text = TicketModel.currentTicket.value.lastNote

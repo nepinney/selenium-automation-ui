@@ -28,8 +28,13 @@ class AddressInterface : BorderPane(), ListenerHandle {
 
     //Listeners
     private val listenerToUpdateNoteArea = ChangeListener<Ticket>() { observableValue: ObservableValue<out Ticket>, oldTicket: Ticket?, newTicket: Ticket? ->
-        noteArea.text = "***FOR REFERENCE***\n" + RecoupNotesParser.quantityInstructions(observableValue.value.notes) + "\n\n" +
-        observableValue.value.lastNote
+        noteArea.text = "***FOR REFERENCE***\n" +
+                RecoupNotesParser.clientToUpdateAndValidate(observableValue.value.notes) +
+                "\n\n" +
+                RecoupNotesParser.quantityInstructions(observableValue.value.notes) +
+                "\n\n" +
+                RecoupNotesParser.exactLocation(observableValue.value.notes) +
+                observableValue.value.lastNote
     }
 
     override fun activateListeners() {
@@ -121,13 +126,14 @@ class AddressInterface : BorderPane(), ListenerHandle {
                             if (addressComponent.suiteNumberField.text.isBlank()) null else addressComponent.suiteNumberField.text)
 
                     //TODO("Open a new Tab if purolator isn't yet open and logged in")
+                    PurolatorFunctions.purolatorOpen = DriverFunctions.driver!!.windowHandles.count() > 1
                     when (PurolatorFunctions.purolatorOpen) {
                         true -> {
                             PurolatorFunctions.switchToPurolatorTab()
                         }
                         false -> {
                             PurolatorFunctions.createPurolatorTab()
-                            PurolatorFunctions.purolatorOpen = true
+                            //PurolatorFunctions.purolatorOpen = true
                         }
                     }
 

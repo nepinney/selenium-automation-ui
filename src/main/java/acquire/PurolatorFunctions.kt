@@ -24,7 +24,7 @@ object PurolatorFunctions {
         //Navigate to Purolator
         DriverFunctions.createNewTab("https://eshiponline.purolator.com/ShipOnline/SecurePages/Public/FormsLogin.aspx?ReturnUrl=/ShipOnline/Welcome.aspx&lang=E", "purolator")
         //Login
-        login("jpaquete", "eusteam")
+        login("fbologna", "CGI123Ship")
     }
 
     fun login(usr: String, ps: String) {

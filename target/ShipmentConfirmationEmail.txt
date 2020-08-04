@@ -1,9 +1,0 @@
-Hello,
-
-An empty return box has been shipped to <address> addressed to <atnTo>. The return Purolator waybill is included inside the box. Please drop off to your nearest Purolator which can be located using their website or call them at 1-888-744-7123 to schedule a pick up.
-
-Purolator outgoing tracking #: <outbound#>
-Purolator incoming tracking #: <inbound#>
-
-Thanks,
-Nick
