@@ -2,7 +2,6 @@ package acquire.recoup.automatic.interfaces
 
 import acquire.*
 import acquire.recoup.automatic.buttongroups.ButtonGroups
-import acquire.recoup.automatic.NoteType
 import acquire.recoup.TicketModel
 import javafx.geometry.HPos
 import javafx.geometry.Insets
@@ -14,8 +13,6 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.HBox
-import java.text.SimpleDateFormat
-import java.util.*
 
 class EmailInterface : BorderPane() {
     private val labelsGrid = GridPane()
@@ -73,13 +70,16 @@ class EmailInterface : BorderPane() {
             email!!.launchOutlook()
 
             //Process the email (add metadata) and add the string to the notes of the ticket
-            processEmailAndAddToTicketNotes(email, null, NoteType.EMAILNOTE)
+            val workInfo = email!!.addMetadataAndCopyEmail()
+            ITSMFunctions.addNotesToWorkInfoTextArea(workInfo)
+            ITSMFunctions.saveNewWorkInfo()
 
             //Change the status of the ticket if it's assigned
             when (TicketModel.currentTicket.value.automaticButtonGroup) {
                 ButtonGroups.INPROGRESSOUTSIDE -> {}
                 ButtonGroups.INPROGRESSLOCAL -> {}
                 else -> {
+                    println("set status field \"In Progress\" code was reached" )
                     ITSMFunctions.setStatusField("In Progress")
                 }
             }
@@ -104,30 +104,6 @@ class EmailInterface : BorderPane() {
         ccField.text = email.ccList!!.joinToString()
         subjectField.text = email.subject!!
         bodyArea.text = email.body!!
-    }
-
-    private fun processEmailAndAddToTicketNotes(email: Email?, note: String?, noteType: NoteType) {
-        var noteToAdd: String
-        when (noteType) {
-            NoteType.EMAILNOTE -> {
-                val date = Date()
-                val formatter = SimpleDateFormat("MMMM dd, yyyy hh:mm aa")
-                val cc = if (email!!.ccList != null) "Cc: ${email!!.ccList?.joinToString(";")}\n" else ""
-                noteToAdd =
-                        "From: Pinney, Nicholas\n" +
-                                "Sent: ${formatter.format(date).toUpperCase().replace(".", "")}\n" +
-                                "To: ${email!!.recipientList.joinToString(";")}\n" +
-                                "$cc" +
-                                "Subject: ${email!!.subject}\n\n" +
-                                "${email!!.body}"
-            }
-            NoteType.CUSTOMNOTE -> {
-                noteToAdd = note!!
-            }
-        }
-        //println("\n$noteToAdd")
-        ITSMFunctions.setNotes(noteToAdd)
-        ITSMFunctions.addWorkInfo()
     }
 
     init {

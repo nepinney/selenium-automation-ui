@@ -2,17 +2,14 @@ package acquire.recoup.automatic.buttongroups
 
 import acquire.ScreenController
 import acquire.recoup.automatic.buttons.ActivateAddNoteInterfaceButton
-import acquire.recoup.automatic.interfaces.EmailInterface
 import acquire.recoup.automatic.buttons.CreateEmailFromTemplateButton
 import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.layout.VBox
 
-class InProgressLocal(
-        private val emailInterface: EmailInterface
-) : VBox() {
+class InProgressLocal : VBox() {
 
-    private val emailButtonFromTemplate = CreateEmailFromTemplateButton(emailInterface)
+    private val emailButtonFromTemplate = CreateEmailFromTemplateButton()
     private val waybillButton = Button("Create Waybill")
     private val noteButton = ActivateAddNoteInterfaceButton()
 

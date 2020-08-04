@@ -1,50 +1,154 @@
 package acquire.recoup.automatic.interfaces
 
-import acquire.*
+import acquire.BackButton
+import acquire.SceneHandle
+import acquire.ScreenController
+import acquire.Ticket
 import acquire.recoup.RecoupNotesParser
+import acquire.recoup.TicketModel
 import acquire.recoup.automatic.AutoLabel
-import acquire.recoup.automatic.buttongroups.ButtonGroups
-import acquire.recoup.automatic.buttongroups.AssignedLocal
-import acquire.recoup.automatic.buttongroups.AssignedOutside
-import acquire.recoup.automatic.buttongroups.InProgressLocal
-import acquire.recoup.automatic.buttongroups.InProgressOutside
+import acquire.recoup.automatic.NotesInstructionsRadio
+import acquire.recoup.automatic.TicketDisplayType
+import acquire.ListenerHandle
+import acquire.recoup.automatic.buttongroups.*
 import acquire.recoup.automatic.buttons.StartButton
 import acquire.recoup.components.PrintTicketButton
-import acquire.recoup.TicketModel
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.geometry.HPos
 import javafx.geometry.Insets
 import javafx.geometry.VPos
-import javafx.scene.control.Button
-import javafx.scene.control.Label
+import javafx.scene.control.*
 import javafx.scene.layout.*
 import javafx.scene.text.Text
 import javafx.scene.text.TextFlow
 
-class AutomaticInterface : BorderPane() {
+class AutomaticInterface : BorderPane(), ListenerHandle, SceneHandle {
 
     //Panes
     private val buttonsBox = HBox()
     private val labelsGrid = GridPane()
     private val noteAndButtonsGrid = GridPane()
+    private val radioOptions = NotesInstructionsRadio()
 
-    //Buttons
-    private val startBtn = StartButton()
-    private val backButton = BackButton("taskSelectionScene")
-    private val endBtn = Button("End")
-    private val refreshButton = Button("Refresh")
-    private val instructionsBtn = Button("Instructions")
-    private val instructionScreen = AutomaticInstructionsInterface()
+    //Global elements
+    private val note = Text("")
+    //Labels
+    private val tsc = AutoLabel("")
+    private val status = Label("")
+    private val lastUpdated = Label("")
+    private val type = Label("")
+
+    //Listeners
+    private val onRadioChangeListener = ChangeListener<Toggle> { observableValue: ObservableValue<out Toggle>, oldTicketDisplayType: Toggle?, newTicketDisplayType: Toggle ->
+        when (newTicketDisplayType.userData == TicketDisplayType.INSTRUCTIONS) {
+            true -> {
+                note.text = "Client to update and validate: \n${RecoupNotesParser.clientToUpdateAndValidate(TicketModel.currentTicket.value.notes)}\n\n" +
+                        "Quantity/Instructions: \n${RecoupNotesParser.quantityInstructions(TicketModel.currentTicket.value.notes)}"
+            }
+            false -> {
+                note.text = TicketModel.currentTicket.value.lastNote
+            }
+        }
+    }
+    private val listenerToUpdateLatestNote = ChangeListener<Ticket>() { observableValue: ObservableValue<out Ticket>?, oldTicket: Ticket?, newTicket: Ticket? ->
+        when (observableValue?.value?.lastNote == "NO NOTE") {
+            true -> {
+                radioOptions.selection.selectToggle(radioOptions.showNote)
+                radioOptions.selection.selectToggle(radioOptions.showInstruction)
+            }
+            false -> {
+                note.text = observableValue?.value?.lastNote
+                radioOptions.selection.selectToggle(radioOptions.showNote)
+            }
+        }
+        //note.text = p0.value.lastNote
+    }
+    private val listenerToUpdateButtonGroup = ChangeListener<Ticket>() { observableValue: ObservableValue<out Ticket>, oldTicket: Ticket?, newTicket: Ticket? ->
+        if (oldTicket != null) {
+            when (oldTicket?.automaticButtonGroup) {
+                ButtonGroups.ASSIGNEDLOCAL -> {
+                    noteAndButtonsGrid.children.remove(assignedLocal)
+                }
+                ButtonGroups.ASSIGNEDOUTSIDE -> {
+                    noteAndButtonsGrid.children.remove(assignedOutside)
+                }
+                ButtonGroups.INPROGRESSLOCAL -> {
+                    noteAndButtonsGrid.children.remove(inProgressLocal)
+                }
+                ButtonGroups.INPROGRESSOUTSIDE -> {
+                    noteAndButtonsGrid.children.remove(inProgressOutside)
+                }
+            }
+        }
+        when (newTicket?.automaticButtonGroup) {
+            ButtonGroups.ASSIGNEDLOCAL -> { selectAssignedLocalGroup() }
+            ButtonGroups.ASSIGNEDOUTSIDE -> { selectAssignedOutsideGroup() }
+            ButtonGroups.INPROGRESSLOCAL -> { selectInProgressLocalGroup() }
+            ButtonGroups.INPROGRESSOUTSIDE -> { selectInProgressOutsideGroup() }
+        }
+    }
+    private val listenerToUpdateLabels = ChangeListener<Ticket>() { observableValue: ObservableValue<out Ticket>, oldTicket: Ticket?, newTicket: Ticket? ->
+        println("Ticket changed")
+        tsc.text = RecoupNotesParser.tscNumber(observableValue.value.notes)
+        status.text = observableValue.value.status
+        lastUpdated.text = observableValue.value.lastModified?.takeWhile { it != ' ' }
+        type.text = observableValue.value.ticketType
+    }
 
     //Interface reference
     private val emailInterface = EmailInterface()
+    private val instructionScreen = AutomaticInstructionsInterface()
     private val addressInterface = AddressInterface()
     private val addNoteInterface = AddNoteInterface()
 
+
+    //Buttons
+    private val startBtn = StartButton()
+    private val backButton = BackButton("taskSelectionScene",
+            listOf(this),
+            listOf(this, addressInterface),
+            resetTicket = true)
+    private val endBtn = Button("End")
+    private val refreshButton = Button("Refresh")
+
+    private val instructionsBtn = Button("Instructions")
+
     //Button Groups
-    private val assignedLocal = AssignedLocal(emailInterface)
-    private val assignedOutside = AssignedOutside(emailInterface)
-    private val inProgressLocal = InProgressLocal(emailInterface)
-    private val inProgressOutside = InProgressOutside(emailInterface)
+    private val assignedLocal = AssignedLocal()
+    private val assignedOutside = AssignedOutside()
+    private val inProgressLocal = InProgressLocal()
+    private val inProgressOutside = InProgressOutside()
+
+    override fun activateListeners() {
+        //println("Activate listeners was called in AutomaticInterface")
+        TicketModel.currentTicket.addListener(listenerToUpdateLabels)
+        radioOptions.selection.selectedToggleProperty().addListener(onRadioChangeListener)
+        TicketModel.currentTicket.addListener(listenerToUpdateLatestNote)
+        TicketModel.currentTicket.addListener(listenerToUpdateButtonGroup)
+    }
+
+    override fun deactivateListeners() {
+        TicketModel.currentTicket.removeListener(listenerToUpdateLabels)
+        radioOptions.selection.selectedToggleProperty().removeListener(onRadioChangeListener)
+        TicketModel.currentTicket.removeListener(listenerToUpdateLatestNote)
+        TicketModel.currentTicket.removeListener(listenerToUpdateButtonGroup)
+    }
+
+    override fun addChildScenes() {
+        ScreenController.addScene("emailInterface", emailInterface)
+        ScreenController.addScene("scanInstructions", instructionScreen)
+        ScreenController.addScene("addressInterface", addressInterface)
+        ScreenController.addScene("addNoteInterface", addNoteInterface)
+    }
+
+    override fun removeChildScenes() {
+        ScreenController.removeScene("emailInterface")
+        ScreenController.removeScene("scanInstructions")
+        ScreenController.removeScene("addressInterface")
+        ScreenController.removeScene("addNoteInterface")
+        ScreenController.removeScene("recoupScan")
+    }
 
     private fun selectAssignedLocalGroup() {
         noteAndButtonsGrid.add(assignedLocal, 1, 0)
@@ -69,25 +173,15 @@ class AutomaticInterface : BorderPane() {
 
     private fun configureLabelsGrid() {
         val tscLabel = Label("TSC #: ")
-        val tsc = AutoLabel("")
         val statusLabel = Label("Status: ")
-        val status = Label("")
         val lastUpdatedLabel = Label("Note date: ")
-        val lastUpdated = Label("")
         val typeLabel = Label("Type: ")
-        val type = Label("")
+
 
         val textItems = listOf(tscLabel, Label(), statusLabel, status, lastUpdatedLabel, lastUpdated, typeLabel, type)
         textItems.forEach{ it.style = "-fx-font-size: 150%;" }
         textItems.filter { textItems.indexOf(it) % 2 == 1 }
                 .forEach { it.style = "-fx-font-weight: bold; -fx-font-size: 150%;" }
-
-        ticketModel.currentTicket.addListener { p0, p1, p2 ->
-            tsc.text = RecoupNotesParser.tscNumber(p0.value.notes)
-            status.text = p0.value.status
-            lastUpdated.text = p0.value.lastModified?.takeWhile { it != ' ' }
-            type.text = p0.value.ticketType
-        }
 
         labelsGrid.add(tscLabel, 0, 0)
         labelsGrid.add(tsc, 1, 0)
@@ -110,15 +204,28 @@ class AutomaticInterface : BorderPane() {
     }
 
     private fun configureNoteAndButtonsGrid() {
-        val note = Text("")
+        val noteAndRadioGrid = GridPane()
         val viewNote = TextFlow(note)
+        val scrollerPane = ScrollPane(viewNote)
+        scrollerPane.style = "-fx-background-color:transparent;";
+        noteAndRadioGrid.add(scrollerPane, 0, 0)
+        noteAndRadioGrid.add(radioOptions, 0, 1)
 
-        ticketModel.currentTicket.addListener { p0, p1, p2 ->
-            note.text = p0.value.lastNote
-        }
+        viewNote.maxWidthProperty().bind(scrollerPane.widthProperty())
+
+        val mainCol = ColumnConstraints()
+        mainCol.percentWidth = 100.0
+        val row12 = RowConstraints()
+        row12.percentHeight = 90.0
+        val row2 = RowConstraints()
+        row2.percentHeight = 10.0
+        noteAndRadioGrid.columnConstraints.addAll(mainCol)
+        noteAndRadioGrid.rowConstraints.addAll(row12, row2)
+
         GridPane.setValignment(viewNote, VPos.CENTER)
         GridPane.setHalignment(viewNote, HPos.CENTER)
-        noteAndButtonsGrid.add(viewNote, 0, 0)
+        noteAndButtonsGrid.add(noteAndRadioGrid, 0, 0)
+        //noteAndButtonsGrid.add(NotesInstructionsRadio(), 0, 1)
 
         GridPane.setValignment(assignedLocal, VPos.CENTER)
         GridPane.setValignment(assignedOutside, VPos.CENTER)
@@ -144,22 +251,16 @@ class AutomaticInterface : BorderPane() {
         this.style = "-fx-padding: 5;"
 
         /*refreshButton.onAction = javafx.event.EventHandler {
-            ticketModel.currentTicket.value.lastNote = ITSMFunctions.getTicketsLastNote(=-        }*/
+            TicketModel.currentTicket.value.lastNote = ITSMFunctions.getTicketsLastNote(=-        }*/
     }
 
     init {
-
-        ScreenController.addScene("emailInterface", emailInterface)
-        ScreenController.addScene("scanInstructions", instructionScreen)
-        ScreenController.addScene("addressInterface", addressInterface)
-        ScreenController.addScene("addNoteInterface", addNoteInterface)
+        TicketModel.setCurrentTicket(Ticket("", ""))
 
         //Configure instructions button
         instructionsBtn.onAction = javafx.event.EventHandler {
             ScreenController.activateScene("scanInstructions")
         }
-
-        ticketModel.setCurrentTicket(Ticket("", "", ticketIndex = 2))
 
         configureButtonsBox()
         configureLabelsGrid()
@@ -167,21 +268,9 @@ class AutomaticInterface : BorderPane() {
 
         //Button groups change depending on the type of ticket
             //Type of the ticket is stored in the ticket itself and gets set in ITSM functions when the ticket is fetched
-        ticketModel.currentTicket.addListener { p0, oldValue, newValue ->
-            when (oldValue.automaticButtonGroup) {
-                ButtonGroups.ASSIGNEDLOCAL -> { noteAndButtonsGrid.children.remove(assignedLocal) }
-                ButtonGroups.ASSIGNEDOUTSIDE -> { noteAndButtonsGrid.children.remove(assignedOutside) }
-                ButtonGroups.INPROGRESSLOCAL -> { noteAndButtonsGrid.children.remove(inProgressLocal) }
-                ButtonGroups.INPROGRESSOUTSIDE -> { noteAndButtonsGrid.children.remove(inProgressOutside) }
-            }
-            when (newValue.automaticButtonGroup) {
-                ButtonGroups.ASSIGNEDLOCAL -> { selectAssignedLocalGroup() }
-                ButtonGroups.ASSIGNEDOUTSIDE -> { selectAssignedOutsideGroup() }
-                ButtonGroups.INPROGRESSLOCAL -> { selectInProgressLocalGroup() }
-                ButtonGroups.INPROGRESSOUTSIDE -> { selectInProgressOutsideGroup() }
-            }
-        }
         configureThis()
     }
+
+
 }
 

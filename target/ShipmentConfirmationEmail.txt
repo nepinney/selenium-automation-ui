@@ -1,13 +1,9 @@
-Shipment confirmation for order <tsc>
----
 Hello,
 
-An empty return box has been shipped to  addressed to . The return Purolator waybill is included inside the box. Please dropoff to your nearest Purolator
-which can be located using their website.
+An empty return box has been shipped to <address> addressed to <atnTo>. The return Purolator waybill is included inside the box. Please drop off to your nearest Purolator which can be located using their website or call them at 1-888-744-7123 to schedule a pick up.
 
-Purolator pin for the box coming to you:
-Purolator pin for the box which will be returning to us:
+Purolator outgoing tracking #: <outbound#>
+Purolator incoming tracking #: <inbound#>
 
 Thanks,
 Nick
----End

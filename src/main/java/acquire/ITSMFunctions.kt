@@ -38,6 +38,8 @@ object ITSMFunctions {
         //select the login button to click to login
         val login = driver!!.findElement(By.name("login"))
         login.click()
+        ScreenController.removeScene("firstLogin")
+        ScreenController.removeScene("pinLogin")
         ScreenController.activateScene("taskSelectionScene")
     }
 
@@ -88,7 +90,7 @@ object ITSMFunctions {
         //Once the ticket has been opened, get the information from the notes textArea
 
         //NEW IMPLEMENTATION
-        val timeOut = if (alreadyOpen) 1 else 4
+        val timeOut = if (alreadyOpen) 1 else 8
         var infoTextArea: WebElement? = null
         try {
             infoTextArea = WebDriverWait(driver, timeOut.toLong())
@@ -183,7 +185,7 @@ object ITSMFunctions {
         }
     }
 
-    fun setNotes(note: String?) {
+    fun addNotesToWorkInfoTextArea(note: String?) {
         var notesField: WebElement? = null
         try {
             notesField = driver!!.findElement(By.id("arid_WIN_4_304247080"))
@@ -199,13 +201,17 @@ object ITSMFunctions {
         notesField?.sendKeys(note)
     }
 
-    fun addWorkInfo() {
+    fun saveNewWorkInfo() {
         val moreDetailsButton = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[4]/div/a"))
         moreDetailsButton.click()
         val radioInternal = driver!!.findElement(By.id("WIN_3_rc0id1000000761"))
         radioInternal.click()
-        val addButton = driver!!.findElement(By.id("WIN_3_304247110"))
-        addButton.click()
+        when (false) {
+            true -> {
+                val addButton = driver!!.findElement(By.id("WIN_3_304247110"))
+                addButton.click()
+            }
+        }
     }
 
     fun sortTicketsBasedOnStatus() {
@@ -216,8 +222,13 @@ object ITSMFunctions {
 
     fun clickOnBackButton() {
         //val backBtn = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[2]/fieldset/div/a[1]/div"))
-        val backBtn = driver!!.findElement(By.id("WIN_0_304248620"))
-        backBtn.click()
+        var backBtn: WebElement? = null
+        try {
+            backBtn = driver!!.findElement(By.id("WIN_0_304248620"))
+        } catch (n: NoSuchElementException) {
+            println("Couldn't find back button")
+        }
+        backBtn!!.click()
     }
 
     fun getIncidentID(): String {
@@ -225,7 +236,7 @@ object ITSMFunctions {
         return idField.getAttribute("value")
     }
 
-    fun getLastModified(): String {
+    fun getDateLastModified(): String {
         return try {
             val lastModifiedDate = WebDriverWait(driver, 3)
                     .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[5]/nobr/span")))
@@ -248,9 +259,27 @@ object ITSMFunctions {
         }
     }
 
+    //TODO: Use notes
+    fun checkIfTicketIsOpen(): Boolean {
+        val hostname: WebElement? = null
+        return try {
+            val hostNameField = driver!!.findElement(By.id("arid_WIN_3_2100100302"))
+            hostNameField.getAttribute("value") == ""
+        }
+        catch (e: NoSuchElementException) {
+            false
+            /*try {
+                val hostNameFieldSecond = driver!!.findElement(By.id("arid_WIN_4_2100100302"))
+                true
+            } catch (n: NoSuchElementException) {
+                false
+            }*/
+        }
+    }
+
     fun getTicketsLastNote(): String {
         return try {
-            val latestNote = WebDriverWait(driver, 3)
+            val latestNote = WebDriverWait(driver, 2)
                     .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div[4]/div[105]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/fieldset[1]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[2]/td[3]/nobr/span")))
             latestNote.getAttribute("textContent")
         }
@@ -309,29 +338,52 @@ object ITSMFunctions {
         }
     }
 
-    fun fetchNextActiveTicket(index: Int): Ticket? {
+    fun getStatusOfTicket(): String {
+        val statusField = try {
+            WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.id("arid_WIN_3_7")))
+        } catch (e: NoSuchElementException) {
+            WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.id("arid_WIN_4_7")))
+        }
+        return statusField!!.getAttribute("value")
+    }
+
+    fun openNextActiveTicket(index: Int): Int {
         var i = index
-        var aTicket: WebElement?
-        var nextActiveTicket: Ticket? = null
+        var dashboardTicketStatus: WebElement?
         while (true) {
             try {
                 println("\nTicket $i")
-                aTicket = WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div/div[1]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[$i]/td[6]/nobr/span")))
+                dashboardTicketStatus = WebDriverWait(driver, 3).until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div/div[1]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[$i]/td[6]/nobr/span")))
             } catch (e: Exception) {
                 println("No more tickets")
                 break
             }
-            if (aTicket!!.getAttribute("textContent") == "In Progress" || aTicket.getAttribute("textContent") == "Assigned") {
+            if (dashboardTicketStatus!!.getAttribute("textContent") == "In Progress" || dashboardTicketStatus.getAttribute("textContent") == "Assigned") {
                 println("\tDouble Clicking...")
                 val dClick = Actions(driver)
-                dClick.doubleClick(aTicket).perform()
-                println("\tFetching notes, INC, last modified Date and adding to array...")
-                nextActiveTicket = Ticket(getNotesFromTicket(false), getIncidentID(), aTicket.getAttribute("textContent") ,getLastModified(), getTicketRecoupType(), ticketIndex = i+1, lastNote = getTicketsLastNote(), automaticButtonGroup = determineButtonGroup(aTicket.getAttribute("textContent"), getTicketRecoupType())) //getTicketRecoupType()
+                dClick.doubleClick(dashboardTicketStatus).perform()
                 break
             }
             i++
         }
-        return nextActiveTicket
+        return i
+    }
+
+    fun getIndexInQueueOfOpenTicket(inc: String): Int {
+        var i = 2
+        return try {
+            while (true) {
+                var incOfQueueTicket = driver!!.findElement(By.xpath("/html/body/div[1]/div[5]/div[2]/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div/div/div[3]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div/div[1]/fieldset/div/div/div/div/div[2]/fieldset/div/div/div/div[4]/div[2]/div/div/div[2]/fieldset/div/div/div[2]/div/div[2]/table/tbody/tr[$i]/td[1]/nobr/span"))
+                if (incOfQueueTicket.getAttribute("textContent") != inc)
+                    i++
+                else
+                    break
+            }
+            i
+        } catch (n: NoSuchElementException) {
+            println("Finding ticket with matching inc# was unsuccessful:(")
+            0
+        }
     }
 
     fun fetchAllInProgressTickets(): List<Ticket> {
@@ -370,7 +422,7 @@ object ITSMFunctions {
                         } catch (e: Exception) { println("Waited too long for ticket to refresh.") }*//*
                     }*/
                     println("\tFetching notes, INC, last modified Date and adding to array...")
-                    tickets.add(0, Ticket(ITSMFunctions.getNotesFromTicket(false), ITSMFunctions.getIncidentID(), ITSMFunctions.getLastModified()))
+                    tickets.add(0, Ticket(ITSMFunctions.getNotesFromTicket(false), ITSMFunctions.getIncidentID(), ITSMFunctions.getDateLastModified()))
                     //tempINC = getIncidentID()
                     //println("Temp INC: $tempINC")
                     println("\tClicking on back button...")

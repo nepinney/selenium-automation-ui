@@ -7,11 +7,9 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.layout.VBox
 
-class InProgressOutside(
-        private val emailInterface: EmailInterface
-) : VBox() {
+class InProgressOutside : VBox() {
 
-    private val emailButtonFromTemplate = CreateEmailFromTemplateButton(emailInterface)
+    private val emailButtonFromTemplate = CreateEmailFromTemplateButton()
     private val waybillButton = Button("Create Waybill")
     private val noteButton = ActivateAddNoteInterfaceButton()
     private val puroStatusButton = PurolatorStatusButton()

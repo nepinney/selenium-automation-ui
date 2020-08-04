@@ -8,11 +8,9 @@ import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.layout.VBox
 
-class AssignedLocal(
-        private val emailInterface: EmailInterface
-) : VBox() {
+class AssignedLocal : VBox() {
 
-    private val requestEmailButton = CreateEmailFromTemplateButton(emailInterface)
+    private val requestEmailButton = CreateEmailFromTemplateButton()
     private val addNoteButton = ActivateAddNoteInterfaceButton()
 
     init {

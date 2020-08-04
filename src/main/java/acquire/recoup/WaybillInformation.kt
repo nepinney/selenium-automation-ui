@@ -1,6 +1,6 @@
 package acquire.recoup
 
-data class MailingAddress(
+data class WaybillInformation(
         val company: String,
         val atnTo: String,
         val streetNumber: String,
@@ -10,7 +10,9 @@ data class MailingAddress(
         val phoneNumberArea: String,
         val phoneNumber: String,
         val suiteNumber: String? = null,
-        val floorNumber: String? = null
+        val floorNumber: String? = null,
+        var outboundPin: String? = null,
+        var inboundPin: String? = null
 
 ) {
 }

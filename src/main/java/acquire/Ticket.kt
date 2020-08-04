@@ -11,7 +11,6 @@ data class Ticket (
         val status: String? = null,
         val lastModified: String? = null,
         val ticketType: String? = null,
-        val ticketIndex: Int? = null,
         var lastNote: String? = null,
         val automaticButtonGroup: ButtonGroups? = null) {
 }

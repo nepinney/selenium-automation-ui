@@ -3,6 +3,7 @@ package acquire.recoup.automatic.buttons
 import acquire.ITSMFunctions
 import acquire.Ticket
 import acquire.recoup.TicketModel
+import acquire.recoup.automatic.buttongroups.ButtonGroups
 import javafx.scene.control.Button
 
 /**
@@ -13,14 +14,16 @@ import javafx.scene.control.Button
  *  Pressing start from an open ticket will fetch the current open ticket and then next will go
  *  to the next ticket from there.
  */
-class StartButton(
-        private val ticketModel: TicketModel
-) : Button("Start") {
+class StartButton : Button("Start") {
+
+    private var startINCNumber: String? = null
+    private var startTicketIndex: Int? = null
+    private var currentIndexInQueue: Int? = null
 
     init {
         this.onAction = javafx.event.EventHandler {
             //DriverFunctions.switchToTab("itsm")
-        /*var ticket = Ticket("Submit\n" +
+       /* var ticket = Ticket("Submit\n" +
             "ITEM DETAILS\n" +
             "Order number : 200528584702\n" +
             "Order date : 2020/05/28 10:01:43 AM\n" +
@@ -70,27 +73,95 @@ class StartButton(
                 "1",
                 ticketType = "Outside",
                 status = "Assigned",
-                lastNote = "This is a test ticket",
-                automaticButtonGroup = ButtonGroups.INPROGRESSOUTSIDE,
+                lastNote = "NO NOTE",
+                automaticButtonGroup = ButtonGroups.ASSIGNEDOUTSIDE,
                 lastModified = "7/13/2020")*/
-
-
             //var ticketIndex = 2 //Start of tickets
             //println("Fetching next ticket from index: ${ticketModel.currentTicket.value.ticketIndex}") //TODO: Uncomment for real exe
-            when (ticketModel.currentTicket.value.ticketIndex!! > 2) {
+
+            /*println(test)
+            println(startINCNumber)
+            println(startTicketIndex)
+            println(currentIndexInQueue)
+            test++*/
+
+            var alreadyOpen: Boolean = false
+            when (this.text == "Start") {
+                true -> {
+                    println(this.text)
+                    //TODO: Check whether ticket is open or not
+                    when (ITSMFunctions.checkIfTicketIsOpen()) {
+                        true -> {
+                            println("Ticket open: ${ITSMFunctions.checkIfTicketIsOpen()}")
+                            alreadyOpen = true
+                            startINCNumber = ITSMFunctions.getIncidentID()
+                        }
+                        false -> {
+                            println("No ticket open")
+                            //open first assigned or in progress
+                            currentIndexInQueue = ITSMFunctions.openNextActiveTicket(2)
+                        }
+                    }
+                    this.text = "Next"
+                }
+                false -> { //next()
+                    println(this.text)
+                    if (ITSMFunctions.checkIfTicketIsOpen())
+                        ITSMFunctions.clickOnBackButton()
+                    when (startINCNumber != null) {
+                        true -> {
+                            if (startTicketIndex == null) {
+                                startTicketIndex = ITSMFunctions.getIndexInQueueOfOpenTicket(startINCNumber!!)
+                                currentIndexInQueue = startTicketIndex
+                            }
+                            currentIndexInQueue = ITSMFunctions.openNextActiveTicket(currentIndexInQueue!!.inc())
+                        }
+                        false -> {
+                            currentIndexInQueue = ITSMFunctions.openNextActiveTicket(currentIndexInQueue!!+1)
+                        }
+                    }
+                }
+            }
+            TicketModel.setCurrentTicket(
+                    Ticket(
+                            ITSMFunctions.getNotesFromTicket(alreadyOpen),
+                            ITSMFunctions.getIncidentID(),
+                            ITSMFunctions.getStatusOfTicket(),
+                            ITSMFunctions.getDateLastModified(),
+                            ITSMFunctions.getTicketRecoupType(),
+                            ITSMFunctions.getTicketsLastNote(),
+                            ITSMFunctions.determineButtonGroup(ITSMFunctions.getStatusOfTicket(), ITSMFunctions.getTicketRecoupType())
+                    ))
+
+                //When ticket is open and INC# == null
+
+                    //save the INC#
+                    //TicketModel.setCurrentTicket(Ticket(fetch this and that)
+                    //Change this button text to "Next"
+                //When ticket is open and INC# != null
+                    //Go back to dashboard
+                    //var startIndex = ITSMFunctions.getIndexOfTicketWithMatchingIncNumber()
+                    //currentQueueIndex = ITSMFunctions.openNextAssignedOrInProgressTicket(startIndex)
+                //When ticket closed && INC# != null
+
+
+
+
+
+            /*when (TicketModel.currentTicket.value.ticketIndex!! > 2) {
                 true -> { ITSMFunctions.clickOnBackButton() }
                 false -> { }
             }
 
-            var ticket: Ticket? = ITSMFunctions.fetchNextActiveTicket(ticketModel.currentTicket.value.ticketIndex!!)
+            var ticket: Ticket? = ITSMFunctions.fetchNextActiveTicket(TicketModel.currentTicket.value.ticketIndex!!)
             if (ticket != null) {
-                ticketModel.setCurrentTicket(ticket)
+                TicketModel.setCurrentTicket(ticket)
                 this.text = "Next"
             }
             else {
                 println("No more tickets!")
                 this.text = "Start"
-            }
+            }*/
 
 /*            while (nextTicketReady) {
                 val indexAndTicket = ITSMFunctions.fetchNextActiveTicket(ticketIndex)
@@ -108,7 +179,7 @@ class StartButton(
 
             //fetch next ticket
 
-            //ticketModel.setCurrentTicket(ticket)
+           //TicketModel.setCurrentTicket(ticket) TODO: Uncomment for GUI testing
             //println("Starting automatic process...")
         }
     }

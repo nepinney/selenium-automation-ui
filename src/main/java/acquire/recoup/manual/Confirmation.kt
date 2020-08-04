@@ -22,13 +22,11 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Confirmation(
-        private val ticketModel: TicketModel
-) : VBox() {
+class Confirmation : VBox() {
 
     private val tscInstructions = Label("1. Fetch notes of ticket to create confirmation excel file.")
     val excelInstructions = Label("2. Create excel confirmation file")
-    private val tscComponent = TscComponent(ticketModel)
+    private val tscComponent = TscComponent()
 
     private fun addTscComponent() {
         this.children.addAll(tscInstructions, tscComponent)
@@ -68,7 +66,7 @@ class Confirmation(
         //TODO: Complete the excel section
         createConfirmationButton.onAction = javafx.event.EventHandler {
             try {
-                if (ticketModel.currentTicket.value == null) throw TicketIsNullException()
+                if (TicketModel.currentTicket.value == null) throw TicketIsNullException()
                 val template = FileInputStream(Config.readExcelConfirmationTemplateLocation())
 
                 // Instantiate a Workbook object that represents an Excel file
@@ -85,8 +83,8 @@ class Confirmation(
                 //Indexes start at 0 for row and col
                 val definiteCellsToEdit = mapOf(
                         Pair(sheet.getRow(1).getCell(1), strDate), //Date
-                        Pair(sheet.getRow(1).getCell(3), RecoupNotesParser.tscNumber(ticketModel.currentTicket.value.notes)), //Tsc#
-                        Pair(sheet.getRow(3).getCell(1), RecoupNotesParser.ownerName(ticketModel.currentTicket.value.notes))) //User name
+                        Pair(sheet.getRow(1).getCell(3), RecoupNotesParser.tscNumber(TicketModel.currentTicket.value.notes)), //Tsc#
+                        Pair(sheet.getRow(3).getCell(1), RecoupNotesParser.ownerName(TicketModel.currentTicket.value.notes))) //User name
                 definiteCellsToEdit.forEach { it.key.setCellValue(it.value) }
 
                 val contentToInclude = mapOf(
@@ -103,24 +101,24 @@ class Confirmation(
 
                 val desktopCells = mapOf(
                         Pair(sheet.getRow(13).getCell(1), "X"),
-                        Pair(sheet.getRow(13).getCell(3), RecoupNotesParser.deviceModel(ticketModel.currentTicket.value.notes)),
-                        Pair(sheet.getRow(13).getCell(4), RecoupNotesParser.serialNumber(ticketModel.currentTicket.value.notes)),
+                        Pair(sheet.getRow(13).getCell(3), RecoupNotesParser.deviceModel(TicketModel.currentTicket.value.notes)),
+                        Pair(sheet.getRow(13).getCell(4), RecoupNotesParser.serialNumber(TicketModel.currentTicket.value.notes)),
                         Pair(sheet.getRow(15).getCell(3), ""),
                         Pair(sheet.getRow(15).getCell(4), "")
                 )
                 val laptopCells = mapOf(
                         Pair(sheet.getRow(15).getCell(1), "X"),
-                        Pair(sheet.getRow(15).getCell(3), RecoupNotesParser.deviceModel(ticketModel.currentTicket.value.notes)),
-                        Pair(sheet.getRow(15).getCell(4), RecoupNotesParser.serialNumber(ticketModel.currentTicket.value.notes))
+                        Pair(sheet.getRow(15).getCell(3), RecoupNotesParser.deviceModel(TicketModel.currentTicket.value.notes)),
+                        Pair(sheet.getRow(15).getCell(4), RecoupNotesParser.serialNumber(TicketModel.currentTicket.value.notes))
                 )
-                if (RecoupNotesParser.deviceType(ticketModel.currentTicket.value.notes).equals("Desktop")) desktopCells.forEach { it.key.setCellValue(it.value) }
-                else if (RecoupNotesParser.deviceType(ticketModel.currentTicket.value.notes).equals("Laptop")) laptopCells.forEach { it.key.setCellValue(it.value) }
+                if (RecoupNotesParser.deviceType(TicketModel.currentTicket.value.notes).equals("Desktop")) desktopCells.forEach { it.key.setCellValue(it.value) }
+                else if (RecoupNotesParser.deviceType(TicketModel.currentTicket.value.notes).equals("Laptop")) laptopCells.forEach { it.key.setCellValue(it.value) }
 
                 template.close()
-                val outFile = FileOutputStream(File("${Config.readSaveBuiltExcelConfirmationLocation()}PC return ${RecoupNotesParser.ownerName(ticketModel.currentTicket.value.notes)}.xls"))
+                val outFile = FileOutputStream(File("${Config.readSaveBuiltExcelConfirmationLocation()}PC return ${RecoupNotesParser.ownerName(TicketModel.currentTicket.value.notes)}.xls"))
                 workbook.write(outFile)
                 outFile.close()
-                println("\nExcel file created successfully: ${Config.readSaveBuiltExcelConfirmationLocation()}PC return ${RecoupNotesParser.ownerName(ticketModel.currentTicket.value.notes)}.xls")
+                println("\nExcel file created successfully: ${Config.readSaveBuiltExcelConfirmationLocation()}PC return ${RecoupNotesParser.ownerName(TicketModel.currentTicket.value.notes)}.xls")
 
             } catch (t: TicketIsNullException) {
                 println("Must first fetch ticket.")
@@ -132,7 +130,7 @@ class Confirmation(
     }
 
     private fun addEmailConponent() {
-        this.children.add(EmailComponent("3. Generate confirmation email", ticketModel.currentTicket, ManualActionTypes.CONFIRMATION))
+        this.children.add(EmailComponent("3. Generate confirmation email", TicketModel.currentTicket, ManualActionTypes.CONFIRMATION))
     }
 
     private fun addUpdateTicketComponent() {

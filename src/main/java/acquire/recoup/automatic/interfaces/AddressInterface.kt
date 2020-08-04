@@ -1,17 +1,20 @@
 package acquire.recoup.automatic.interfaces
 
-import acquire.BackButton
-import acquire.PurolatorFunctions
-import acquire.recoup.MailingAddress
+import acquire.*
+import acquire.recoup.RecoupNotesParser
+import acquire.recoup.WaybillInformation
 import acquire.recoup.components.AddressComponent
 import acquire.recoup.TicketModel
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.geometry.Insets
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.layout.*
+import java.util.*
 
-class AddressInterface(private val ticketModel: TicketModel) : BorderPane() {
+class AddressInterface : BorderPane(), ListenerHandle {
 
     private val rootPane = BorderPane()
     private val headerGrid = GridPane()
@@ -21,7 +24,24 @@ class AddressInterface(private val ticketModel: TicketModel) : BorderPane() {
     private val backBtn = BackButton("recoupScan")
     private val createWaybillBtn = Button("Create Waybill")
 
-    private val addressComponent = AddressComponent(ticketModel.currentTicket)
+    private val addressComponent = AddressComponent()
+
+    //Listeners
+    private val listenerToUpdateNoteArea = ChangeListener<Ticket>() { observableValue: ObservableValue<out Ticket>, oldTicket: Ticket?, newTicket: Ticket? ->
+        noteArea.text = "***FOR REFERENCE***\n" + RecoupNotesParser.quantityInstructions(observableValue.value.notes) + "\n\n" +
+        observableValue.value.lastNote
+    }
+
+    override fun activateListeners() {
+       // println("Activate listeners was called in AddressInterface")
+        addressComponent.activateListeners()
+        TicketModel.currentTicket.addListener(listenerToUpdateNoteArea)
+    }
+
+    override fun deactivateListeners() {
+        addressComponent.deactivateListeners()
+        TicketModel.currentTicket.removeListener(listenerToUpdateNoteArea)
+    }
 
     private fun configureRootGrid() {
 
@@ -69,16 +89,8 @@ class AddressInterface(private val ticketModel: TicketModel) : BorderPane() {
         buttonsBox.children.addAll(createWaybillBtn, backBtn)
     }
 
-    private fun configureTicketNotes() {
-        //val noteArea = TextArea()
-        ticketModel.currentTicket.addListener { p0, p1, p2 ->
-            noteArea.text = "***FOR REFERENCE***\n" + p0.value.lastNote
-        }
-    }
-
     init {
         configureLabelHeader()
-        configureTicketNotes()
         configureRootGrid()
         configureButtonsBox()
 
@@ -91,24 +103,76 @@ class AddressInterface(private val ticketModel: TicketModel) : BorderPane() {
         BorderPane.setMargin(buttonsBox, Insets(0.0, 5.0, 5.0, 5.0))
 
         createWaybillBtn.onAction = javafx.event.EventHandler {
-            val address = MailingAddress(
-                    "Bell",
-                    addressComponent.attentionToField.text,
-                    addressComponent.streetNumberField.text,
-                    addressComponent.streetNameField.text,
-                    addressComponent.postalCodeField.text,
-                    addressComponent.cityField.text,
-                    addressComponent.phoneNumberAreaField.text,
-                    addressComponent.phoneNumberField.text,
-                    if (addressComponent.floorNumberField.text.isBlank()) null else addressComponent.floorNumberField.text,
-                    if (addressComponent.suiteNumberField.text.isBlank()) null else addressComponent.suiteNumberField.text)
-            when (PurolatorFunctions.purolatorOpen) {
-                true -> {
-                    PurolatorFunctions.createNewWaybill(address)
 
+            //TODO("Check the fields to make sure they are filled")
+            when (addressComponent.checkFields()) {
+                true -> {
+                    //TODO("Create a new Waybill Information object")
+                    val address = WaybillInformation(
+                            "Bell",
+                            addressComponent.attentionToField.text,
+                            addressComponent.streetNumberField.text,
+                            addressComponent.streetNameField.text,
+                            addressComponent.postalCodeField.text,
+                            addressComponent.cityField.text,
+                            addressComponent.phoneNumberAreaField.text,
+                            addressComponent.phoneNumberField.text,
+                            if (addressComponent.floorNumberField.text.isBlank()) null else addressComponent.floorNumberField.text,
+                            if (addressComponent.suiteNumberField.text.isBlank()) null else addressComponent.suiteNumberField.text)
+
+                    //TODO("Open a new Tab if purolator isn't yet open and logged in")
+                    when (PurolatorFunctions.purolatorOpen) {
+                        true -> {
+                            PurolatorFunctions.switchToPurolatorTab()
+                        }
+                        false -> {
+                            PurolatorFunctions.createPurolatorTab()
+                            PurolatorFunctions.purolatorOpen = true
+                        }
+                    }
+
+                    //TODO("Populate fields on purolator website")
+                    PurolatorFunctions.createNewShipment()
+                    PurolatorFunctions.fillAddressFields(address)
+
+                    //TODO("Ask for pins")
+                    val scan = Scanner(System.`in`)
+                    print("Enter outbound waybill pin: ")
+                    val outbound = scan.nextLine()
+                    print("Enter inbound waybill pin: ")
+                    val inbound = scan.nextLine()
+                    address.outboundPin = outbound
+                    address.inboundPin = inbound
+
+                    var choice: String
+                    do {
+                        print("Add work info containing shipment information to ticket? (y/n): ")
+                        choice = scan.nextLine()
+                    } while (choice != "y" && choice != "n" && choice != "Y" && choice != "N")
+
+                    when (choice == "y" || choice == "Y") {
+                        true -> {
+                            DriverFunctions.switchToTab("itsm")
+                            val str = "Return package shipped to ${address.streetNumber + " " + address.streetName} addressed to ${address.atnTo}." +
+                                    "\nOutbound pin: $outbound" +
+                                    "\nInbound pin: $inbound"
+                            ITSMFunctions.addNotesToWorkInfoTextArea(str)
+                            ITSMFunctions.saveNewWorkInfo()
+                        }
+                        false -> {
+                            println("Sucks")
+                        }
+                    }
+                    scan.close()
+
+                    //TODO("Create email with pins and add that to ticket notes")
+                    val shipmentEmail = Email()
+                    shipmentEmail.buildShipmentConfirmationEmail(address)
+                    shipmentEmail.buildEmlFile()
+                    shipmentEmail.launchOutlook()
                 }
                 false -> {
-                    PurolatorFunctions.createWaybillFromScratch(address)
+                    println("Please fill all red boxes.")
                 }
             }
             //PurolatorFunctions.enterShippingInformation("Nicholas Pinney","L6H 5T8", "2140", "Winding Woods Drive", "905", "2575603")

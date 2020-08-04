@@ -14,9 +14,7 @@ import javafx.scene.input.ClipboardContent
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 
-class TscComponent(
-        private val ticketModel: TicketModel
-) : GridPane() {
+class TscComponent : GridPane() {
 
     private val fieldIdentifier = Label("TSC #:")
     private val tscField = TextField()
@@ -42,7 +40,7 @@ class TscComponent(
     }
 
     private fun addListenerToTicket() {
-        ticketModel.currentTicket.addListener { p0, p1, p2 ->
+        TicketModel.currentTicket.addListener { p0, p1, p2 ->
             tscField.text = RecoupNotesParser.tscNumber(p0.value.notes)
         }
     }
@@ -120,7 +118,7 @@ class TscComponent(
                    generateTicketFromTSCField()
                }
            }
-           ticketModel.setCurrentTicket(ticket)
+           TicketModel.setCurrentTicket(ticket)
        }
 
        tscField.onMouseClicked = javafx.event.EventHandler {

@@ -1,24 +1,15 @@
 package acquire.recoup.components
 
-import acquire.DriverFunctions
-import acquire.PurolatorFunctions
 import acquire.Ticket
-import acquire.main
-import acquire.recoup.MailingAddress
 import acquire.recoup.RecoupNotesParser
-import acquire.recoup.automatic.CreateWaybill
-import javafx.beans.property.ObjectProperty
-import javafx.geometry.HPos
-import javafx.scene.control.Button
-import javafx.scene.control.Label
+import acquire.recoup.TicketModel
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.scene.control.TextField
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
-import javafx.scene.layout.VBox
 
-class AddressComponent(
-        private val ticketProperty: ObjectProperty<Ticket>
-) : GridPane() {
+class AddressComponent : GridPane() {
 
     private val attentionToGrid = GridPane()
     private val addressGrid = GridPane()
@@ -34,20 +25,41 @@ class AddressComponent(
     val suiteNumberField = TextField("Suite #")
     val floorNumberField = TextField("Floor #")
 
+    //Listener
+    private val listenerToUpdateFields = ChangeListener<Ticket>() { observableValue: ObservableValue<out Ticket>, oldTicket: Ticket?, newTicket: Ticket? ->
+        if (RecoupNotesParser.clientToUpdateAndValidate(observableValue.value.notes).isBlank())
+            println("Client to address not mentioned in ticket")
+        else {
+            attentionToField.text = RecoupNotesParser.attentionTo(observableValue.value.notes)
+            streetNumberField.text = RecoupNotesParser.streetNumber(observableValue.value.notes)
+            streetNameField.text = RecoupNotesParser.streetName(observableValue.value.notes)
+            cityField.text = RecoupNotesParser.city(observableValue.value.notes)
+            postalCodeField.text = RecoupNotesParser.postalCode(observableValue.value.notes)
+        }
+    }
+
     //private val createWaybillButton = Button("Create Waybill")
 
-    private fun addListenersToTextFields() {
-        ticketProperty.addListener { p0, p1, p2 ->
-            if (RecoupNotesParser.clientToUpdateAndValidate(p0.value.notes).isBlank())
-                println("Client to address not mentioned in ticket")
-            else {
-                attentionToField.text = RecoupNotesParser.attentionTo(p0.value.notes)
-                streetNumberField.text = RecoupNotesParser.streetNumber(p0.value.notes)
-                streetNameField.text = RecoupNotesParser.streetName(p0.value.notes)
-                cityField.text = RecoupNotesParser.city(p0.value.notes)
-                postalCodeField.text = RecoupNotesParser.postalCode(p0.value.notes)
+    fun activateListeners() {
+        TicketModel.currentTicket.addListener(listenerToUpdateFields)
+    }
+
+    fun deactivateListeners() {
+        TicketModel.currentTicket.removeListener(listenerToUpdateFields)
+    }
+
+    fun checkFields(): Boolean {
+        var re = true
+        val fields = listOf(attentionToField, phoneNumberAreaField, phoneNumberField, streetNumberField, streetNameField, postalCodeField, cityField)
+        val startingValues = listOf("Attention To", "Area", "Phone #", "Street #", "Street Name", "Postal Code", "City")
+        fields.forEach {
+            val field = it
+            if (field.text in startingValues) {
+                field.style = "-fx-text-box-border: red;"
+                re = false
             }
         }
+        return re
     }
 
     private fun configureAttentionToGrid() {
@@ -99,7 +111,6 @@ class AddressComponent(
     }
 
     init {
-        addListenersToTextFields()
         configureAddressGrid()
         configureAttentionToGrid()
         configureThis()

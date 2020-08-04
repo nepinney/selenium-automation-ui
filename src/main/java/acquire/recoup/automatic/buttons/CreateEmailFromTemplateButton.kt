@@ -6,7 +6,7 @@ import acquire.recoup.automatic.buttongroups.ButtonGroups
 import acquire.recoup.automatic.interfaces.EmailInterface
 import javafx.scene.control.Button
 
-class CreateEmailFromTemplateButton : Button(){
+class CreateEmailFromTemplateButton : Button() {
 
     init {
         this.onAction = javafx.event.EventHandler {
@@ -26,8 +26,6 @@ class CreateEmailFromTemplateButton : Button(){
 
             //TODO: Activate email interface
             ScreenController.activateScene("emailInterface")
-
         }
     }
-
 }

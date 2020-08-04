@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.*?>
+<?import acquire.recoup.manual.ManualActionTypes?>
+<?import acquire.recoup.automatic.TicketDisplayType?>
+<fx:root type="javafx.scene.layout.HBox" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" spacing="5">
+
+    <fx:define>
+        <ToggleGroup fx:id="selection"/>
+    </fx:define>
+
+    <RadioButton fx:id="showNote" text="Show Note" toggleGroup="$selection" selected="true">
+        <userData>
+            <TicketDisplayType fx:constant="LATESTNOTE"/>
+        </userData>
+    </RadioButton>
+
+    <RadioButton fx:id="showInstruction" text="Show Instructions" toggleGroup="$selection">
+        <userData>
+            <TicketDisplayType fx:constant="INSTRUCTIONS"/>
+        </userData>
+    </RadioButton>
+
+</fx:root>

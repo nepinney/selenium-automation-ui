@@ -2,10 +2,12 @@ package acquire
 
 import acquire.recoup.RecoupNotesParser
 import acquire.recoup.TicketModel
+import acquire.recoup.WaybillInformation
 import acquire.recoup.automatic.buttongroups.ButtonGroups
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.mail.Message
 import javax.mail.MessagingException
@@ -42,6 +44,23 @@ class Email {
             }
         }
         generateRecipientsAndCcs()
+    }
+
+    fun buildShipmentConfirmationEmail(address: WaybillInformation) {
+        val emailVariables = mapOf(
+                Pair("<address>", (address.streetNumber + " " + address.streetName)),
+                Pair("<atnTo>", address.atnTo),
+                Pair("<outbound#>", address.outboundPin),
+                Pair("<inbound#>", address.inboundPin)
+        )
+
+        val emailTemplate = File(Config.readConfirmShipmentEmailLocation())
+        body = emailTemplate.readText()
+
+        for (variable in emailVariables) {
+            body = body!!.replace(variable.key, variable.value.toString())
+        }
+
     }
 
     fun generateSubjectAndBody(emailTemplatePath: String) {
@@ -119,8 +138,8 @@ class Email {
             val multipart: Multipart = MimeMultipart()
             multipart.addBodyPart(content)
 
-            recipientList!!.forEach { message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(it)) }
-            ccList!!.forEach { message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(it)) }
+            recipientList?.forEach { message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(it)) }
+            ccList?.forEach { message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(it)) }
 
             // integration
             message.setContent(multipart)
@@ -134,6 +153,19 @@ class Email {
         } catch (ex: IOException) {
             ex.printStackTrace()
         }
+    }
+
+    fun addMetadataAndCopyEmail(): String {
+        var noteToAdd: String
+        val date = Date()
+        val formatter = SimpleDateFormat("MMMM dd, yyyy hh:mm aa")
+        val cc = if (ccList != null) "Cc: ${ccList?.joinToString(";")}\n" else ""
+        return "From: Pinney, Nicholas\n" +
+                "Sent: ${formatter.format(date).toUpperCase().replace(".", "")}\n" +
+                "To: ${recipientList!!.joinToString(";")}\n" +
+                "$cc" +
+                "Subject: ${subject}\n\n" +
+                "${body}"
     }
 
     fun launchOutlook() {

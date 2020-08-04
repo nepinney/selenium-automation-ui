@@ -12,7 +12,7 @@ object ScreenController {
 
     var stage: Stage? = null
     var scene: Scene? = null
-    private val mapOfCustomPanes = HashMap<String, Pane>()
+    val mapOfCustomPanes = mutableMapOf<String, Pane>()
 
     private var activeScreen: String? = null
     private var previousScreen = "taskSelectionScene"
@@ -23,10 +23,15 @@ object ScreenController {
 
     fun addScene(name: String, pane: Pane) {
         mapOfCustomPanes[name] = pane
+        //println()
+        //mapOfCustomPanes.forEach { println(it) }
     }
 
     fun removeScene(name: String?) {
+        //println("Removing pane: $name")
         mapOfCustomPanes.remove(name)
+        //println()
+        //mapOfCustomPanes.forEach { println(it) }
     }
 
     fun activateScene(name: String?) {

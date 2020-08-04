@@ -1,8 +1,7 @@
 package acquire
 
 import acquire.DriverFunctions.driver
-import acquire.recoup.MailingAddress
-import okio.Timeout
+import acquire.recoup.WaybillInformation
 import org.openqa.selenium.By
 import org.openqa.selenium.Keys
 import org.openqa.selenium.NoSuchElementException
@@ -17,16 +16,40 @@ object PurolatorFunctions {
 
     var purolatorOpen = false
 
-    fun createWaybillFromScratch(address: MailingAddress) {
-        //Open new tab
+    fun switchToPurolatorTab() {
         DriverFunctions.switchToTab("purolator")
+    }
+
+    fun createPurolatorTab() {
         //Navigate to Purolator
         DriverFunctions.createNewTab("https://eshiponline.purolator.com/ShipOnline/SecurePages/Public/FormsLogin.aspx?ReturnUrl=/ShipOnline/Welcome.aspx&lang=E", "purolator")
-        purolatorOpen = true
+        //Login
+        login("jpaquete", "eusteam")
+    }
+
+    fun login(usr: String, ps: String) {
+        val usernameField = driver!!.findElement(By.id("ctl00_Login_TxtBoxUserName"))
+        usernameField.sendKeys(usr)
+        val passwordField = driver!!.findElement(By.id("ctl00_Login_TxtBoxPassword"))
+        passwordField.sendKeys(ps)
+        val loginButton = driver!!.findElement(By.id("ctl00_Login_BtnLogin"))
+        loginButton.click()
+    }
+
+    fun createNewShipment() {
+        try{
+            val homeBtn = driver!!.findElement(By.id("ctl00_PageHeader_lbHomeButton"))
+            homeBtn.click()
+            val btn = WebDriverWait(driver, 3)
+                    .until(ExpectedConditions.elementToBeClickable(By.id("ctl00_CPPC_btnCreateShipment")))
+            btn.click()
+        } catch(e: NoSuchElementException){
+            println("Create shipment failed")
+        }
+    }
+
+    fun fillAddressFields(address: WaybillInformation) {
         try {
-            //Login
-            login("jpaquete", "eusteam")
-            clickCreateShipmentButtonFromHomeScreen()
             //Fill fields
             fillCompanyName(address.company)
             //Fill atn to
@@ -44,48 +67,6 @@ object PurolatorFunctions {
             e.printStackTrace()
             println("\nCaught an error finding an element")
         }
-    }
-
-    fun createNewWaybill(address: MailingAddress) {
-        try {
-            goToHome()
-            clickCreateShipmentButtonFromHomeScreen()
-            //Fill fields
-            fillCompanyName(address.company)
-            //Fill atn to
-            fillAttentionTo(address.atnTo)
-            //fill ps code
-            fillPostalCode(address.postalcode)
-            //fill street #
-            checkAndFillStreetNumber(address.streetNumber)
-            //fill street name
-            checkAndFillStreetName(address.streetName)
-            //fill phone number
-            fillPhoneNumber(address.phoneNumberArea, address.phoneNumber)
-            selectDropOff()
-        } catch (e: NoSuchElementException) {
-            e.printStackTrace()
-        }
-    }
-
-    fun login(usr: String, ps: String) {
-        val usernameField = driver!!.findElement(By.id("ctl00_Login_TxtBoxUserName"))
-        usernameField.sendKeys(usr)
-        val passwordField = driver!!.findElement(By.id("ctl00_Login_TxtBoxPassword"))
-        passwordField.sendKeys(ps)
-        val loginButton = driver!!.findElement(By.id("ctl00_Login_BtnLogin"))
-        loginButton.click()
-    }
-
-    fun goToHome() {
-        val homeBtn = driver!!.findElement(By.id("ctl00_PageHeader_ImgBtnPurolatorHome"))
-        homeBtn.click()
-    }
-
-    fun clickCreateShipmentButtonFromHomeScreen() {
-        val createNewLabelLink = WebDriverWait(driver, 10)
-                .until(ExpectedConditions.elementToBeClickable(By.id("ctl00_CPPC_btnCreateShipment")))
-        createNewLabelLink.click()
     }
 
     private fun fillCompanyName(str: String) {

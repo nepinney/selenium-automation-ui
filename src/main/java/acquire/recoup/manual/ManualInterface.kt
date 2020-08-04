@@ -15,12 +15,12 @@ class ManualInterface(
 
     private val splitRoot = SplitPane()
 
-    private val ticketModel = TicketModel()
+   // private val ticketModel = TicketModel()
 
-    private val localRequest = LocalRequest(ticketModel)
-    private val outsideRequest = OutsideRequest(ticketModel)
-    private val createWaybill = CreateWaybill(ticketModel)
-    private val confirmation = Confirmation(ticketModel)
+    private val localRequest = LocalRequest()
+    private val outsideRequest = OutsideRequest()
+    private val createWaybill = CreateWaybill()
+    private val confirmation = Confirmation()
 
     private fun selectLocalRequest() {
         splitRoot.items.add(0, localRequest)
@@ -59,16 +59,16 @@ class ManualInterface(
 
         val buttonHbox1 = HBox()
         buttonHbox1.spacing = 5.0
-        buttonHbox1.children.addAll(PrintTicketButton(ticketModel.currentTicket), ManuallnstructionsButton(), BackButton("taskSelectionScene"))
+        buttonHbox1.children.addAll(PrintTicketButton(TicketModel.currentTicket), ManuallnstructionsButton(), BackButton("taskSelectionScene"))
         val buttonHbox2 = HBox()
         buttonHbox2.spacing = 5.0
-        buttonHbox2.children.addAll(PrintTicketButton(ticketModel.currentTicket), ManuallnstructionsButton(), BackButton("taskSelectionScene"))
+        buttonHbox2.children.addAll(PrintTicketButton(TicketModel.currentTicket), ManuallnstructionsButton(), BackButton("taskSelectionScene"))
         val buttonHbox3 = HBox()
         buttonHbox3.spacing = 5.0
-        buttonHbox3.children.addAll(PrintTicketButton(ticketModel.currentTicket), ManuallnstructionsButton(), BackButton("taskSelectionScene"))
+        buttonHbox3.children.addAll(PrintTicketButton(TicketModel.currentTicket), ManuallnstructionsButton(), BackButton("taskSelectionScene"))
         val buttonHbox4 = HBox()
         buttonHbox4.spacing = 5.0
-        buttonHbox4.children.addAll(PrintTicketButton(ticketModel.currentTicket), ManuallnstructionsButton(), BackButton("taskSelectionScene"))
+        buttonHbox4.children.addAll(PrintTicketButton(TicketModel.currentTicket), ManuallnstructionsButton(), BackButton("taskSelectionScene"))
 
         localRequest.children.add(buttonHbox1)
         outsideRequest.children.add(buttonHbox2)

@@ -36,7 +36,7 @@ class UpdateTicketComponent(
                     ITSMFunctions.setStatusField("pending")
                     ITSMFunctions.setStatusReasonField()
                     ITSMFunctions.setResolution("Recoup completed.")
-                    ITSMFunctions.setNotes("Recoup completed.")
+                    ITSMFunctions.addNotesToWorkInfoTextArea("Recoup completed.")
                     ITSMFunctions.setTargetDate()
                 }
                 else -> {

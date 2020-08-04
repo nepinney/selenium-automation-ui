@@ -8,17 +8,17 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 
-class OutsideRequest(private val ticketModel: TicketModel) : VBox() {
+class OutsideRequest : VBox() {
 
     private val tscInstructionLabel = Label("1. Open ticket on browser or enter tsc number to generate")
-    private val tscComponent = TscComponent(ticketModel)
+    private val tscComponent = TscComponent()
 
     private fun addTscComponent() {
         this.children.add(tscComponent)
     }
 
     private fun addEmailComponent() {
-        this.children.add(EmailComponent("2. Create outside request email", ticketModel.currentTicket, ManualActionTypes.OUTSIDEREQUEST))
+        this.children.add(EmailComponent("2. Create outside request email", TicketModel.currentTicket, ManualActionTypes.OUTSIDEREQUEST))
     }
 
     private fun addUpdateTicketComponent() {

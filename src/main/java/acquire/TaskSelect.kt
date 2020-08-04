@@ -52,7 +52,23 @@ class TaskSelect : AnchorPane() {
 
         recoupScanButton.onAction = javafx.event.EventHandler {
             //ITSMFunctions.sortTicketsBasedOnStatus()
-            ScreenController.addScene("recoupScan", AutomaticInterface())
+            val auto = AutomaticInterface()
+            ScreenController.addScene("recoupScan", auto)
+
+            //Adding all required child scenes to the scene controller
+            ScreenController.mapOfCustomPanes.forEach {
+                val pane = it.value
+                if (pane is SceneHandle)
+                    pane.addChildScenes()
+            }
+
+            //Activating the listeners associated with all scenes
+            ScreenController.mapOfCustomPanes.forEach {
+                val pane = it.value
+                if (pane is ListenerHandle) {
+                    pane.activateListeners()
+                }
+            }
             ScreenController.activateScene("recoupScan")
         }
 

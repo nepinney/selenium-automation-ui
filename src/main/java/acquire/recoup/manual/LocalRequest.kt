@@ -8,20 +8,18 @@ import javafx.geometry.Pos
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 
-class LocalRequest(
-        private val ticketModel: TicketModel
-) : VBox() {
+class LocalRequest : VBox() {
 
     private val tscInstructionLabel = Label("1. Open ticket on browser or enter tsc number to generate")
     //private val ticketModel = TicketModel()
-    private val tscComponent = TscComponent(ticketModel)
+    private val tscComponent = TscComponent()
 
     private fun addTscComponent() {
         this.children.add(tscComponent)
     }
 
     private fun addEmailComponent() {
-        this.children.add(EmailComponent("2. Create local request email", ticketModel.currentTicket, ManualActionTypes.LOCALREQUEST))
+        this.children.add(EmailComponent("2. Create local request email", TicketModel.currentTicket, ManualActionTypes.LOCALREQUEST))
     }
 
     private fun addUpdateTicketComponent() {
