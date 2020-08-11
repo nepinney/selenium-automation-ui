@@ -12,6 +12,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.TextArea
 import javafx.scene.layout.*
+import org.openqa.selenium.NoSuchElementException
 import java.util.*
 
 class AddressInterface : BorderPane(), ListenerHandle {
@@ -125,57 +126,72 @@ class AddressInterface : BorderPane(), ListenerHandle {
                             if (addressComponent.floorNumberField.text.isBlank()) null else addressComponent.floorNumberField.text,
                             if (addressComponent.suiteNumberField.text.isBlank()) null else addressComponent.suiteNumberField.text)
 
-                    //TODO("Open a new Tab if purolator isn't yet open and logged in")
-                    PurolatorFunctions.purolatorOpen = DriverFunctions.driver!!.windowHandles.count() > 1
-                    when (PurolatorFunctions.purolatorOpen) {
-                        true -> {
-                            PurolatorFunctions.switchToPurolatorTab()
+                    try {
+                        //TODO("Open a new Tab if purolator isn't yet open and logged in")
+                        PurolatorFunctions.purolatorOpen = DriverFunctions.driver!!.windowHandles.count() > 1
+                        println("Checked window handles, purolator open?: ${PurolatorFunctions.purolatorOpen}")
+                        when (PurolatorFunctions.purolatorOpen) {
+                            true -> {
+                                PurolatorFunctions.switchToPurolatorTab()
+                            }
+                            false -> {
+                                PurolatorFunctions.createPurolatorTab()
+                                //PurolatorFunctions.purolatorOpen = true
+                            }
                         }
-                        false -> {
-                            PurolatorFunctions.createPurolatorTab()
-                            //PurolatorFunctions.purolatorOpen = true
+
+
+                        //TODO("Populate fields on purolator website")
+                        PurolatorFunctions.createNewShipment()
+                        PurolatorFunctions.fillAddressFields(address)
+
+                        //TODO("Ask for pins")
+                        val scan = Scanner(System.`in`)
+                        print("Enter outbound waybill pin: ")
+                        val outbound = scan.nextLine().trim()
+                        print("Enter inbound waybill pin: ")
+                        val inbound = scan.nextLine().trim()
+                        address.outboundPin = outbound
+                        address.inboundPin = inbound
+
+                        var choice: String
+                        do {
+                            print("Add work info containing shipment information to ticket? (y/n): ")
+                            choice = scan.next()
+                            scan.nextLine()
+                        } while (choice != "y" && choice != "n" && choice != "Y" && choice != "N")
+
+                        when (choice == "y" || choice == "Y") {
+                            true -> {
+                                DriverFunctions.switchToTab("itsm")
+                                val str = "Return package shipped to ${address.streetNumber + " " + address.streetName} addressed to ${address.atnTo}." +
+                                        "\nOutbound pin: $outbound" +
+                                        "\nInbound pin: $inbound"
+                                ITSMFunctions.addNotesToWorkInfoTextArea(str)
+                                ITSMFunctions.saveNewWorkInfo()
+                            }
+                            false -> {
+                                println("Sucks")
+                            }
                         }
+                        scan.close()
+
+                        //TODO("Create email with pins and add that to ticket notes")
+                        val shipmentEmail = Email()
+                        shipmentEmail.buildShipmentConfirmationEmail(address)
+                        shipmentEmail.buildEmlFile()
+                        shipmentEmail.launchOutlook()
+                    }
+/*                    catch(n: NoSuchElementException) {
+
+                        println("Someone already logged into Purolator:(")
+                    }*/
+                    catch (e: Exception) {
+                        DriverFunctions.closeTab("purolator")
+                        //println("Caught error during waybill creation")
+                        //e.printStackTrace()
                     }
 
-                    //TODO("Populate fields on purolator website")
-                    PurolatorFunctions.createNewShipment()
-                    PurolatorFunctions.fillAddressFields(address)
-
-                    //TODO("Ask for pins")
-                    val scan = Scanner(System.`in`)
-                    print("Enter outbound waybill pin: ")
-                    val outbound = scan.nextLine()
-                    print("Enter inbound waybill pin: ")
-                    val inbound = scan.nextLine()
-                    address.outboundPin = outbound
-                    address.inboundPin = inbound
-
-                    var choice: String
-                    do {
-                        print("Add work info containing shipment information to ticket? (y/n): ")
-                        choice = scan.nextLine()
-                    } while (choice != "y" && choice != "n" && choice != "Y" && choice != "N")
-
-                    when (choice == "y" || choice == "Y") {
-                        true -> {
-                            DriverFunctions.switchToTab("itsm")
-                            val str = "Return package shipped to ${address.streetNumber + " " + address.streetName} addressed to ${address.atnTo}." +
-                                    "\nOutbound pin: $outbound" +
-                                    "\nInbound pin: $inbound"
-                            ITSMFunctions.addNotesToWorkInfoTextArea(str)
-                            ITSMFunctions.saveNewWorkInfo()
-                        }
-                        false -> {
-                            println("Sucks")
-                        }
-                    }
-                    scan.close()
-
-                    //TODO("Create email with pins and add that to ticket notes")
-                    val shipmentEmail = Email()
-                    shipmentEmail.buildShipmentConfirmationEmail(address)
-                    shipmentEmail.buildEmlFile()
-                    shipmentEmail.launchOutlook()
                 }
                 false -> {
                     println("Please fill all red boxes.")

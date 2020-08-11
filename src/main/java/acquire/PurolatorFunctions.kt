@@ -40,7 +40,7 @@ object PurolatorFunctions {
         try{
             val homeBtn = driver!!.findElement(By.id("ctl00_PageHeader_lbHomeButton"))
             homeBtn.click()
-            val btn = WebDriverWait(driver, 3)
+            val btn = WebDriverWait(driver, 1.5.toLong())
                     .until(ExpectedConditions.elementToBeClickable(By.id("ctl00_CPPC_btnCreateShipment")))
             btn.click()
         } catch(e: NoSuchElementException){

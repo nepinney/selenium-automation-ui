@@ -88,7 +88,7 @@ object ITSMFunctions {
      */
     fun getNotesFromTicket(alreadyOpen: Boolean): String {
         //Once the ticket has been opened, get the information from the notes textArea
-
+        driver!!.switchTo().defaultContent()
         //NEW IMPLEMENTATION
         val timeOut = if (alreadyOpen) 1 else 8
         var infoTextArea: WebElement? = null

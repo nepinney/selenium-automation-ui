@@ -25,6 +25,7 @@ object DriverFunctions {
     }
 
     fun createNewTab(link: String, key: String) {
+        switchToTab("itsm")
         when (isRunning) {
             true -> {
                 (driver as JavascriptExecutor).executeScript("window.open()")
@@ -61,6 +62,15 @@ object DriverFunctions {
                 driver!!.switchTo().window(tabs!![key])
             }
         }
+    }
+
+    fun closeTab(tabHandle: String) {
+        switchToTab(tabHandle)
+        (driver as JavascriptExecutor).executeScript("window.close()")
+        tabs?.remove(tabHandle)
+        switchToTab("itsm")
+        driver!!.switchTo().defaultContent()
+        tabs = null
     }
 
 }
